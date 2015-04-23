@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -22,33 +25,64 @@ import java.util.List;
 /**
  * Created by intercont on 19/04/15.
  */
-public class ForecastFragment {
+public class ForecastFragment extends Fragment {
 
-        public ForecastFragment() {
+    public ForecastFragment() {
+    }
+
+    //este override do onCreate sera executado antes do proprio onCreate da View abaixo, antes do UI ser inflado
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //Especificando que tenho Opçoes de Menu a serem inclusas no menu principal
+        setHasOptionsMenu(true);
+    }
+
+    //inflando o item do forecastfragment das opçoes apos setar o setHasOptionsMenu como true no fim de onCreate
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.forecastfragment, menu);
+    }
+
+    //este cara 'e de forma geral padrao e necessario
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_refresh) {
+            return true;
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-            List<String> weekForecast = new ArrayList<String>();
-
-            weekForecast.add("Hoje, Sol 27º");
-            weekForecast.add("Segunda, Sol 25º");
-            weekForecast.add("Terça, Sol 29º");
-            weekForecast.add("Quarta, Nublado 24º");
-            weekForecast.add("Quinta, Chuva 22º");
-            weekForecast.add("Sexta, Sol 25º");
-            weekForecast.add("Sabado, Sol 25º");
-            weekForecast.add("Domingo, Sol 25º");
-            weekForecast.add("Segunda, Sol 25º");
-            weekForecast.add("Terça, Sol 25º");
-            weekForecast.add("Quarta, Sol 25º");
-            weekForecast.add("Quinta, Sol 25º");
+        return super.onOptionsItemSelected(item);
+    }
 
 
-            //criando um array de strings
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        List<String> weekForecast = new ArrayList<String>();
+
+        weekForecast.add("Hoje, Sol 27º");
+        weekForecast.add("Segunda, Sol 25º");
+        weekForecast.add("Terça, Sol 29º");
+        weekForecast.add("Quarta, Nublado 24º");
+        weekForecast.add("Quinta, Chuva 22º");
+        weekForecast.add("Sexta, Sol 25º");
+        weekForecast.add("Sabado, Sol 25º");
+        weekForecast.add("Domingo, Sol 25º");
+        weekForecast.add("Segunda, Sol 25º");
+        weekForecast.add("Terça, Sol 25º");
+        weekForecast.add("Quarta, Sol 25º");
+        weekForecast.add("Quinta, Sol 25º");
+
+
+        //criando um array de strings
 //            String[] forecastArray = {
 //                "Hoje, Sol 27º",
 //                "Segunda, Sol 25º",
@@ -61,24 +95,37 @@ public class ForecastFragment {
 //            List<String> weekForecast = new ArrayList<String>(
 //                    Arrays.asList(forecastArray));
 
-            //Adaptador para popular a ListView por uma fonte de dados, que no caso, é o ArrayList Mocado
-            //ele requer uma série de parâmetros, como se pode ver pelos diferentes construtores dele
-            ArrayAdapter<String> mForecastAdapter = new ArrayAdapter<String>(
-                    //o contexto corrente, ou seja, o pai deste fragment, a Activity
-                    getActivity(),
-                    //referência ao layout gráfico como um todoo, por isso o nome do arquivo xml
-                    R.layout.list_item_forecast,
-                    //referência ao elemento do TextView, dentro do arquivo de layout de antes
-                    R.id.list_item_forecast_textview,
-                    //fonte de dados, neste caso o ArrayList acima
-                    weekForecast);
+        //Adaptador para popular a ListView por uma fonte de dados, que no caso, é o ArrayList Mocado
+        //ele requer uma série de parâmetros, como se pode ver pelos diferentes construtores dele
+        ArrayAdapter<String> mForecastAdapter = new ArrayAdapter<String>(
+                //o contexto corrente, ou seja, o pai deste fragment, a Activity
+                getActivity(),
+                //referência ao layout gráfico como um todoo, por isso o nome do arquivo xml
+                R.layout.list_item_forecast,
+                //referência ao elemento do TextView, dentro do arquivo de layout de antes
+                R.id.list_item_forecast_textview,
+                //fonte de dados, neste caso o ArrayList acima
+                weekForecast);
 
-            //Trazendo o ListView pra cá, precisa trazer do rootView já que é onde está o ListView,
-            //o rootView inflou o fragment_main aí encima e tem todos seus elementos
-            ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-            //e set o Adapter
-            listView.setAdapter(mForecastAdapter);
+        //Trazendo o ListView pra cá, precisa trazer do rootView já que é onde está o ListView,
+        //o rootView inflou o fragment_main aí encima e tem todos seus elementos
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        //e set o Adapter
+        listView.setAdapter(mForecastAdapter);
+        return rootView;
+    }
 
+    /**
+     * FetchWeatherTask
+     * Subclasse para execuçao da consulta na API dos dados em Background
+     */
+    private class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
+
+        //TAG Usada para identificaçao do nome da classe no Logger, facilita para a identificaçao de erros e estao em sincronia caso refatore a classe
+        private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+
+        @Override
+        protected Void doInBackground(Void... params) {
             //Trazendo dados reais da API do OpenWeather, comentários reais mantidos do Github
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
@@ -122,11 +169,11 @@ public class ForecastFragment {
                 }
                 forecastJsonStr = buffer.toString();
             } catch (IOException e) {
-                Log.e("PlaceholderFragment", "Error ", e);
+                Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
                 // to parse it.
                 return null;
-            } finally{
+            } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
                 }
@@ -134,15 +181,12 @@ public class ForecastFragment {
                     try {
                         reader.close();
                     } catch (final IOException e) {
-                        Log.e("PlaceholderFragment", "Error closing stream", e);
+                        Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
             }
 
-            return rootView;
+            return null;
         }
-
-    public class FetchWeatherTask extends AsyncTask{
-
     }
 }
