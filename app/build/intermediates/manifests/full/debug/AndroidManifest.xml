@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="21" />
+    <!-- Necessary for the app to use Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"

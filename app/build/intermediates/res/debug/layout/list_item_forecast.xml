@@ -6,4 +6,4 @@
     android:gravity="center_vertical"
     android:id="@+id/list_item_forecast_textview">
 
-</TextView><!-- From: file:/home/intercont/AndroidStudioProjects/Sunshinegit/androidstudy/app/src/main/res/layout/list_item_forecast.xml -->
+</TextView><!-- From: file:/home/intercont/AndroidStudioProjects/Sunshine/app/src/main/res/layout/list_item_forecast.xml -->
