@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Sunshine</string>
     <string name="hello_world" translatable="false">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Configurações</string>
     <string name="action_refresh">Atualizar</string>
-    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_detail">Detalhes</string>
+
+    <!-- preferences settings -->
+    <string name="pref_location_label">Localização</string>
+    <string name="pref_location_key" translatable="false">location</string>
+    <string name="pref_location_default" translatable="false">13206714</string>
 </resources>
