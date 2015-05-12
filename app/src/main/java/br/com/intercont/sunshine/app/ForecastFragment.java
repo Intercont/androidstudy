@@ -1,9 +1,12 @@
 package br.com.intercont.sunshine.app;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -40,6 +43,9 @@ public class ForecastFragment extends Fragment {
     private ArrayAdapter<String> mForecastAdapter;
     private ListView listView;
 
+    private static final String PREF_LOCATION = "location";
+    private static final String PREF_LOCATION_DEFAULT = "13206714";
+
     public ForecastFragment() {
     }
 
@@ -67,12 +73,38 @@ public class ForecastFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            FetchWeatherTask weatherTask  = new FetchWeatherTask();
-            weatherTask.execute("13206714");
+            updateData();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * updateData - Método para atualizar os dados da MainActivity
+     * Funcionamento:
+     * - Uso o PreferenceManager, pegando o getDefaultSharedPreferences, no contexto corrente,
+     * trago a String do arquivo strings.xml da chave que quero e o valor por Default se esta não
+     * existir e passo na chamada
+     *
+     */
+    private void updateData(){
+        FetchWeatherTask weatherTask  = new FetchWeatherTask();
+        //1º - Obtenho o arquivo Preferences default
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //2º - Recupero o valor de location, passando o valor KEY e o valor DEFAULT, trazendo do strings.xml
+        String location = preferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        //3º - Passo o valor da String para o parâmetro de FetchWeatherTask
+        weatherTask.execute(location);
+    }
+
+    /**
+     * onStart - Always executed when the Activity is started
+     */
+    @Override
+    public void onStart(){
+        super.onStart();
+        updateData();
     }
 
 
@@ -80,35 +112,6 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        List<String> weekForecast = new ArrayList<String>();
-
-        weekForecast.add("Hoje, Sol 27º");
-        weekForecast.add("Segunda, Sol 25º");
-        weekForecast.add("Terça, Sol 29º");
-        weekForecast.add("Quarta, Nublado 24º");
-        weekForecast.add("Quinta, Chuva 22º");
-        weekForecast.add("Sexta, Sol 25º");
-        weekForecast.add("Sabado, Sol 25º");
-        weekForecast.add("Domingo, Sol 25º");
-        weekForecast.add("Segunda, Sol 25º");
-        weekForecast.add("Terça, Sol 25º");
-        weekForecast.add("Quarta, Sol 25º");
-        weekForecast.add("Quinta, Sol 25º");
-
-
-        //criando um array de strings
-//            String[] forecastArray = {
-//                "Hoje, Sol 27º",
-//                "Segunda, Sol 25º",
-//                "Terça, Sol 29º",
-//                "Quarta, Nublado 24º",
-//                "Quinta, Chuva 22º",
-//                "Sexta, Sol 25º",
-//            };
-//            //convertendo-o para um ArrayList
-//            List<String> weekForecast = new ArrayList<String>(
-//                    Arrays.asList(forecastArray));
 
         //Adaptador para popular a ListView por uma fonte de dados, que no caso, é o ArrayList Mocado
         //ele requer uma série de parâmetros, como se pode ver pelos diferentes construtores dele
@@ -119,8 +122,9 @@ public class ForecastFragment extends Fragment {
                 R.layout.list_item_forecast,
                 //referência ao elemento do TextView, dentro do arquivo de layout de antes
                 R.id.list_item_forecast_textview,
-                //fonte de dados, neste caso o ArrayList acima
-                weekForecast);
+                //fonte de dados, neste caso o ArrayList acima - UPDATE: como estou trazendo agora
+                // direto da API, passo um ArrayList vazio no lugar do ArrayList mocado
+                new ArrayList<String>());
 
         //Trazendo o ListView pra cá, precisa trazer do rootView já que é onde está o ListView,
         //o rootView inflou o fragment_main aí encima e tem todos seus elementos
@@ -135,8 +139,6 @@ public class ForecastFragment extends Fragment {
                 intent.putExtra(Intent.EXTRA_TEXT, mForecastAdapter.getItem(position));
                 startActivity(intent);
 
-
-
                 //TOAST de Teste
                 //SOLUÇÃO DO CURSO
 //                String forecast = mForecastAdapter.getItem(position);
@@ -149,8 +151,6 @@ public class ForecastFragment extends Fragment {
                 //FIM - TOAST de Teste
             }
         });
-
-
         return rootView;
     }
 
@@ -164,7 +164,7 @@ public class ForecastFragment extends Fragment {
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
-        protected String[] doInBackground(String... postalcode) {
+        protected String[] doInBackground(String... params) {
             //Trazendo dados reais da API do OpenWeather, comentários reais mantidos do Github
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
@@ -209,14 +209,14 @@ public class ForecastFragment extends Fragment {
                         .appendPath(VERSION)
                         .appendPath(SERVICE)
                         .appendPath(FREQUENCY)
-                        .appendQueryParameter(QUERY_PARAM, postalcode[0])
+                        .appendQueryParameter(QUERY_PARAM, params[0])
                         .appendQueryParameter(FORMAT_PARAM, format)
                         .appendQueryParameter(UNITS_PARAM, units)
                         .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
                         .appendQueryParameter(LANG_PARAM, lang);
 
                 String urlQuery = builder.build().toString();
-//                Log.v("Query do Builder", urlQuery);
+                Log.v("Query do Builder", urlQuery);
 
                 URL url = new URL(urlQuery);
                 // Create the request to OpenWeatherMap, and open the connection
@@ -248,7 +248,7 @@ public class ForecastFragment extends Fragment {
                 forecastJsonStr = buffer.toString();
 
                 //logando o retorno do backend da API do Tempo
-//                Log.v(LOG_TAG, "String JSON da Previsao: " + forecastJsonStr);
+                Log.v(LOG_TAG, "String JSON da Previsao: " + forecastJsonStr);
 
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
@@ -292,8 +292,29 @@ public class ForecastFragment extends Fragment {
 
         /**
          * Prepare the weather high/lows for presentation.
+         * Como o objetivo do aplicativo é apenas trazer os dados em Celsius e
+         converter os valores de Celsius para Fahrenheit no aplicativo,
+         deixarei o parâmetro da chamada como metric, intacta, e realizo as
+         conversões aqui, como mostrado no curso. O objetivo de converter os
+         valores aqui e somente trazer valores métricos é porque vamos
+         armazenar estes valores em um Banco de Dados e não queremos dados com
+         unidades misturadas, então, para mostrar ao usuário de acordo com a pref
+         dele, convertemos aqui trazendo sua preferência de SharedPreferences
          */
         private String formatHighLows(double high, double low) {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String unitType = sharedPrefs.getString(getString(R.string.pref_unit_key),getString(R.string.pref_unit_default));
+
+            //verificamos se a unidade de medida de preferência é imperial, se for, convertemos, amém
+            if(unitType.equals(getString(R.string.pref_unit_imperial))){
+                //cálculo para conversão dos valores para Fahrenheit
+                high = (high * 1.8) + 32;
+                low = (low * 1.8) + 32;
+            }else if (!unitType.equals(getString(R.string.pref_unit_metric))){
+                //caso não seja nem métrica nem imperial, loga que bicho é esse
+                Log.d(LOG_TAG,"Unit type not found: " + unitType);
+            }
+
             // For presentation, assume the user doesn't care about tenths of a degree.
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);

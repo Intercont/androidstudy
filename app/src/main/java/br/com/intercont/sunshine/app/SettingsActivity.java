@@ -32,7 +32,10 @@ public class SettingsActivity extends PreferenceActivity
         // updated when the preference changes.
         //Faço Bind usando o método findPreference via getString pra trazer o valor chave que
         // alimentei no strings.xml
+        //Este Bind tem como finalidade alimentar a linha embaixo da preferência nas Configurações
+        // do aplicativo, para que se veja qual opção está selecionada, sempre pela chave
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_unit_key)));
     }
 
     /**

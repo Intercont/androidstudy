@@ -5,8 +5,16 @@
     <string name="action_refresh">Atualizar</string>
     <string name="title_activity_detail">Detalhes</string>
 
-    <!-- preferences settings -->
+    <!-- location preferences settings -->
     <string name="pref_location_label">Localização</string>
     <string name="pref_location_key" translatable="false">location</string>
     <string name="pref_location_default" translatable="false">13206714</string>
+
+    <!-- unit preferences settings -->
+    <string name="pref_unit_label">Unidade de Medida</string>
+    <string name="pref_unit_key" translatable="false">unit</string>
+    <string name="pref_unit_default" translatable="false">metric</string>
+    <string name="pref_unit_metric" translatable="false">metric</string>
+    <string name="pref_unit_imperial" translatable="false">imperial</string>
+
 </resources>
