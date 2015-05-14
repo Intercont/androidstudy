@@ -1,19 +1,25 @@
 package br.com.intercont.sunshine.app;
 
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 
 public class DetailActivity extends ActionBarActivity {
 
+    private ShareActionProvider mShareActionProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
     }
 
 
@@ -21,7 +27,38 @@ public class DetailActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
-        return true;
+
+        //Definindo a Intent default do ShareActionProvider
+        MenuItem shareItem = menu.findItem(R.id.action_share);
+        //cast para compatibilidade da v4 para a v7
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+        //passamos a Intent a ser executada na opção de Share, no caso, o ACTION_SEND no método auxiliar
+        mShareActionProvider.setShareIntent(getDefaultIntent());
+
+        return super.onCreateOptionsMenu(menu);
+//        return true;
+    }
+
+    /**
+     * Get forecast text from selected day
+     * @return Text showed in DetailActivity
+     */
+    private String getExtraText(){
+        Intent intent = this.getIntent();
+        TextView text = (TextView) findViewById(R.id.detailforecast);
+        return (String) text.getText();
+    }
+
+    /**
+     * Set Share Intent to the loaded ShareActionProvider
+     * @return intent
+     */
+    private Intent getDefaultIntent(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        String text = getExtraText();
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT,text);
+        return intent;
     }
 
     @Override

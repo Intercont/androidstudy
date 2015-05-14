@@ -1,6 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:id="@+id/action_share"
+        android:title="@string/abc_shareactionprovider_share_with"
+        app:showAsAction="ifRoom"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        />
+    <item
+        android:id="@+id/action_mapuserlocationigor"
+        android:title="@string/action_mapuserlocationigor"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_mapuserlocationcourse"
+        android:title="@string/action_mapuserlocationcourse"
+        app:showAsAction="never" />
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

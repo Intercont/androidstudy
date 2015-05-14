@@ -3,6 +3,8 @@
     <string name="hello_world" translatable="false">Hello world!</string>
     <string name="action_settings">Configurações</string>
     <string name="action_refresh">Atualizar</string>
+    <string name="action_mapuserlocationigor">Localização do Usuário by Igor (Lat/Lon)</string>
+    <string name="action_mapuserlocationcourse">User Location by CEP (course solution)</string>
     <string name="title_activity_detail">Detalhes</string>
 
     <!-- location preferences settings -->

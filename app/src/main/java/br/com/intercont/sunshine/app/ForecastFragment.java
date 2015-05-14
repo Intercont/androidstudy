@@ -40,8 +40,12 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
+    private final String LOG_TAG = ForecastFragment.class.getSimpleName();
+
     private ArrayAdapter<String> mForecastAdapter;
     private ListView listView;
+    private double coordLatitude;
+    private double coordLongitude;
 
     private static final String PREF_LOCATION = "location";
     private static final String PREF_LOCATION_DEFAULT = "13206714";
@@ -77,6 +81,11 @@ public class ForecastFragment extends Fragment {
             return true;
         }
 
+        if(id == R.id.action_mapuserlocationigor) {
+            showMap();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -93,7 +102,7 @@ public class ForecastFragment extends Fragment {
         //1º - Obtenho o arquivo Preferences default
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         //2º - Recupero o valor de location, passando o valor KEY e o valor DEFAULT, trazendo do strings.xml
-        String location = preferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        String location = preferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
         //3º - Passo o valor da String para o parâmetro de FetchWeatherTask
         weatherTask.execute(location);
     }
@@ -107,6 +116,21 @@ public class ForecastFragment extends Fragment {
         updateData();
     }
 
+    /**
+     * showMap (MINHA SOLUÇÃO) - Este método foi a minha solução para apresentar a localização do usuário no mapa
+     * O mesmo faz uso das coordenadas que a API retorna e carrega o mapa com uso delas
+     */
+    public void showMap() {
+        //geo:latitude,longitude
+        String geoUri = "geo:"+coordLatitude+","+coordLongitude;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(geoUri));
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }else{
+            Log.d(LOG_TAG, "Nao foi possivel chamar " + geoUri + ", não há nenhuma aplicação de mapas instalada");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -340,8 +364,22 @@ public class ForecastFragment extends Fragment {
             final String OWM_MAX = "max";
             final String OWM_MIN = "min";
             final String OWM_DESCRIPTION = "main";
+            final String OWM_LOCATION = "city";
+            final String OWM_LOCATION_COORD = "coord";
+            final String OWM_LOCATION_COORD_LAT = "lat";
+            final String OWM_LOCATION_COORD_LON = "lon";
 
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
+
+            //MINHA SOLUÇÃO
+            //Obtém a latitude e a longitude para mostrar no mapa o lugar de preferência do usuário
+            JSONObject forecastCity = forecastJson.getJSONObject(OWM_LOCATION);
+            JSONObject forecastCoord = forecastCity.getJSONObject(OWM_LOCATION_COORD);
+            coordLatitude = forecastCoord.getDouble(OWM_LOCATION_COORD_LAT);
+            coordLongitude = forecastCoord.getDouble(OWM_LOCATION_COORD_LON);
+            //MINHA SOLUÇÃO
+
+            //Forecast Array
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
 
             // OWM returns daily forecasts based upon the local time of the city that is being
