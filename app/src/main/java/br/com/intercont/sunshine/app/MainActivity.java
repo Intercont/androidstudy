@@ -39,6 +39,8 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new ForecastFragment())
                     .commit();
         }
+        //Log para validacao das fases do ciclo de vida de uma Activity apenas
+        Log.d(LOG_TAG, "onCreate");
     }
 
 
@@ -61,8 +63,8 @@ public class MainActivity extends ActionBarActivity {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
-        //solução do curso para apresentar a localização do mapa, passa o CEP/ZIP Postal Code
-        // diretamente para a API do Google e esta se encarrega de buscar o endereço
+        //solucao do curso para apresentar a localizacao do mapa, passa o CEP/ZIP Postal Code
+        // diretamente para a API do Google e esta se encarrega de buscar o endereco
         if(id == R.id.action_mapuserlocationcourse) {
             openPreferredLocationInMap();
             return true;
@@ -72,8 +74,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /**
-     * SOLUÇÃO DO CURSO
-     * Solução do curso para carregar o mapa com a região, passa de parâmetro diretamente
+     * SOLUCAO DO CURSO
+     * Solucao do curso para carregar o mapa com a regiao, passa de parametro diretamente
      * o CEP armazenado no SharedPreferences na query da Implicit Intent para algum aplicativo de maps
      */
     private void openPreferredLocationInMap(){
@@ -84,16 +86,50 @@ public class MainActivity extends ActionBarActivity {
                 .appendQueryParameter("q",location)
                 .build();
 
-        //Chamada de uma Intent Action View, necessária para mostrar o mapa
+        //Chamada de uma Intent Action View, necessaria para mostrar o mapa
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(geoLocation);
 
-        //Verificamos se é possível chamar essa Intent, quer dizer, se há algum aplicativo no celular que pode abrir mapas
+        //Verificamos se e possivel chamar essa Intent, quer dizer, se ha algum aplicativo no celular que pode abrir mapas
         if(intent.resolveActivity(getPackageManager()) != null){
             startActivity(intent);
         }else{
-            Log.d(LOG_TAG, "Não foi possive chamar " + location + ", não há nenhuma aplicação de mapas instalada");
+            Log.d(LOG_TAG, "Nao foi possivel chamar " + location + ", nao ha nenhuma aplicacao de mapas instalada");
         }
 
     }
+
+    /**
+     * Log para validacao das fases do ciclo de vida de uma Activity apenas
+     */
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Log.d(LOG_TAG, "onStart");
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d(LOG_TAG, "onResume");
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.d(LOG_TAG, "onPause");
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.d(LOG_TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.d(LOG_TAG, "onDestroy");
+    }
+
 }

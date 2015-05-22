@@ -24,7 +24,7 @@ public class SettingsActivity extends PreferenceActivity
         super.onCreate(savedInstanceState);
         // Add 'general' preferences, defined in the XML file
 
-        //Está chiando que o método está depreciado mas como estou fazendo retrocompatibilidade com
+        //Esta chiando que o metodo esta depreciado mas como estou fazendo retrocompatibilidade com
         //o Gingerbreak, f*ck it anyway, tem que usar o deprecated mesmo
         addPreferencesFromResource(R.xml.pref_general);
 

@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 /**
  * A placeholder fragment containing a simple view.
- * Recebeu o Intent para Share após o refactor realizado para adaptar meu código ao ensinado na
+ * Recebeu o Intent para Share apos o refactor realizado para adaptar meu codigo ao ensinado na
  * aula Share Intent, Lesson 3
  */
 public class DetailActivityFragment extends Fragment {
@@ -29,7 +29,7 @@ public class DetailActivityFragment extends Fragment {
 
     public DetailActivityFragment() {
         //sinaliza que o Fragment tem um Menu a ser inserido
-        // para que chame o onCreateOptionMenu lá no DetailActivity
+        // para que chame o onCreateOptionMenu la no DetailActivity
         setHasOptionsMenu(true);
     }
 
@@ -40,10 +40,10 @@ public class DetailActivityFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         //altero o return para que atribua a um rootView e seja retornado somente ao final, assim como no ForecastFragment
         View rootView =  inflater.inflate(R.layout.fragment_detail, container, false);
-        //verifico se o intent não está vazio ou nulo e se tem algum Extra
+        //verifico se o intent nao esta vazio ou nulo e se tem algum Extra
         if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
             //recebo o texto selecionado do ListView e enviado pelo Extra
-            //UPDATE - Atualizado no Refactor para alimentar uma variável Global, assim a String é usada no Share
+            //UPDATE - Atualizado no Refactor para alimentar uma variavel Global, assim a String e usada no Share
 //            String selectedItemText = intent.getStringExtra(Intent.EXTRA_TEXT);
             mForecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
             //Seto o texto no TextView que coloquei ID que estava com o Hello World quando criei a Activity
@@ -58,9 +58,9 @@ public class DetailActivityFragment extends Fragment {
      */
     private Intent createShareForecastIntent(){
         Intent intent = new Intent(Intent.ACTION_SEND);
-        //em substituição à FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET que foi Deprecated mas tem o mesmo valor
+        //em substituicao a FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET que foi Deprecated mas tem o mesmo valor
         //Flag utilizada para garantir que ao finalizar o compartilhamento e retroceder, a mesma retorne
-        //ao aplicativo Sunshine que está compartilhando, e não ao aplicativo com o qual foi compartilhado
+        //ao aplicativo Sunshine que esta compartilhando, e nao ao aplicativo com o qual foi compartilhado
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, mForecastStr + FORECAST_SHARE_HASHTAG);
@@ -68,8 +68,8 @@ public class DetailActivityFragment extends Fragment {
     }
 
     /**
-     * Incluído no Refactor de Share
-     * Após a criação do detailfragment.xml, e setar setHasOptionsMenu(true); no construtor
+     * Incluido no Refactor de Share
+     * Apos a criacao do detailfragment.xml, e setar setHasOptionsMenu(true); no construtor
      * desta classe, crio um onCreateOptionMenu independente e separado da classe Pai DetailActivity
      * e inicializo e crio o ShareActionProvider daqui
      * @param menu
@@ -84,16 +84,16 @@ public class DetailActivityFragment extends Fragment {
         MenuItem shareItem = menu.findItem(R.id.action_share);
 
         //Obtenho o ShareActionProvider pelo MenuItemCompat e seto o MenuItem do Share nele pra que
-        // seja habilitado no botão o os Providers para o Share, pelo getActionProvider
+        // seja habilitado no botao o os Providers para o Share, pelo getActionProvider
         ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
-        //Anexo uma intent à este ShareActionProvider, fazendo uso do método createShareForecastIntent
-        //que criei acima. Este é atualizado a qualquer hora, quando o usuário seleciona um novo
+        //Anexo uma intent a este ShareActionProvider, fazendo uso do metodo createShareForecastIntent
+        //que criei acima. Este e atualizado a qualquer hora, quando o usuario seleciona um novo
         // conjunto de dados para compartilhar
         if(mShareActionProvider != null){
             mShareActionProvider.setShareIntent(createShareForecastIntent());
         }else{
-            Log.d(LOG_TAG, "ShareActionProvider está nulo");
+            Log.d(LOG_TAG, "ShareActionProvider esta nulo");
         }
     }
 }

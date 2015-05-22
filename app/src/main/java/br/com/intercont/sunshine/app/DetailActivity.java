@@ -29,13 +29,13 @@ public class DetailActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
 
         /**
-        //MINHA FORMA - FUNCIONA MAS NÃO É BOA PRÁTICA E NO REFACTOR FUNCIONA MELHOR
+        //MINHA FORMA - FUNCIONA MAS NAO E BOA PRATICA E NO REFACTOR FUNCIONA MELHOR
         //LEVADO PRA DENTRO DO DetailActivityFragment
         //Definindo a Intent default do ShareActionProvider
         MenuItem shareItem = menu.findItem(R.id.action_share);
         //cast para compatibilidade da v4 para a v7
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        //passamos a Intent a ser executada na opção de Share, no caso, o ACTION_SEND no método auxiliar
+        //passamos a Intent a ser executada na opcao de Share, no caso, o ACTION_SEND no metodo auxiliar
         mShareActionProvider.setShareIntent(getDefaultIntent());
 
         return super.onCreateOptionsMenu(menu);
@@ -46,7 +46,7 @@ public class DetailActivity extends ActionBarActivity {
     }
 
     /**
-     * Substituído pelo Refactor do Share
+     * Substituido pelo Refactor do Share
      * Get forecast text from selected day
      * @return Text showed in DetailActivity
      */
@@ -62,7 +62,7 @@ public class DetailActivity extends ActionBarActivity {
      * Set Share Intent to the loaded ShareActionProvider
      * @return intent
      *
-     * Substituído pelo Refactor do Share. Esta foi a forma como eu fiz funcionar antes de assistir a resposta.
+     * Substituido pelo Refactor do Share. Esta foi a forma como eu fiz funcionar antes de assistir a resposta.
      * O refactor leva todo este processo pra dentro do DetailActivityFragment
      */
 //    @Deprecated
