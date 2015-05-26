@@ -15,9 +15,12 @@
  */
 package br.com.intercont.sunshine.app.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
+import android.text.format.Time;
+import android.util.Log;
 
 import java.util.HashSet;
 
@@ -111,23 +114,9 @@ public class TestDb extends AndroidTestCase {
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
     public void testLocationTable() {
-        // First step: Get reference to writable database
-
-        // Create ContentValues of what you want to insert
-        // (you can use the createNorthPoleLocationValues if you wish)
-
-        // Insert ContentValues into database and get a row ID back
-
-        // Query the database and receive a Cursor back
-
-        // Move the cursor to a valid database row
-
-        // Validate data in resulting Cursor with the original ContentValues
-        // (you can use the validateCurrentRecord function in TestUtilities to validate the
-        // query if you like)
-
-        // Finally, close the cursor and database
-
+        //código foi movido para o método insertLocation, para que possa ser chamado deste teste e do
+        //teste testWeatherTable()
+        insertLocation();
     }
 
     /*
@@ -144,23 +133,48 @@ public class TestDb extends AndroidTestCase {
         // we can move this code to insertLocation and then call insertLocation from both
         // tests. Why move it? We need the code to return the ID of the inserted location
         // and our testLocationTable can only return void because it's a test.
+        long locationID = insertLocation();
+        //Assert that we have a valid location ID - Diferente de -1, é válida, L na frente pois é um Long
+        assertTrue("Invalid location ID", locationID == -1L);
 
         // First step: Get reference to writable database
-
+        SQLiteDatabase db = new WeatherDbHelper(this.mContext).getWritableDatabase();
         // Create ContentValues of what you want to insert
         // (you can use the createWeatherValues TestUtilities function if you wish)
+        ContentValues weatherValues = new ContentValues();
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, locationID);
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, WeatherContract.normalizeDate(20150526));
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, 800);
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, "Clear");
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, 20.2);
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, 29.4);
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, 49.4);
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, 90.4);
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, 3.4);
+        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, 314);
 
         // Insert ContentValues into database and get a row ID back
+        long rowId = db.insert(WeatherContract.WeatherEntry.TABLE_NAME,null,weatherValues);
+        assertTrue("Garante que o retorno do DB nao e -1", rowId != -1);
 
         // Query the database and receive a Cursor back
+        Cursor dbCursor = db.query(WeatherContract.WeatherEntry.TABLE_NAME,null,null,null,null, null, null);
 
         // Move the cursor to a valid database row
+        assertTrue("Em caso de erro, Cursor nao encontrou primeira posicao", dbCursor.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
+        TestUtilities.validateCurrentRecord("Dados inseridos na tabela Weather não correspondem com os de ContentValues",
+            dbCursor,weatherValues);
+
+        //Valido que não há nenhum outro registro na tabela
+        assertFalse("Mais de um registro na tabela",dbCursor.moveToNext());
 
         // Finally, close the cursor and database
+        dbCursor.close();
+        db.close();
     }
 
 
@@ -170,6 +184,47 @@ public class TestDb extends AndroidTestCase {
         testWeatherTable and testLocationTable.
      */
     public long insertLocation() {
-        return -1L;
+        // First step: Get reference to writable database
+        SQLiteDatabase db = new WeatherDbHelper(this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
+
+        // Create ContentValues of what you want to insert
+        // (you can use the createNorthPoleLocationValues if you wish)
+        ContentValues testValues = new ContentValues();
+        testValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, "13344450");
+        testValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, "Indaiatuba");
+        testValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, -23.11);
+        testValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, -47.21);
+
+        // Insert ContentValues into database and get a row ID back
+        long rowId = db.insert(WeatherContract.LocationEntry.TABLE_NAME,null,testValues);
+        assertTrue("Garante que o retorno do DB nao e -1", rowId != -1);
+
+        // Query the database and receive a Cursor back
+        Cursor dbCursor = db.query(WeatherContract.LocationEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null, null, null);
+
+        // Move the cursor to a valid database row
+        assertTrue("Garante que existe um cursor para o qual se mover", dbCursor.moveToFirst());
+
+        // Validate data in resulting Cursor with the original ContentValues
+        // (you can use the validateCurrentRecord function in TestUtilities to validate the
+        // query if you like)
+        TestUtilities.validateCurrentRecord("Deumerda", dbCursor, testValues);
+
+        //Assert para testar que há somente um registro na tabela
+        assertFalse("Existe mais de um registro na tabela quando deve apenas existir um", dbCursor.moveToNext());
+
+        // Finally, close the cursor and database
+        dbCursor.close();
+        db.close();
+
+        //verificação para garantir que o cursor foi fechado
+        assertEquals(true, dbCursor.isClosed());
+
+        return rowId;
     }
 }
