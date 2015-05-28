@@ -135,7 +135,7 @@ public class TestDb extends AndroidTestCase {
         // and our testLocationTable can only return void because it's a test.
         long locationID = insertLocation();
         //Assert that we have a valid location ID - Diferente de -1, é válida, L na frente pois é um Long
-        assertTrue("Invalid location ID", locationID == -1L);
+        assertTrue("Invalid location ID", locationID != -1L);
 
         // First step: Get reference to writable database
         SQLiteDatabase db = new WeatherDbHelper(this.mContext).getWritableDatabase();

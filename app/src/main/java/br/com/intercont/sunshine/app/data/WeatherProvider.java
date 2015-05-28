@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.app.data;
+package br.com.intercont.sunshine.app.data;
 
 import android.annotation.TargetApi;
 import android.content.ContentProvider;
@@ -115,16 +115,46 @@ public class WeatherProvider extends ContentProvider {
         testUriMatcher test within TestUriMatcher.
      */
     static UriMatcher buildUriMatcher() {
+        /*
+        Nossas 4 URI´s:
+        CAMINHO - Confere exatamente igual ao caminho
+        CAMINHO/# - Confere com o caminho seguido de um NÚMERO
+        CAMINHO/* - Confere com o caminho seguido de QUALQUER STRING
+        CAMINHO/* /OUTRO/# - Confere com o caminho seguido de QUALQUER STRING,
+                SEGUIDO DE "OUTRO" SEGUIDO DE UM NÚMERO
+         */
+
         // 1) The code passed into the constructor represents the code to return for the root
         // URI.  It's common to use NO_MATCH as the code for this case. Add the constructor below.
-
+        UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        String authority = WeatherContract.CONTENT_AUTHORITY;
 
         // 2) Use the addURI function to match each of the types.  Use the constants from
         // WeatherContract to help define the types to the UriMatcher.
-
+        //sURIMatcher.addURI("contacts", "people", PEOPLE);
+        //Weather
+        sURIMatcher.addURI(
+                authority,
+                WeatherContract.PATH_WEATHER,
+                WEATHER);
+        //Weather with Location
+        sURIMatcher.addURI(
+                authority,
+                WeatherContract.PATH_WEATHER.concat("/*"),
+                WEATHER_WITH_LOCATION);
+//        //Weather with Location and Date
+        sURIMatcher.addURI(
+                authority,
+                WeatherContract.PATH_WEATHER.concat("/*").concat("/#"),
+                WEATHER_WITH_LOCATION_AND_DATE);
+//        //Location
+        sURIMatcher.addURI(
+                authority,
+                WeatherContract.PATH_LOCATION,
+                LOCATION);
 
         // 3) Return the new matcher!
-        return null;
+        return sURIMatcher;
     }
 
     /*

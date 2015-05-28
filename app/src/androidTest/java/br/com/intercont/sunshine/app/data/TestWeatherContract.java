@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.app.data;
+package br.com.intercont.sunshine.app.data;
 
+import android.net.Uri;
 import android.test.AndroidTestCase;
+
+import br.com.intercont.sunshine.app.data.WeatherContract;
 
 /*
     Students: This is NOT a complete test for the WeatherContract --- just for the functions
@@ -29,16 +32,17 @@ public class TestWeatherContract extends AndroidTestCase {
 
     /*
         Students: Uncomment this out to test your weather location function.
+        Atualizado pacote no 2º assertEquals para que compare com o pacote do meu aplicativo e tenha o resultado esperado
      */
-//    public void testBuildWeatherLocation() {
-//        Uri locationUri = WeatherContract.WeatherEntry.buildWeatherLocation(TEST_WEATHER_LOCATION);
-//        assertNotNull("Error: Null Uri returned.  You must fill-in buildWeatherLocation in " +
-//                        "WeatherContract.",
-//                locationUri);
-//        assertEquals("Error: Weather location not properly appended to the end of the Uri",
-//                TEST_WEATHER_LOCATION, locationUri.getLastPathSegment());
-//        assertEquals("Error: Weather location Uri doesn't match our expected result",
-//                locationUri.toString(),
-//                "content://com.example.android.sunshine.app/weather/%2FNorth%20Pole");
-//    }
+    public void testBuildWeatherLocation() {
+        Uri locationUri = WeatherContract.WeatherEntry.buildWeatherLocation(TEST_WEATHER_LOCATION);
+        assertNotNull("Error: Null Uri returned.  You must fill-in buildWeatherLocation in " +
+                        "WeatherContract.",
+                locationUri);
+        assertEquals("Error: Weather location not properly appended to the end of the Uri",
+                TEST_WEATHER_LOCATION, locationUri.getLastPathSegment());
+        assertEquals("Error: Weather location Uri doesn't match our expected result",
+                locationUri.toString(),
+                "content://br.com.intercont.sunshine.app/weather/%2FNorth%20Pole");
+    }
 }
