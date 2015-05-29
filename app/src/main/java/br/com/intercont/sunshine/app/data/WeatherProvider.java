@@ -36,9 +36,12 @@ public class WeatherProvider extends ContentProvider {
     static final int LOCATION = 300;
 
     private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder;
+    private static final SQLiteQueryBuilder sWeatherQueryBuilder;
 
     static{
         sWeatherByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
+        sWeatherQueryBuilder = new SQLiteQueryBuilder();
+//        sLocationQueryBuilder = new SQLiteQueryBuilder();
         
         //This is an inner join which looks like
         //weather INNER JOIN location ON weather.location_id = location._id
@@ -49,7 +52,28 @@ public class WeatherProvider extends ContentProvider {
                         "." + WeatherContract.WeatherEntry.COLUMN_LOC_KEY +
                         " = " + WeatherContract.LocationEntry.TABLE_NAME +
                         "." + WeatherContract.LocationEntry._ID);
+
+        //This is an inner join which looks like
+        //weather INNER JOIN location ON weather.location_id = location._id
+        sWeatherQueryBuilder.setTables(
+                WeatherContract.WeatherEntry.TABLE_NAME + " INNER JOIN " +
+                        WeatherContract.LocationEntry.TABLE_NAME +
+                        " ON " + WeatherContract.WeatherEntry.TABLE_NAME +
+                        "." + WeatherContract.WeatherEntry.COLUMN_LOC_KEY +
+                        " = " + WeatherContract.LocationEntry.TABLE_NAME +
+                        "." + WeatherContract.LocationEntry._ID);
     }
+
+    //TODO
+    //weather
+    private static final String sWeatherSelection =
+            WeatherContract.WeatherEntry.TABLE_NAME;
+
+    //location
+    private static final String sLocationSelection =
+            WeatherContract.LocationEntry.TABLE_NAME+
+                    "." + WeatherContract.LocationEntry._ID + " = ? ";
+    //TODO
 
     //location.location_setting = ?
     private static final String sLocationSettingSelection =
@@ -105,6 +129,30 @@ public class WeatherProvider extends ContentProvider {
                 null,
                 null,
                 sortOrder
+        );
+    }
+    //TODO
+    private Cursor getWeather(String[] projection) {
+        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+    //TODO
+    private Cursor getLocation(
+            String[] projection) {
+//        String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
+        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                sLocationSelection,
+                null,
+                null,
+                null,
+                null
         );
     }
 
@@ -180,10 +228,16 @@ public class WeatherProvider extends ContentProvider {
 
         switch (match) {
             // Student: Uncomment and fill out these two cases
-//            case WEATHER_WITH_LOCATION_AND_DATE:
-//            case WEATHER_WITH_LOCATION:
+            //"weather/*/*"
+            case WEATHER_WITH_LOCATION_AND_DATE:
+                return WeatherContract.WeatherEntry.CONTENT_ITEM_TYPE;
+            //"weather/*"
+            case WEATHER_WITH_LOCATION:
+                return WeatherContract.WeatherEntry.CONTENT_TYPE;
+            //"weather"
             case WEATHER:
                 return WeatherContract.WeatherEntry.CONTENT_TYPE;
+            //"location"
             case LOCATION:
                 return WeatherContract.LocationEntry.CONTENT_TYPE;
             default:
@@ -211,12 +265,12 @@ public class WeatherProvider extends ContentProvider {
             }
             // "weather"
             case WEATHER: {
-                retCursor = null;
+                retCursor = getWeather(projection);
                 break;
             }
             // "location"
             case LOCATION: {
-                retCursor = null;
+                retCursor = getLocation(projection);
                 break;
             }
 

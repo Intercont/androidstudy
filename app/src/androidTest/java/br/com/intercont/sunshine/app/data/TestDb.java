@@ -201,11 +201,14 @@ public class TestDb extends AndroidTestCase {
         assertTrue("Garante que o retorno do DB nao e -1", rowId != -1);
 
         // Query the database and receive a Cursor back
-        Cursor dbCursor = db.query(WeatherContract.LocationEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null, null, null);
+        Cursor dbCursor = db.query(
+                WeatherContract.LocationEntry.TABLE_NAME, //Tabela a consultar
+                null, //colunas a trazer na consulta
+                null,//colunas para a cláusula Where
+                null, //group by
+                null, //filtrar por grupo de colunas
+                null, //having
+                null); //order by
 
         // Move the cursor to a valid database row
         assertTrue("Garante que existe um cursor para o qual se mover", dbCursor.moveToFirst());
