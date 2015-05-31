@@ -64,17 +64,6 @@ public class WeatherProvider extends ContentProvider {
                         "." + WeatherContract.LocationEntry._ID);
     }
 
-    //TODO
-    //weather
-    private static final String sWeatherSelection =
-            WeatherContract.WeatherEntry.TABLE_NAME;
-
-    //location
-    private static final String sLocationSelection =
-            WeatherContract.LocationEntry.TABLE_NAME+
-                    "." + WeatherContract.LocationEntry._ID + " = ? ";
-    //TODO
-
     //location.location_setting = ?
     private static final String sLocationSettingSelection =
             WeatherContract.LocationEntry.TABLE_NAME+
@@ -131,30 +120,6 @@ public class WeatherProvider extends ContentProvider {
                 sortOrder
         );
     }
-    //TODO
-    private Cursor getWeather(String[] projection) {
-        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-    }
-    //TODO
-    private Cursor getLocation(
-            String[] projection) {
-//        String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
-        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-                projection,
-                sLocationSelection,
-                null,
-                null,
-                null,
-                null
-        );
-    }
 
     /*
         Students: Here is where you need to create the UriMatcher. This UriMatcher will
@@ -164,12 +129,12 @@ public class WeatherProvider extends ContentProvider {
      */
     static UriMatcher buildUriMatcher() {
         /*
-        Nossas 4 URI´s:
+        Nossas 4 URIï¿½s:
         CAMINHO - Confere exatamente igual ao caminho
-        CAMINHO/# - Confere com o caminho seguido de um NÚMERO
+        CAMINHO/# - Confere com o caminho seguido de um Nï¿½MERO
         CAMINHO/* - Confere com o caminho seguido de QUALQUER STRING
         CAMINHO/* /OUTRO/# - Confere com o caminho seguido de QUALQUER STRING,
-                SEGUIDO DE "OUTRO" SEGUIDO DE UM NÚMERO
+                SEGUIDO DE "OUTRO" SEGUIDO DE UM Nï¿½MERO
          */
 
         // 1) The code passed into the constructor represents the code to return for the root
@@ -265,12 +230,28 @@ public class WeatherProvider extends ContentProvider {
             }
             // "weather"
             case WEATHER: {
-                retCursor = getWeather(projection);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
             // "location"
             case LOCATION: {
-                retCursor = getLocation(projection);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
 

@@ -231,7 +231,7 @@ public class TestProvider extends AndroidTestCase {
         );
 
         // Make sure we get the correct cursor out of the database
-        TestUtilities.validateCursor("testBasicLocationQueries, location query", locationCursor, testValues);
+        TestUtilities.validateCursor("testBasicLocationQueries, location query" + "locationCursor: " + locationCursor + "testValues: " +testValues, locationCursor, testValues);
 
         // Has the NotificationUri been set correctly? --- we can only test this easily against API
         // level 19 or greater because getNotificationUri was added in API level 19.
