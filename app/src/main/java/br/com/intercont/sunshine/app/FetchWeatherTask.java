@@ -15,9 +15,13 @@
  */
 package br.com.intercont.sunshine.app;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -25,7 +29,10 @@ import android.text.format.Time;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import br.com.intercont.sunshine.app.data.WeatherContract;
 import br.com.intercont.sunshine.app.data.WeatherContract.WeatherEntry;
+import br.com.intercont.sunshine.app.data.WeatherDbHelper;
+import br.com.intercont.sunshine.app.data.WeatherProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,12 +48,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
+/**
+ * Refactor do FetchWeatherTask para a classe separada, após a finalização da contrução
+ * do ContentProvider, lição 4B
+ * Adicionadas as minhas alterações da inner Class neste refactor
+ */
 public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
     private ArrayAdapter<String> mForecastAdapter;
     private final Context mContext;
+    //MINHA SOLUÇÃO - Mapas, coordenadas para o Maps
+    public static double coordLatitude;
+    public static double coordLongitude;
+    //MINHA SOLUÇÃO - Mapas, coordenadas para o Maps
 
     public FetchWeatherTask(Context context, ArrayAdapter<String> forecastAdapter) {
         mContext = context;
@@ -68,6 +84,14 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
     /**
      * Prepare the weather high/lows for presentation.
+     * * Como o objetivo do aplicativo é apenas trazer os dados em Celsius e
+     converter os valores de Celsius para Fahrenheit no aplicativo,
+     deixarei o parâmetro da chamada como metric, intacta, e realizo as
+     conversões aqui, como mostrado no curso. O objetivo de converter os
+     valores aqui e somente trazer valores métricos é porque vamos
+     armazenar estes valores em um Banco de Dados e não queremos dados com
+     unidades misturadas, então, para mostrar ao usuário de acordo com a pref
+     dele, convertemos aqui trazendo sua preferência de SharedPreferences
      */
     private String formatHighLows(double high, double low) {
         // Data is fetched in Celsius by default.
@@ -81,10 +105,13 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 mContext.getString(R.string.pref_unit_key),
                 mContext.getString(R.string.pref_unit_metric));
 
+        //verificamos se a unidade de medida de preferência é imperial, se for, convertemos, amém
         if (unitType.equals(mContext.getString(R.string.pref_unit_imperial))) {
+            //cálculo para conversão dos valores para Fahrenheit
             high = (high * 1.8) + 32;
             low = (low * 1.8) + 32;
         } else if (!unitType.equals(mContext.getString(R.string.pref_unit_metric))) {
+            //caso não seja nem métrica nem imperial, loga que bicho é esse
             Log.d(LOG_TAG, "Unit type not found: " + unitType);
         }
 
@@ -109,7 +136,60 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         // Students: First, check if the location with this city name exists in the db
         // If it exists, return the current ID
         // Otherwise, insert it using the content resolver and the base URI
-        return -1;
+        WeatherDbHelper mOpenHelper = new WeatherDbHelper(mContext);
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        Cursor retCursor;
+        long _id;
+
+            //MINHA SOLUÇÃO - verifico se esta location existe no banco - FUNCIONAL
+//            retCursor = db.query(
+//                    WeatherContract.LocationEntry.TABLE_NAME,
+//                    new String[]{WeatherContract.LocationEntry._ID},
+//                    WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " + WeatherContract.LocationEntry.COLUMN_CITY_NAME + " = ?",
+//                    new String[]{locationSetting, cityName},
+//                    null,
+//                    null,
+//                    null
+//                    );
+            //MINHA SOLUÇÃO - verifico se esta location existe no banco
+
+            //SOLUÇÃO DO CURSO - Consulto no banco usando o ContentResolver, para fazer uma query,
+            // usando a URI do Location no Contract, que já passa todos os parâmetros para a consulta
+            retCursor = mContext.getContentResolver().query(
+                    WeatherContract.LocationEntry.CONTENT_URI,
+                    new String[]{WeatherContract.LocationEntry._ID},
+                    WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?", //o curso usou somente LocationSetting de parâmetro de busca já que pela URI do ContentProvider somente será possível buscar usando esse parâmetro
+                    new String[]{locationSetting},
+                    null
+            );
+            //SOLUÇÃO DO CURSO
+
+            //se já tiver um valor
+            if (retCursor.moveToFirst()){
+                _id = retCursor.getLong(retCursor.getColumnIndex(WeatherContract.LocationEntry._ID));
+            }else{
+                //se não, insiro o valor
+                ContentValues values = new ContentValues();
+                values.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+                values.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
+                values.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
+                values.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
+
+                //MINHA SOLUÇÃO - Insiro diretamente via db com Insert - FUNCIONAL
+//                _id = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, values);
+                //MINHA SOLUÇÃO - Insiro diretamente via db com Insert - FUNCIONAL
+
+                //SOLUÇÃO DO CURSO - Insiro fazendo uso do ContentProvider com a URI
+                Uri insertedUri = mContext.getContentResolver().insert(
+                        WeatherContract.LocationEntry.CONTENT_URI,
+                        values
+                );
+                //SOLUÇÃO DO CURSO - A URI contém um ID para a row. Extraio a locationId da Uri
+                _id = ContentUris.parseId(insertedUri);
+                //SOLUÇÃO DO CURSO
+            }
+        retCursor.close();
+        return _id;
     }
 
     /*
@@ -131,6 +211,21 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                     " - " + highAndLow;
         }
         return resultStrs;
+    }
+
+    /*
+        MINHA SOLUÇÃO
+        Convertendo do Vector de ContentValues para um Array comum de ContentValues para chamar o BulkInsert.
+        UPDATE após SOLUÇÃO DO CURSO: Não será necessária, pois com apenas converter o Vector para Array com
+        a função toArray(variavelDoVetor) obtenho o mesmo resultado
+     */
+    @Deprecated
+    ContentValues[] convertVectorContentValuesToContentValuesArray(Vector<ContentValues> cvv) {
+        ContentValues[] resultCV = new ContentValues[cvv.size()];
+        for ( int i = 0; i < cvv.size(); i++ ) {
+            resultCV[i] = cvv.elementAt(i);
+        }
+        return resultCV;
     }
 
     /**
@@ -176,8 +271,25 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         final String OWM_DESCRIPTION = "main";
         final String OWM_WEATHER_ID = "id";
 
+        //MINHA SOLUÇÃO - Mostrar a localização no Mapa
+        final String OWM_LOCATION = "city";
+        final String OWM_LOCATION_COORD = "coord";
+        final String OWM_LOCATION_COORD_LAT = "lat";
+        final String OWM_LOCATION_COORD_LON = "lon";
+        //MINHA SOLUÇÃO - Mostrar a localização no Mapa
+
         try {
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
+
+            //MINHA SOLUÇÃO - Mostrar a localização no Mapa com as coordenadas de retorno da API
+            //Obtém a latitude e a longitude para mostrar no mapa o lugar de preferência do usuário
+            JSONObject forecastCity = forecastJson.getJSONObject(OWM_LOCATION);
+            JSONObject forecastCoord = forecastCity.getJSONObject(OWM_LOCATION_COORD);
+            coordLatitude = forecastCoord.getDouble(OWM_LOCATION_COORD_LAT);
+            coordLongitude = forecastCoord.getDouble(OWM_LOCATION_COORD_LON);
+            //MINHA SOLUÇÃO
+
+
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
 
             JSONObject cityJson = forecastJson.getJSONObject(OWM_CITY);
@@ -193,7 +305,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             Vector<ContentValues> cVVector = new Vector<ContentValues>(weatherArray.length());
 
             // OWM returns daily forecasts based upon the local time of the city that is being
-            // asked for, which means that we need to know the GMT offset to translate this data
+            // asked f or, which means that we need to know the GMT offset to translatethis data
             // properly.
 
             // Since this data is also sent in-order and the first day is always the
@@ -266,6 +378,15 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             // add to database
             if ( cVVector.size() > 0 ) {
                 // Student: call bulkInsert to add the weatherEntries to the database here
+                //MINHA SOLUÇÃO - FUNCIONAL, porém perde performance frente à do curso
+//                mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI,
+//                        convertVectorContentValuesToContentValuesArray(cVVector));
+                //MINHA SOLUÇÃO
+                //SOLUÇÃO DO CURSO com coisas minhas
+                ContentValues[] resultCV = new ContentValues[cVVector.size()];
+                mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI,
+                        cVVector.toArray(resultCV));
+                //SOLUÇÃO DO CURSO com coisas minhas
             }
 
             // Sort order:  Ascending, by date.
@@ -275,17 +396,17 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
             // Students: Uncomment the next lines to display what what you stored in the bulkInsert
 
-//            Cursor cur = mContext.getContentResolver().query(weatherForLocationUri,
-//                    null, null, null, sortOrder);
-//
-//            cVVector = new Vector<ContentValues>(cur.getCount());
-//            if ( cur.moveToFirst() ) {
-//                do {
-//                    ContentValues cv = new ContentValues();
-//                    DatabaseUtils.cursorRowToContentValues(cur, cv);
-//                    cVVector.add(cv);
-//                } while (cur.moveToNext());
-//            }
+            Cursor cur = mContext.getContentResolver().query(weatherForLocationUri,
+                    null, null, null, sortOrder);
+
+            cVVector = new Vector<ContentValues>(cur.getCount());
+            if ( cur.moveToFirst() ) {
+                do {
+                    ContentValues cv = new ContentValues();
+                    DatabaseUtils.cursorRowToContentValues(cur, cv);
+                    cVVector.add(cv);
+                } while (cur.moveToNext());
+            }
 
             Log.d(LOG_TAG, "FetchWeatherTask Complete. " + cVVector.size() + " Inserted");
 
@@ -318,6 +439,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         String format = "json";
         String units = "metric";
+        String lang = "pt"; //minha custom
         int numDays = 14;
 
         try {
@@ -330,12 +452,14 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             final String FORMAT_PARAM = "mode";
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
+            final String LANG_PARAM = "lang"; //minha custom
 
             Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, params[0])
                     .appendQueryParameter(FORMAT_PARAM, format)
                     .appendQueryParameter(UNITS_PARAM, units)
                     .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                    .appendQueryParameter(LANG_PARAM, lang) //minha custom
                     .build();
 
             URL url = new URL(builtUri.toString());
@@ -367,6 +491,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 return null;
             }
             forecastJsonStr = buffer.toString();
+
+            //logando o retorno do backend da API do Tempo
+            Log.v(LOG_TAG, "String JSON da Previsao: " + forecastJsonStr);
+
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping

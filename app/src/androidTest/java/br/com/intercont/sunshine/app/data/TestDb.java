@@ -109,7 +109,8 @@ public class TestDb extends AndroidTestCase {
 
     /*
         Students:  Here is where you will build code to test that we can insert and query the
-        location database.  We've done a lot of work for you.  You'll want to look in TestUtilities
+        location database.  We've
+         done a lot of work for you.  You'll want to look in TestUtilities
         where you can uncomment out the "createNorthPoleLocationValues" function.  You can
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
