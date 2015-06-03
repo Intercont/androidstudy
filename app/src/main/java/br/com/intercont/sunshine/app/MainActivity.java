@@ -79,9 +79,12 @@ public class MainActivity extends ActionBarActivity {
      * o CEP armazenado no SharedPreferences na query da Implicit Intent para algum aplicativo de maps
      */
     private void openPreferredLocationInMap(){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String location = preferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
-        //Uri para chamada do intent, como descrita em https://developer.android.com/guide/components/intents-common.html#Maps
+        //REFACTOR 4C
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        String location = preferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        //REFACTOR 4C
+        String location = Utility.getPreferredLocation(this);
+                //Uri para chamada do intent, como descrita em https://developer.android.com/guide/components/intents-common.html#Maps
         Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
                 .appendQueryParameter("q",location)
                 .build();
