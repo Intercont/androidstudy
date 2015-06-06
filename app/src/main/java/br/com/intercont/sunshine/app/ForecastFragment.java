@@ -1,15 +1,13 @@
 package br.com.intercont.sunshine.app;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.text.format.Time;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,32 +15,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import br.com.intercont.sunshine.app.FetchWeatherTask;
 import br.com.intercont.sunshine.app.data.WeatherContract;
 
 /**
  * Created by intercont on 19/04/15.
  */
-public class ForecastFragment extends Fragment {
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
@@ -56,6 +36,9 @@ public class ForecastFragment extends Fragment {
     private static final String PREF_LOCATION = "location";
     private static final String PREF_LOCATION_DEFAULT = "13206714";
 
+    //CursorLoader Loader ID
+    private static final int FORECAST_FRAGMENT_LOADER_ID = 0;
+
     public ForecastFragment() {
     }
 
@@ -65,12 +48,55 @@ public class ForecastFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //Especificando que tenho Opçoes de Menu a serem inclusas no menu principal
         setHasOptionsMenu(true);
+
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(
+                FORECAST_FRAGMENT_LOADER_ID,
+                null,
+                this);
     }
 
     //inflando o item do forecastfragment das opçoes apos setar o setHasOptionsMenu como true no fim de onCreate
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.forecastfragment, menu);
+    }
+
+//    //Loader Callbacks
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        //Lição 4C Refactor - requisitando dados do DB para o Cursor
+        //getPreferredLocation - Busca a location, de acordo com o SharedPreferences setando em Settings
+        String locationSetting = Utility.getPreferredLocation(getActivity());
+
+        //Sort order: ASCending, by date
+        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+                locationSetting, System.currentTimeMillis() //pega a hora atual do dispositivo em milisegundos
+        );
+
+
+
+
+        return new CursorLoader(
+                getActivity(),
+                weatherForLocationUri,
+                null,null,null,sortOrder);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mForecastAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mForecastAdapter.swapCursor(null);
     }
 
     //este cara 'e de forma geral padrao e necessario
@@ -149,46 +175,24 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        //Lição 4C Refactor - requisitando dados do DB para o Cursor
-        //getPreferredLocation - Busca a location, de acordo com o SharedPreferences setando em Settings
-        String locationSetting = Utility.getPreferredLocation(getActivity());
-
-        //Sort order: ASCending, by date
-        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
-                locationSetting, System.currentTimeMillis() //pega a hora atual do dispositivo em milisegundos
-        );
-
         //Query o ContentProvider com a Uri que fizemos acima para obter o cursor
-        Cursor cur = getActivity().getContentResolver().query(
-                weatherForLocationUri,
-                null,
-                null,
-                null,
-                sortOrder);
+//        cur = getActivity().getContentResolver().query(
+//                weatherForLocationUri,
+//                null,
+//                null,
+//                null,
+//                sortOrder);
 
 
-        //DEPRECATED - Substituído pelo ForecastAdapter na Lição 4C
-        // Adaptador para popular a ListView por uma fonte de dados, que no caso, é o ArrayList Mocado
-        //ele requer uma série de parâmetros, como se pode ver pelos diferentes construtores dele
-//        mForecastAdapter = new ArrayAdapter<String>(
-//                //o contexto corrente, ou seja, o pai deste fragment, a Activity
-//                getActivity(),
-//                //referência ao layout gráfico como um todoo, por isso o nome do arquivo xml
-//                R.layout.list_item_forecast,
-//                //referência ao elemento do TextView, dentro do arquivo de layout de antes
-//                R.id.list_item_forecast_textview,
-//                //fonte de dados, neste caso o ArrayList acima - UPDATE: como estou trazendo agora
-//                // direto da API, passo um ArrayList vazio no lugar do ArrayList mocado
-//                new ArrayList<String>());
 
-        //A partir da Lição 4C, fazemos uso de CursorAdapters com o ForecastAdapter para carregar assincronamente
-        mForecastAdapter = new ForecastAdapter(
-                getActivity(), //o contexto corrente, ou seja, o pai deste fragment, a Activity
-                cur, //o cursor que buscamos do Banco de Dados acima
-                0);
+//        mForecastAdapter = new ForecastAdapter(
+//                getActivity(), //o contexto corrente, ou seja, o pai deste fragment, a Activity
+//                cur, //o cursor que buscamos do Banco de Dados acima
+//                0);
 
-
+        //Lição 4C - O mForecastAdapter (ou seja, o CursorAdapter) irá pegar os dados do nosso cursor pelo Loader
+        // e popular a ListView
+        mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
         //Trazendo o ListView pra cá, precisa trazer do rootView já que é onde está o ListView,
         //o rootView inflou o fragment_main aí encima e tem todos seus elementos
@@ -219,6 +223,8 @@ public class ForecastFragment extends Fragment {
 //        });
         return rootView;
     }
+
+
 
     /**
      * FetchWeatherTask - DEPRECATED
