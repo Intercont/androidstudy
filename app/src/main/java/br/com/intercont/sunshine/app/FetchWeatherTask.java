@@ -60,7 +60,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
-    private ArrayAdapter<String> mForecastAdapter;
+//    private ArrayAdapter<String> mForecastAdapter;
     private final Context mContext;
     //MINHA SOLUÇÃO - Mapas, coordenadas para o Maps
     public static double coordLatitude;
