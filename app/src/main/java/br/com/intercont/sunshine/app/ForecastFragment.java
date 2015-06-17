@@ -176,10 +176,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
      * UPDATE - Removido no final da Lição 4C
      */
 //    @Override
-//    public void onStart(){
-//        super.onStart();
-//        updateData();
-//    }
+    public void onStart(){
+        super.onStart();
+        updateData();
+    }
 
     /**
      * showMap (MINHA SOLUÇÃO) - Este método foi a minha solução para apresentar a localização do usuário no mapa

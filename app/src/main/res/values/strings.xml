@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Sunshine</string>
     <string name="hello_world" translatable="false">Hello world!</string>
     <string name="action_settings">Configurações</string>
@@ -6,6 +6,11 @@
     <string name="action_mapuserlocationigor">Localização do Usuário by Igor (Lat/Lon)</string>
     <string name="action_mapuserlocationcourse">User Location by CEP (course solution)</string>
     <string name="title_activity_detail">Detalhes</string>
+
+    <!-- forecast description -->
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="format_full_friendly_date"><xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g></string>
 
     <!-- location preferences settings -->
     <string name="pref_location_label">Localização</string>

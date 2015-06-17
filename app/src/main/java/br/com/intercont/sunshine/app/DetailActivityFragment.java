@@ -62,8 +62,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //obtendo o Intent da chamada ao se clicado na ListView
 //        Intent intent = getActivity().getIntent();
         //altero o return para que atribua a um rootView e seja retornado somente ao final, assim como no ForecastFragment
