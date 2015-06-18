@@ -17,20 +17,17 @@
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/list_item_date_textview"
-            android:text="Hoje, 16 de Junho" />
+            android:id="@+id/list_item_date_textview" />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/list_item_high_textview"
-            android:text="23°" />
+            android:id="@+id/list_item_high_textview" />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/list_item_low_textview"
-            android:text="15º" />
+            android:id="@+id/list_item_low_textview" />
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -43,13 +40,11 @@
         <ImageView
             android:id="@+id/list_item_icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"/>
+            android:layout_height="wrap_content"/>
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/list_item_forecast_textview"
-            android:text="Céu Limpo" />
+            android:id="@+id/list_item_forecast_textview" />
     </LinearLayout>
 </LinearLayout>

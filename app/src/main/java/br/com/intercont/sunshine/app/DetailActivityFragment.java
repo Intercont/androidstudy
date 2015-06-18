@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import br.com.intercont.sunshine.app.data.WeatherContract;
@@ -45,7 +46,11 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             WeatherContract.WeatherEntry.COLUMN_DATE,
             WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
             WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
+            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
+            WeatherContract.WeatherEntry.COLUMN_HUMIDITY,
+            WeatherContract.WeatherEntry.COLUMN_PRESSURE,
+            WeatherContract.WeatherEntry.COLUMN_WIND_SPEED,
+            WeatherContract.WeatherEntry.COLUMN_DEGREES
     };
     //Constantes correspondentes à projeção acima e DEVEM ser atualizadas caso a projeção mude
     private static final int COL_WEATHER_ID = 0;
@@ -53,6 +58,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private static final int COL_WEATHER_DESC = 2;
     private static final int COL_WEATHER_MAX_TEMP = 3;
     private static final int COL_WEATHER_MIN_TEMP = 4;
+    private static final int COL_WEATHER_HUMIDITY = 5;
+    private static final int COL_WEATHER_PRESSURE = 6;
+    private static final int COL_WEATHER_WIND_SPEED = 7;
+    private static final int COL_WEATHER_DEGREES = 8;
 
 
     public DetailActivityFragment() {
@@ -63,21 +72,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //obtendo o Intent da chamada ao se clicado na ListView
-//        Intent intent = getActivity().getIntent();
-        //altero o return para que atribua a um rootView e seja retornado somente ao final, assim como no ForecastFragment
         rootView =  inflater.inflate(R.layout.fragment_detail, container, false);
-        //verifico se o intent nao esta vazio ou nulo e se tem algum Extra
-//        if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
-        //Refactor Lição 4C - Trabalhando com Content Providers
-//        if(intent != null){
-        //recebo o texto selecionado do ListView e enviado pelo Extra
-        //UPDATE - Atualizado no Refactor para alimentar uma variavel Global, assim a String e usada no Share
-//            String selectedItemText = intent.getStringExtra(Intent.EXTRA_TEXT);
-        //Seto o texto no TextView que coloquei ID que estava com o Hello World quando criei a Activity
-//            ((TextView)rootView.findViewById(R.id.detailforecast)).setText(mForecastStr);
-        //alimentando o TextView
-//        }
         return rootView;
     }
 
@@ -93,11 +88,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         // seja habilitado no botao o os Providers para o Share, pelo getActionProvider
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
-        //Anexo uma intent a este ShareActionProvider, fazendo uso do metodo createShareForecastIntent
-        //que criei acima. Este e atualizado a qualquer hora, quando o usuario seleciona um novo
-        // conjunto de dados para compartilhar
-
-//        if(mShareActionProvider != null){
         //Refactor Lição 4C - Details Activity - Share Option - Valido se tenho algum valor
         // alimentado pelo CursorLoader da consulta do clique na ListView
         if(mForecast != null){
@@ -151,27 +141,63 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.v(LOG_TAG, "Dentro de onLoadFinished");
         //se não há dados, return vazio
-        if(!data.moveToFirst()){
+        if(!cursor.moveToFirst()){
             return;
         }
 
         //Vamos reconstruir a String com os dados do Cursor, usando as constantes
         // de projeção para requisitar os dados
-        String dateString = Utility.formatDate(data.getLong(COL_WEATHER_DATE));
-        String weatherDescription = data.getString(COL_WEATHER_DESC);
+//        String dateString = Utility.formatDate(cursor.getLong(COL_WEATHER_DATE));
+        String weatherDescription = cursor.getString(COL_WEATHER_DESC);
         boolean isMetric = Utility.isMetric(getActivity());
-        String high = Utility.formatTemperature(data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
-        String low = Utility.formatTemperature(data.getDouble(COL_WEATHER_MIN_TEMP),isMetric);
+        String high = Utility.formatTemperature(getActivity(), cursor.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
+        String low = Utility.formatTemperature(getActivity(), cursor.getDouble(COL_WEATHER_MIN_TEMP),isMetric);
+        String humidity = String.format(getString(R.string.format_humidity), cursor.getDouble(COL_WEATHER_HUMIDITY));
+        String wind = Utility.getFormattedWind(getActivity(), cursor.getFloat(COL_WEATHER_WIND_SPEED), cursor.getFloat(COL_WEATHER_DEGREES));
+        String pressure = String.format(getString(R.string.format_pressure), cursor.getDouble(COL_WEATHER_PRESSURE));
+
 
         //Formatando a String com format e as variáveis
-        mForecast = String.format("%s - %s - %s/%s", dateString, weatherDescription, high, low);
+//        mForecast = String.format("%s - %s - %s/%s", dateString, weatherDescription, high, low);
 
-        //alimentando o TextView
-        TextView detailTextView = (TextView) getView().findViewById(R.id.detailforecast);
-        detailTextView.setText(mForecast);
+        //TODO alimentando os TextViews
+        TextView detailDayTextView = (TextView) getView().findViewById(R.id.detail_day_textview);
+        detailDayTextView.setText(Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE)));
+
+        TextView detailDateTextView = (TextView) getView().findViewById(R.id.detail_date_textview);
+        detailDateTextView.setText(Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE)));
+
+        TextView detailHighTextView = (TextView) getView().findViewById(R.id.detail_high_textview);
+        detailHighTextView.setText(high);
+
+        TextView detailLowTextView = (TextView) getView().findViewById(R.id.detail_low_textview);
+        detailLowTextView.setText(low);
+
+        ImageView imageView = (ImageView) getView().findViewById(R.id.detail_icon);
+        imageView.setImageResource(R.mipmap.ic_launcher);
+
+        TextView detailForecastTextView = (TextView) getView().findViewById(R.id.detail_forecast_textview);
+        detailForecastTextView.setText(weatherDescription);
+
+        TextView detailHumidityTextView = (TextView) getView().findViewById(R.id.detail_humidity_textview);
+        detailHumidityTextView.setText(humidity);
+
+        TextView detailWindTextView = (TextView) getView().findViewById(R.id.detail_wind_textview);
+        detailWindTextView.setText(wind);
+
+        TextView detailPressureTextView = (TextView) getView().findViewById(R.id.detail_pressure_textview);
+        detailPressureTextView.setText(pressure);
+
+
+
+
+
+
+
+
         Log.d(LOG_TAG,"mForecast: " + mForecast);
 
         //If onCreateOptionsMenu has already happened, we need to update the share intent

@@ -32,7 +32,7 @@ public class ForecastAdapter extends CursorAdapter {
      */
     private String formatHighLows(double high, double low) {
         boolean isMetric = Utility.isMetric(mContext);
-        String highLowStr = Utility.formatTemperature(high, isMetric) + "/" + Utility.formatTemperature(low, isMetric);
+        String highLowStr = Utility.formatTemperature(mContext, high, isMetric) + "/" + Utility.formatTemperature(mContext, low, isMetric);
         return highLowStr;
     }
 
@@ -146,13 +146,13 @@ public class ForecastAdapter extends CursorAdapter {
         float high = cursor.getFloat(ForecastFragment.COL_WEATHER_MAX_TEMP);
 //        TextView highView = (TextView) view.findViewById(R.id.list_item_high_textview);
 //        highView.setText(Utility.formatTemperature(high, isMetric));
-        viewHolder.highView.setText(Utility.formatTemperature(high, isMetric));
+        viewHolder.highView.setText(Utility.formatTemperature(context, high, isMetric));
 
         //Read low temperature from cursor
         float low = cursor.getFloat(ForecastFragment.COL_WEATHER_MIN_TEMP);
 //        TextView lowView = (TextView) view.findViewById(R.id.list_item_low_textview);
 //        lowView.setText(Utility.formatTemperature(low, isMetric));
-        viewHolder.lowView.setText(Utility.formatTemperature(low, isMetric));
+        viewHolder.lowView.setText(Utility.formatTemperature(context, low, isMetric));
     }
 
     /**
