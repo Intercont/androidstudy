@@ -36,6 +36,21 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private String mForecast;
     private ShareActionProvider mShareActionProvider;
 
+    TextView mDetailDayTextView;
+    TextView mDetailDateTextView;
+    TextView mDetailHighTextView;
+    TextView mDetailLowTextView;
+    ImageView mImageView;
+    TextView mDetailForecastTextView;
+    TextView mDetailHumidityTextView;
+    TextView mDetailWindTextView;
+    TextView mDetailPressureTextView;
+
+
+
+
+
+
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
     //CursorLoader Loader ID
     private static final int DETAIL_FRAGMENT_LOADER_ID = 1;
@@ -73,6 +88,15 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView =  inflater.inflate(R.layout.fragment_detail, container, false);
+        mDetailDayTextView = (TextView) rootView.findViewById(R.id.detail_day_textview);
+        mDetailDateTextView = (TextView) rootView.findViewById(R.id.detail_date_textview);
+        mDetailHighTextView = (TextView) rootView.findViewById(R.id.detail_high_textview);
+        mDetailLowTextView = (TextView) rootView.findViewById(R.id.detail_low_textview);
+        mImageView = (ImageView) rootView.findViewById(R.id.detail_icon);
+        mDetailForecastTextView = (TextView) rootView.findViewById(R.id.detail_forecast_textview);
+        mDetailHumidityTextView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
+        mDetailWindTextView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
+        mDetailPressureTextView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
         return rootView;
     }
 
@@ -148,9 +172,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             return;
         }
 
-        //Vamos reconstruir a String com os dados do Cursor, usando as constantes
-        // de projeção para requisitar os dados
-//        String dateString = Utility.formatDate(cursor.getLong(COL_WEATHER_DATE));
         String weatherDescription = cursor.getString(COL_WEATHER_DESC);
         boolean isMetric = Utility.isMetric(getActivity());
         String high = Utility.formatTemperature(getActivity(), cursor.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
@@ -159,44 +180,15 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         String wind = Utility.getFormattedWind(getActivity(), cursor.getFloat(COL_WEATHER_WIND_SPEED), cursor.getFloat(COL_WEATHER_DEGREES));
         String pressure = String.format(getString(R.string.format_pressure), cursor.getDouble(COL_WEATHER_PRESSURE));
 
-
-        //Formatando a String com format e as variáveis
-//        mForecast = String.format("%s - %s - %s/%s", dateString, weatherDescription, high, low);
-
-        //TODO alimentando os TextViews
-        TextView detailDayTextView = (TextView) getView().findViewById(R.id.detail_day_textview);
-        detailDayTextView.setText(Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE)));
-
-        TextView detailDateTextView = (TextView) getView().findViewById(R.id.detail_date_textview);
-        detailDateTextView.setText(Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE)));
-
-        TextView detailHighTextView = (TextView) getView().findViewById(R.id.detail_high_textview);
-        detailHighTextView.setText(high);
-
-        TextView detailLowTextView = (TextView) getView().findViewById(R.id.detail_low_textview);
-        detailLowTextView.setText(low);
-
-        ImageView imageView = (ImageView) getView().findViewById(R.id.detail_icon);
-        imageView.setImageResource(R.mipmap.ic_launcher);
-
-        TextView detailForecastTextView = (TextView) getView().findViewById(R.id.detail_forecast_textview);
-        detailForecastTextView.setText(weatherDescription);
-
-        TextView detailHumidityTextView = (TextView) getView().findViewById(R.id.detail_humidity_textview);
-        detailHumidityTextView.setText(humidity);
-
-        TextView detailWindTextView = (TextView) getView().findViewById(R.id.detail_wind_textview);
-        detailWindTextView.setText(wind);
-
-        TextView detailPressureTextView = (TextView) getView().findViewById(R.id.detail_pressure_textview);
-        detailPressureTextView.setText(pressure);
-
-
-
-
-
-
-
+        mDetailDayTextView.setText(Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE)));
+        mDetailDateTextView.setText(Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE)));
+        mDetailHighTextView.setText(high);
+        mDetailLowTextView.setText(low);
+        mImageView.setImageResource(R.mipmap.ic_launcher);
+        mDetailForecastTextView.setText(weatherDescription);
+        mDetailHumidityTextView.setText(humidity);
+        mDetailWindTextView.setText(wind);
+        mDetailPressureTextView.setText(pressure);
 
         Log.d(LOG_TAG,"mForecast: " + mForecast);
 
