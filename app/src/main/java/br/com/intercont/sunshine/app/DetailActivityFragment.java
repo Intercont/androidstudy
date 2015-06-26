@@ -65,9 +65,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             WeatherContract.WeatherEntry.COLUMN_HUMIDITY,
             WeatherContract.WeatherEntry.COLUMN_PRESSURE,
             WeatherContract.WeatherEntry.COLUMN_WIND_SPEED,
-            WeatherContract.WeatherEntry.COLUMN_DEGREES
+            WeatherContract.WeatherEntry.COLUMN_DEGREES,
+            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
     };
-    //Constantes correspondentes à projeção acima e DEVEM ser atualizadas caso a projeção mude
+    //Constantes correspondentes ï¿½ projeï¿½ï¿½o acima e DEVEM ser atualizadas caso a projeï¿½ï¿½o mude
     private static final int COL_WEATHER_ID = 0;
     private static final int COL_WEATHER_DATE = 1;
     private static final int COL_WEATHER_DESC = 2;
@@ -77,6 +78,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private static final int COL_WEATHER_PRESSURE = 6;
     private static final int COL_WEATHER_WIND_SPEED = 7;
     private static final int COL_WEATHER_DEGREES = 8;
+    private static final int COL_WEATHER_CONDITION_ID = 9;
 
 
     public DetailActivityFragment() {
@@ -112,7 +114,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         // seja habilitado no botao o os Providers para o Share, pelo getActionProvider
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
-        //Refactor Lição 4C - Details Activity - Share Option - Valido se tenho algum valor
+        //Refactor Liï¿½ï¿½o 4C - Details Activity - Share Option - Valido se tenho algum valor
         // alimentado pelo CursorLoader da consulta do clique na ListView
         if(mForecast != null){
             mShareActionProvider.setShareIntent(createShareForecastIntent());
@@ -151,7 +153,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         Log.v(LOG_TAG, "Dentro de onCreateLoader");
         Intent intent = getActivity().getIntent();
         Log.d(LOG_TAG,"intent.getData(): " + intent.getData());
-        if(intent == null){
+        if(intent == null || intent.getData() == null){
             return null;
         }
 
@@ -167,13 +169,14 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.v(LOG_TAG, "Dentro de onLoadFinished");
-        //se não há dados, return vazio
+        //se nï¿½o hï¿½ dados, return vazio
         if(!cursor.moveToFirst()){
             return;
         }
 
         String weatherDescription = cursor.getString(COL_WEATHER_DESC);
         boolean isMetric = Utility.isMetric(getActivity());
+        int weatherID = cursor.getInt(COL_WEATHER_CONDITION_ID);
         String high = Utility.formatTemperature(getActivity(), cursor.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
         String low = Utility.formatTemperature(getActivity(), cursor.getDouble(COL_WEATHER_MIN_TEMP),isMetric);
         String humidity = String.format(getString(R.string.format_humidity), cursor.getDouble(COL_WEATHER_HUMIDITY));
@@ -184,7 +187,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mDetailDateTextView.setText(Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE)));
         mDetailHighTextView.setText(high);
         mDetailLowTextView.setText(low);
-        mImageView.setImageResource(R.mipmap.ic_launcher);
+        mImageView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherID));
         mDetailForecastTextView.setText(weatherDescription);
         mDetailHumidityTextView.setText(humidity);
         mDetailWindTextView.setText(wind);

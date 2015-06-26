@@ -19,6 +19,12 @@ public class DetailActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        //adicionando o DetailActivityFragment dinâmicamente para o painel de Smartphone
+        if (savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.weather_detail_container, new DetailActivityFragment())
+                    .commit();
+        }
 
     }
 

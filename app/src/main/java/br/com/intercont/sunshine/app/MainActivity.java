@@ -29,21 +29,46 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final String FORECASTFRAGMENT_TAG = "FFTAG";
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     private String mLocation;
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Alimentando a mLocation
-        mLocation = Utility.getPreferredLocation(this);
         super.onCreate(savedInstanceState);
+        mLocation = Utility.getPreferredLocation(this);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment(),FORECASTFRAGMENT_TAG)
-                    .commit();
+        //Removido na Lição 5 ao adicionar o layout de 2 painéis para o Tablet.
+        //A lista passa a ser um Fragment estático, ficando dinâmicamente somente os Detalhes
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.container, new ForecastFragment(),FORECASTFRAGMENT_TAG)
+//                    .commit();
+//        }
+
+        //Verifico se há a presença de weather_detail_container no layout do activity_main
+        //Caso tenha, estou em um tablet, com o layout de sw600dp carregado,
+        // caso não, estou em um smartphone com o layout default carregado
+        if (findViewById(R.id.weather_detail_container) != null){
+            //The detail container view will be present only in the large-screen layouts
+            //(res/layout-sw600dp. If this view is present, the the activityshould be
+            //in two-pane mode.
+            mTwoPane = true;
+
+            //In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a fragment transaction
+            if (savedInstanceState == null){
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.weather_detail_container, new DetailActivityFragment())
+                        .commit();
+            }
+        }else{
+            mTwoPane = false;
         }
+
+
         //Log para validacao das fases do ciclo de vida de uma Activity apenas
         Log.d(LOG_TAG, "onCreate");
 
@@ -121,11 +146,11 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        //Verifica��o se o location est� diferente do atual, se sim, requisito novos dados
+        //Verifica��o se o location est� diferente do atual, se sim, requisito novos dados
         String location = Utility.getPreferredLocation(this);
         if(location != null && !location.equals(mLocation)){
             ForecastFragment ff = (ForecastFragment)getSupportFragmentManager()
-                    .findFragmentByTag(FORECASTFRAGMENT_TAG);
+                    .findFragmentById(R.id.fragment_forecast);
             if(null != ff) {
                 ff.onLocationChange();
             }

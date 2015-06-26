@@ -28,23 +28,23 @@ import java.util.Date;
 public class Utility {
 
     //formato utilizado para armazenar datas no banco de dados.
-    // Também utilizado para converter estas strings de volta à objetos
-    // de data para comparação/processo
+    // Tambï¿½m utilizado para converter estas strings de volta ï¿½ objetos
+    // de data para comparaï¿½ï¿½o/processo
     public static final String DATE_FORMAT = "yyyyMMdd";
 
     /**
-     * Método Helper para converter a representação de data do banco de dados em algo
-     * a ser mostrado para os usuários.
+     * Mï¿½todo Helper para converter a representaï¿½ï¿½o de data do banco de dados em algo
+     * a ser mostrado para os usuï¿½rios.
      * @param context
      * @param dateInMillis
-     * @return uma representação "user-friendly" da data
+     * @return uma representaï¿½ï¿½o "user-friendly" da data
      */
     public static String getFriendlyDayString(Context context, long dateInMillis){
-        //Para a string de previsão do tempo, utilizo a seguinte lógica:
-        //Para hoje em inglês: "Today, June 16" e em português (TODO): Hoje, 16 de Junho (agora mesmo vai vir o mês em inglês)
-        //Para amanhã em inglês: "Tomorrow" e em português (TODO): Amanhã
-        //Para os próximos 5 dias: "Wednesday" (somente o nome do dia). TODO para português ao internacionalizar
-        //Para os demais dias após: "Tue Jun 16" e TODO em português BR: "Ter Jun 16"
+        //Para a string de previsï¿½o do tempo, utilizo a seguinte lï¿½gica:
+        //Para hoje em inglï¿½s: "Today, June 16" e em portuguï¿½s (TODO): Hoje, 16 de Junho (agora mesmo vai vir o mï¿½s em inglï¿½s)
+        //Para amanhï¿½ em inglï¿½s: "Tomorrow" e em portuguï¿½s (TODO): Amanhï¿½
+        //Para os prï¿½ximos 5 dias: "Wednesday" (somente o nome do dia). TODO para portuguï¿½s ao internacionalizar
+        //Para os demais dias apï¿½s: "Tue Jun 16" e TODO em portuguï¿½s BR: "Ter Jun 16"
 
         Time time = new Time();
         time.setToNow();
@@ -52,8 +52,8 @@ public class Utility {
         int julianDay = Time.getJulianDay(dateInMillis, time.gmtoff);
         int currentJulianDay = Time.getJulianDay(currentTime, time.gmtoff);
 
-        //Se a data que estamos construíndo é a data de hoje,
-        // o formato é "Hoje, Junho 16" ou em inglês, "Today, June 16"
+        //Se a data que estamos construï¿½ndo ï¿½ a data de hoje,
+        // o formato ï¿½ "Hoje, Junho 16" ou em inglï¿½s, "Today, June 16"
         if(julianDay == currentJulianDay){
             String today = context.getString(R.string.today);
             int formatId = R.string.format_full_friendly_date;
@@ -63,11 +63,11 @@ public class Utility {
                             today,
                             getFormattedMonthDay(context, dateInMillis)));
         }else if(julianDay < currentJulianDay + 7){
-            //Se a data de entrada é menor que uma semana no futuro,
-            // apenas retorne o nome do dia fornecido pelo método auxiliar
+            //Se a data de entrada ï¿½ menor que uma semana no futuro,
+            // apenas retorne o nome do dia fornecido pelo mï¿½todo auxiliar
             return getDayName(context,dateInMillis);
         }else{
-            //do contrário, uso o formato "Ter Jun 16" ou in english, "Tue Jun 16"
+            //do contrï¿½rio, uso o formato "Ter Jun 16" ou in english, "Tue Jun 16"
             SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
             return shortenedDateFormat.format(dateInMillis);
         }
@@ -75,14 +75,14 @@ public class Utility {
 
     /**
      * Dado um dia, retorno somente o nome deste dia para usar neste dia
-     * Exemplos: Hoje, Amanhã, Quarta, Quinta
-     * Exemplos em Inglês (original): Today, Tomorrow, Wednesday
+     * Exemplos: Hoje, Amanhï¿½, Quarta, Quinta
+     * Exemplos em Inglï¿½s (original): Today, Tomorrow, Wednesday
      * @param context
      * @param dateInMillis
      * @return nome do dia selecionado em String
      */
     public static String getDayName(Context context, long dateInMillis){
-        //Se o dia é Hoje, retorne a versão localizada de "Hoje" no lugar do nome do dia
+        //Se o dia ï¿½ Hoje, retorne a versï¿½o localizada de "Hoje" no lugar do nome do dia
 
         Time t = new Time();
         t.setToNow();
@@ -96,16 +96,16 @@ public class Utility {
         }else{
             Time time = new Time();
             time.setToNow();
-            //do contrário, se não é Hoje nem Amanhã, o formato é apenas o dia da semana (ex: Quarta/Wednesday)
+            //do contrï¿½rio, se nï¿½o ï¿½ Hoje nem Amanhï¿½, o formato ï¿½ apenas o dia da semana (ex: Quarta/Wednesday)
             SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
             return dayFormat.format(dateInMillis);
         }
     }
 
     /**
-     * Converte a data do formato do Banco de Dados para o formato "Mês dia", por ex. "June 17"
-     * @param context Contexto para uso do recurso de localização
-     * @param dateInMillis A String formatada para o Banco de Dados, é esperada que esteja no
+     * Converte a data do formato do Banco de Dados para o formato "Mï¿½s dia", por ex. "June 17"
+     * @param context Contexto para uso do recurso de localizaï¿½ï¿½o
+     * @param dateInMillis A String formatada para o Banco de Dados, ï¿½ esperada que esteja no
      *                     formato especificado em Utility.DATE_FORMAT
      * @return O dia em String no formato "June 17"
      */
@@ -156,7 +156,7 @@ public class Utility {
             windSpeed = .621371192237334f * windSpeed;
         }
 
-        //A partir da direção do vento em graus, determine a direção do compasso como uma
+        //A partir da direï¿½ï¿½o do vento em graus, determine a direï¿½ï¿½o do compasso como uma
         // string (ex.: NW, N, NE, E, SE, SW, W).
         //TODO Internacionalizar este if/else para pt-BR, alimentando os valores desde strings.xml
         String direction = "WTF";
@@ -179,6 +179,76 @@ public class Utility {
         }
 
         //Construo a String de retorno
-        return String.format(context.getString(windFormat),windSpeed, direction);
+        return String.format(context.getString(windFormat), windSpeed, direction);
+    }
+
+    /**
+     * MÃ©todo auxiliar para informar o id de recurso do Ã­cone de acordo com o id de condiÃ§Ã£o do tempo
+     * retornado pela chamada ao OpenWeatherMap.
+     * @param weatherId de resposta da API do OpeWeatherMap
+     * @return o id da imagem correspondente que vem de R(esources). -1 se nÃ£o for nada encontrado
+     */
+    public static int getIconResourceForWeatherCondition(int weatherId){
+        //Baseado no cÃ³digo de dados encontrado em
+        // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+        if(weatherId >= 200 && weatherId <= 232){
+            return R.drawable.ic_storm;
+        } else if (weatherId >= 300 && weatherId <= 321){
+            return R.drawable.ic_light_rain;
+        } else if (weatherId >= 500 && weatherId <= 504){
+            return R.drawable.ic_rain;
+        } else if (weatherId == 511){ //TODO
+            return R.drawable.ic_snow;
+        } else if (weatherId >= 520 && weatherId <= 531){
+            return R.drawable.ic_rain;
+        } else if (weatherId >= 600 && weatherId <= 622){
+            return R.drawable.ic_snow;
+        } else if (weatherId >= 701 && weatherId <= 761){
+            return R.drawable.ic_fog;
+        } else if (weatherId >= 761 && weatherId <= 781){
+            return R.drawable.ic_storm;
+        } else if (weatherId == 800){
+            return R.drawable.ic_clear;
+        } else if (weatherId == 801){
+            return R.drawable.ic_light_clouds;
+        } else if (weatherId >= 802 && weatherId <= 804){
+            return R.drawable.ic_cloudy;
+        }
+        return -1;
+    }
+
+    /**
+     * MÃ©todo auxiliar para informar o id de recurso da Arte (Vista do Dia ou Detalhes) de acordo
+     * com o id de condiÃ§Ã£o do tempo retornado pela chamada ao OpenWeatherMap.
+     * @param weatherId de resposta da API do OpeWeatherMap
+     * @return o id da imagem correspondente que vem de R(esources). -1 se nÃ£o for nada encontrado
+     */
+    public static int getArtResourceForWeatherCondition(int weatherId){
+        //Baseado no cÃ³digo de dados encontrado em
+        // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+        if(weatherId >= 200 && weatherId <= 232){
+            return R.drawable.art_storm;
+        } else if (weatherId >= 300 && weatherId <= 321){
+            return R.drawable.art_light_rain;
+        } else if (weatherId >= 500 && weatherId <= 504){
+            return R.drawable.art_rain;
+        } else if (weatherId == 511){ //TODO
+            return R.drawable.art_snow;
+        } else if (weatherId >= 520 && weatherId <= 531){
+            return R.drawable.art_rain;
+        } else if (weatherId >= 600 && weatherId <= 622){
+            return R.drawable.art_snow;
+        } else if (weatherId >= 701 && weatherId <= 761){
+            return R.drawable.art_fog;
+        } else if (weatherId >= 761 && weatherId <= 781){
+            return R.drawable.art_storm;
+        } else if (weatherId == 800){
+            return R.drawable.art_clear;
+        } else if (weatherId == 801){
+            return R.drawable.art_light_clouds;
+        } else if (weatherId >= 802 && weatherId <= 804){
+            return R.drawable.art_clouds;
+        }
+        return -1;
     }
 }

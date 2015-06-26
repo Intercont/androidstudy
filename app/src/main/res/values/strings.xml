@@ -8,8 +8,8 @@
     <string name="title_activity_detail">Detalhes</string>
 
     <!-- forecast description -->
-    <string name="today">Today</string>
-    <string name="tomorrow">Tomorrow</string>
+    <string name="today">Hoje</string>
+    <string name="tomorrow">Amanhã</string>
     <string name="format_full_friendly_date">
         <xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g>
     </string>

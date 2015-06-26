@@ -49,11 +49,11 @@ import java.util.Date;
 import java.util.Vector;
 
 /**
- * Refactor do FetchWeatherTask para a classe separada, após a finalização da contrução
- * do ContentProvider, lição 4B
- * Adicionadas as minhas alterações da inner Class neste refactor
- * REFACTOR Lição 4C - Alterado o tipo de retorno pela classe no último parâmetro de
- * extensão do AsyncTask de String[] para Void
+ * Refactor do FetchWeatherTask para a classe separada, apï¿½s a finalizaï¿½ï¿½o da contruï¿½ï¿½o
+ * do ContentProvider, liï¿½ï¿½o 4B
+ * Adicionadas as minhas alteraï¿½ï¿½es da inner Class neste refactor
+ * REFACTOR Liï¿½ï¿½o 4C - Alterado o tipo de retorno pela classe no ï¿½ltimo parï¿½metro de
+ * extensï¿½o do AsyncTask de String[] para Void
  */
 //public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
@@ -62,13 +62,13 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
 //    private ArrayAdapter<String> mForecastAdapter;
     private final Context mContext;
-    //MINHA SOLUÇÃO - Mapas, coordenadas para o Maps
+    //MINHA SOLUï¿½ï¿½O - Mapas, coordenadas para o Maps
     public static double coordLatitude;
     public static double coordLongitude;
-    //MINHA SOLUÇÃO - Mapas, coordenadas para o Maps
+    //MINHA SOLUï¿½ï¿½O - Mapas, coordenadas para o Maps
 
     //public FetchWeatherTask(Context context, ArrayAdapter<String> forecastAdapter) {
-    //REFACTOR Lição 4C
+    //REFACTOR Liï¿½ï¿½o 4C
     public FetchWeatherTask(Context context) {
         mContext = context;
 //        mForecastAdapter = forecastAdapter;
@@ -79,7 +79,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
     /* The date/time conversion code is going to be moved outside the asynctask later,
      * so for convenience we're breaking it out into its own method now.
      */
-//    REFACTOR LIÇÃO 4C
+//    REFACTOR LIï¿½ï¿½O 4C
 //    private String getReadableDateString(long time){
 //        // Because the API returns a unix timestamp (measured in seconds),
 //        // it must be converted to milliseconds in order to be converted to valid date.
@@ -90,16 +90,16 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     /**
      * Prepare the weather high/lows for presentation.
-     * * Como o objetivo do aplicativo é apenas trazer os dados em Celsius e
+     * * Como o objetivo do aplicativo ï¿½ apenas trazer os dados em Celsius e
      converter os valores de Celsius para Fahrenheit no aplicativo,
-     deixarei o parâmetro da chamada como metric, intacta, e realizo as
-     conversões aqui, como mostrado no curso. O objetivo de converter os
-     valores aqui e somente trazer valores métricos é porque vamos
-     armazenar estes valores em um Banco de Dados e não queremos dados com
-     unidades misturadas, então, para mostrar ao usuário de acordo com a pref
-     dele, convertemos aqui trazendo sua preferência de SharedPreferences
+     deixarei o parï¿½metro da chamada como metric, intacta, e realizo as
+     conversï¿½es aqui, como mostrado no curso. O objetivo de converter os
+     valores aqui e somente trazer valores mï¿½tricos ï¿½ porque vamos
+     armazenar estes valores em um Banco de Dados e nï¿½o queremos dados com
+     unidades misturadas, entï¿½o, para mostrar ao usuï¿½rio de acordo com a pref
+     dele, convertemos aqui trazendo sua preferï¿½ncia de SharedPreferences
      */
-//    REFACTOR LIÇÃO 4C - Levou o formatHighLows para o ForecastAdapter, diferente do meu
+//    REFACTOR LIï¿½ï¿½O 4C - Levou o formatHighLows para o ForecastAdapter, diferente do meu
 //    private String formatHighLows(double high, double low) {
 //        // Data is fetched in Celsius by default.
 //        // If user prefers to see in Fahrenheit, convert the values here.
@@ -112,13 +112,13 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 //                mContext.getString(R.string.pref_unit_key),
 //                mContext.getString(R.string.pref_unit_metric));
 //
-//        //verificamos se a unidade de medida de preferência é imperial, se for, convertemos, amém
+//        //verificamos se a unidade de medida de preferï¿½ncia ï¿½ imperial, se for, convertemos, amï¿½m
 //        if (unitType.equals(mContext.getString(R.string.pref_unit_imperial))) {
-//            //cálculo para conversão dos valores para Fahrenheit
+//            //cï¿½lculo para conversï¿½o dos valores para Fahrenheit
 //            high = (high * 1.8) + 32;
 //            low = (low * 1.8) + 32;
 //        } else if (!unitType.equals(mContext.getString(R.string.pref_unit_metric))) {
-//            //caso não seja nem métrica nem imperial, loga que bicho é esse
+//            //caso nï¿½o seja nem mï¿½trica nem imperial, loga que bicho ï¿½ esse
 //            Log.d(LOG_TAG, "Unit type not found: " + unitType);
 //        }
 //
@@ -148,7 +148,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         Cursor retCursor;
         long _id;
 
-            //MINHA SOLUÇÃO - verifico se esta location existe no banco - FUNCIONAL
+            //MINHA SOLUï¿½ï¿½O - verifico se esta location existe no banco - FUNCIONAL
 //            retCursor = db.query(
 //                    WeatherContract.LocationEntry.TABLE_NAME,
 //                    new String[]{WeatherContract.LocationEntry._ID},
@@ -158,53 +158,53 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 //                    null,
 //                    null
 //                    );
-            //MINHA SOLUÇÃO - verifico se esta location existe no banco
+            //MINHA SOLUï¿½ï¿½O - verifico se esta location existe no banco
 
-            //SOLUÇÃO DO CURSO - Consulto no banco usando o ContentResolver, para fazer uma query,
-            // usando a URI do Location no Contract, que já passa todos os parâmetros para a consulta
+            //SOLUï¿½ï¿½O DO CURSO - Consulto no banco usando o ContentResolver, para fazer uma query,
+            // usando a URI do Location no Contract, que jï¿½ passa todos os parï¿½metros para a consulta
             retCursor = mContext.getContentResolver().query(
                     WeatherContract.LocationEntry.CONTENT_URI,
                     new String[]{WeatherContract.LocationEntry._ID},
-                    WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?", //o curso usou somente LocationSetting de parâmetro de busca já que pela URI do ContentProvider somente será possível buscar usando esse parâmetro
+                    WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?", //o curso usou somente LocationSetting de parï¿½metro de busca jï¿½ que pela URI do ContentProvider somente serï¿½ possï¿½vel buscar usando esse parï¿½metro
                     new String[]{locationSetting},
                     null
             );
-            //SOLUÇÃO DO CURSO
+            //SOLUï¿½ï¿½O DO CURSO
 
-            //se já tiver um valor
+            //se jï¿½ tiver um valor
             if (retCursor.moveToFirst()){
                 _id = retCursor.getLong(retCursor.getColumnIndex(WeatherContract.LocationEntry._ID));
             }else{
-                //se não, insiro o valor
+                //se nï¿½o, insiro o valor
                 ContentValues values = new ContentValues();
                 values.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
                 values.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
                 values.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
                 values.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
 
-                //MINHA SOLUÇÃO - Insiro diretamente via db com Insert - FUNCIONAL
+                //MINHA SOLUï¿½ï¿½O - Insiro diretamente via db com Insert - FUNCIONAL
 //                _id = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, values);
-                //MINHA SOLUÇÃO - Insiro diretamente via db com Insert - FUNCIONAL
+                //MINHA SOLUï¿½ï¿½O - Insiro diretamente via db com Insert - FUNCIONAL
 
-                //SOLUÇÃO DO CURSO - Insiro fazendo uso do ContentProvider com a URI
+                //SOLUï¿½ï¿½O DO CURSO - Insiro fazendo uso do ContentProvider com a URI
                 Uri insertedUri = mContext.getContentResolver().insert(
                         WeatherContract.LocationEntry.CONTENT_URI,
                         values
                 );
-                //SOLUÇÃO DO CURSO - A URI contém um ID para a row. Extraio a locationId da Uri
+                //SOLUï¿½ï¿½O DO CURSO - A URI contï¿½m um ID para a row. Extraio a locationId da Uri
                 _id = ContentUris.parseId(insertedUri);
-                //SOLUÇÃO DO CURSO
+                //SOLUï¿½ï¿½O DO CURSO
             }
         retCursor.close();
         return _id;
     }
-//    REFACTOR LIÇÃO 4C Levou o convertContentValuesToUXFormat para o ForecastAdapter
+//    REFACTOR LIï¿½ï¿½O 4C Levou o convertContentValuesToUXFormat para o ForecastAdapter
 
     /*
-        MINHA SOLUÇÃO
+        MINHA SOLUï¿½ï¿½O
         Convertendo do Vector de ContentValues para um Array comum de ContentValues para chamar o BulkInsert.
-        UPDATE após SOLUÇÃO DO CURSO: Não será necessária, pois com apenas converter o Vector para Array com
-        a função toArray(variavelDoVetor) obtenho o mesmo resultado
+        UPDATE apï¿½s SOLUï¿½ï¿½O DO CURSO: Nï¿½o serï¿½ necessï¿½ria, pois com apenas converter o Vector para Array com
+        a funï¿½ï¿½o toArray(variavelDoVetor) obtenho o mesmo resultado
      */
 //    @Deprecated
 //    ContentValues[] convertVectorContentValuesToContentValuesArray(Vector<ContentValues> cvv) {
@@ -222,7 +222,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    //REFACTOR LIÇÃO 4C - muda o retorno do getWeatherDataFromJson
+    //REFACTOR LIï¿½ï¿½O 4C - muda o retorno do getWeatherDataFromJson
     private void getWeatherDataFromJson(String forecastJsonStr,
                                             String locationSetting)
             throws JSONException {
@@ -259,23 +259,23 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         final String OWM_DESCRIPTION = "main";
         final String OWM_WEATHER_ID = "id";
 
-        //MINHA SOLUÇÃO - Mostrar a localização no Mapa
+        //MINHA SOLUï¿½ï¿½O - Mostrar a localizaï¿½ï¿½o no Mapa
         final String OWM_LOCATION = "city";
         final String OWM_LOCATION_COORD = "coord";
         final String OWM_LOCATION_COORD_LAT = "lat";
         final String OWM_LOCATION_COORD_LON = "lon";
-        //MINHA SOLUÇÃO - Mostrar a localização no Mapa
+        //MINHA SOLUï¿½ï¿½O - Mostrar a localizaï¿½ï¿½o no Mapa
 
         try {
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
 
-            //MINHA SOLUÇÃO - Mostrar a localização no Mapa com as coordenadas de retorno da API
-            //Obtém a latitude e a longitude para mostrar no mapa o lugar de preferência do usuário
+            //MINHA SOLUï¿½ï¿½O - Mostrar a localizaï¿½ï¿½o no Mapa com as coordenadas de retorno da API
+            //Obtï¿½m a latitude e a longitude para mostrar no mapa o lugar de preferï¿½ncia do usuï¿½rio
             JSONObject forecastCity = forecastJson.getJSONObject(OWM_LOCATION);
             JSONObject forecastCoord = forecastCity.getJSONObject(OWM_LOCATION_COORD);
             coordLatitude = forecastCoord.getDouble(OWM_LOCATION_COORD_LAT);
             coordLongitude = forecastCoord.getDouble(OWM_LOCATION_COORD_LON);
-            //MINHA SOLUÇÃO
+            //MINHA SOLUï¿½ï¿½O
 
 
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
@@ -363,23 +363,23 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 cVVector.add(weatherValues);
             }
 
-            //Refactor Lição 4C - Insere um contador para substituir o código de contagem
+            //Refactor Liï¿½ï¿½o 4C - Insere um contador para substituir o cï¿½digo de contagem
             // de registros inseridos
             int inserted = 0;
 
             // add to database
             if ( cVVector.size() > 0 ) {
                 // Student: call bulkInsert to add the weatherEntries to the database here
-                //MINHA SOLUÇÃO - FUNCIONAL, porém perde performance frente à do curso
+                //MINHA SOLUï¿½ï¿½O - FUNCIONAL, porï¿½m perde performance frente ï¿½ do curso
 //                mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI,
 //                        convertVectorContentValuesToContentValuesArray(cVVector));
-                //MINHA SOLUÇÃO
-                //SOLUÇÃO DO CURSO com coisas minhas
+                //MINHA SOLUï¿½ï¿½O
+                //SOLUï¿½ï¿½O DO CURSO com coisas minhas
                 ContentValues[] resultCV = new ContentValues[cVVector.size()];
                 cVVector.toArray(resultCV);
-                //REFACTOR LIÇÃO 4C - Levei pra cima a conversão do Vetor para Array
+                //REFACTOR LIï¿½ï¿½O 4C - Levei pra cima a conversï¿½o do Vetor para Array
                 inserted = mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI, resultCV);
-                //REFACTOR LIÇÃO 4C - acima, o novo bulkInsert
+                //REFACTOR LIï¿½ï¿½O 4C - acima, o novo bulkInsert
             }
             Log.d(LOG_TAG, "FetchWeatherTask Complete. " + inserted + " Inserted");
 
@@ -462,18 +462,18 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             }
             forecastJsonStr = buffer.toString();
 
-            //REFACTOR Lição 4C
+            //REFACTOR Liï¿½ï¿½o 4C
             getWeatherDataFromJson(forecastJsonStr, locationQuery);
 
             //logando o retorno do backend da API do Tempo
-            Log.v(LOG_TAG, "String JSON da Previsao: " + forecastJsonStr);
+            Log.d(LOG_TAG, "String JSON da Previsao: " + forecastJsonStr);
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
             return null;
-        }catch (JSONException e){ //Refactor 4C - Tratamento da excessão da chamada de getWeatherDataFromJson
+        }catch (JSONException e){ //Refactor 4C - Tratamento da excessï¿½o da chamada de getWeatherDataFromJson
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         } finally {

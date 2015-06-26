@@ -17,9 +17,9 @@ import br.com.intercont.sunshine.app.data.WeatherContract;
  */
 public class ForecastAdapter extends CursorAdapter {
 
-    // Representações de int do tipo de ViewType.
-    // Seu maior número NUNCA vai ser maior ou igual à quantidade de Views
-    // por conta do índice da lista começar no primeiro em 0
+    // Representaï¿½ï¿½es de int do tipo de ViewType.
+    // Seu maior nï¿½mero NUNCA vai ser maior ou igual ï¿½ quantidade de Views
+    // por conta do ï¿½ndice da lista comeï¿½ar no primeiro em 0
     private final int VIEW_TYPE_TODAY = 0;
     private final int VIEW_TYPE_FUTURE_DAY = 1;
 
@@ -42,8 +42,8 @@ public class ForecastAdapter extends CursorAdapter {
      */
     public String convertCursorRowToUXFormat(Cursor cursor) {
         // get row indices for our cursor
-        //Refactor 4C - Foram substituídos pelas constantes de Projection do ForecastFragment.
-        // Caso os índices no DB mudem ou haja alteração de Schema ou do Join, as constantes
+        //Refactor 4C - Foram substituï¿½dos pelas constantes de Projection do ForecastFragment.
+        // Caso os ï¿½ndices no DB mudem ou haja alteraï¿½ï¿½o de Schema ou do Join, as constantes
         // devem ser atualizadas manualmente
 
 //        int idx_max_temp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
@@ -61,11 +61,11 @@ public class ForecastAdapter extends CursorAdapter {
     }
 
     /**
-     * Especifica qual tipo de View deve ser usada pela condição ternária.
-     * Se a mesma é a primeira, estará na posição zero, então, corresponte à
-     * previsão de Hoje, então carregamos a View list_item_forecast_today,
-     * se não, carregamos a lista normal com as demais previsões dos dias.
-     * Esta lógica de qual carregar é feita dentro de newView com o valor de
+     * Especifica qual tipo de View deve ser usada pela condiÃ§Ã£o ternÃ¡ria.
+     * Se a mesma Ã© a primeira, estarÃ¡ na posiÃ§Ã£o zero, entÃ£o, corresponte Ã 
+     * previsÃ£o de Hoje, entÃ£o carregamos a View list_item_forecast_today,
+     * se nÃ£o, carregamos a lista normal com as demais previsÃµes dos dias.
+     * Esta lÃ³gica de qual carregar Ã© feita dentro de newView com o valor de
      * retorno daqui.
      * @param position
      * @return
@@ -76,7 +76,7 @@ public class ForecastAdapter extends CursorAdapter {
     }
 
     /**
-     * Sobrescreve o método getViewTypeCount
+     * Sobrescreve o mï¿½todo getViewTypeCount
      * que especifica quantas Views o Adapter retorna
      * @return Quantidade de Views
      */
@@ -94,8 +94,8 @@ public class ForecastAdapter extends CursorAdapter {
         int viewType = getItemViewType(cursor.getPosition());
         int layoutId = -1;
 
-        //Define qual layout será, substituí o ternário para legibilidade e consistência em caso de
-        // um retorno não esperado pelo cursor, para que a aplicação não quebre
+        //Define qual layout serÃ¡, substituï¿½ o ternï¿½rio para legibilidade e consistï¿½ncia em caso de
+        // um retorno nï¿½o esperado pelo cursor, para que a aplicaï¿½ï¿½o nï¿½o quebre
         if(viewType == VIEW_TYPE_TODAY){
             layoutId = R.layout.list_item_forecast_today;
         }else if(viewType == VIEW_TYPE_FUTURE_DAY){
@@ -115,17 +115,31 @@ public class ForecastAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         //Criando o objeto viewHolder e recuperando a tag da View criada em newView
-        //Este objeto será o utilizado de agora em diante para aplicar os valores
+        //Este objeto serï¿½ o utilizado de agora em diante para aplicar os valores
         //na view
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
+        //Choose the layout type
+        int viewType = getItemViewType(cursor.getPosition());
+        int layoutId = -1;
+
+        //Define qual layout serÃ¡, substituï¿½ o ternï¿½rio para legibilidade e consistï¿½ncia em caso de
+        // um retorno nï¿½o esperado pelo cursor, para que a aplicaï¿½ï¿½o nï¿½o quebre
+
+
         //Read weather icon ID from Cursor
-//        int weatherID = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
+        int weatherID = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
 
         //Use placeholder image for now
 //        ImageView iconView = (ImageView) view.findViewById(R.id.list_item_icon);
 //        iconView.setImageResource(R.mipmap.ic_launcher);
-        viewHolder.iconView.setImageResource(R.mipmap.ic_launcher);
+
+        //Verifica se devo carregar o Ã­cone Art (cores HD), previsÃ£o HOJE ou o Ã­cone Icon (cinza) DEMAIS DIAS
+        if(viewType == VIEW_TYPE_TODAY){
+            viewHolder.iconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherID));
+        }else if(viewType == VIEW_TYPE_FUTURE_DAY){
+            viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(weatherID));
+        }
 
         //Read DATE from cursor
         long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
