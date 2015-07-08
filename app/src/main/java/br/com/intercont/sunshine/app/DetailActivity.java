@@ -1,6 +1,7 @@
 package br.com.intercont.sunshine.app;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;

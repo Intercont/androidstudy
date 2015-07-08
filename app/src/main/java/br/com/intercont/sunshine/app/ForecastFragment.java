@@ -23,12 +23,14 @@ import br.com.intercont.sunshine.app.data.WeatherContract;
 /**
  * Created by intercont on 19/04/15.
  */
-public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>  {
 
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
     private ForecastAdapter mForecastAdapter;
     private ListView listView;
+
+    private MainActivity mCallback;
 
     private static final String PREF_LOCATION = "location";
     private static final String PREF_LOCATION_DEFAULT = "13206714";
@@ -230,10 +232,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     String locationSetting = Utility.getPreferredLocation(getActivity());
                     //Abre a Activity de Details, apravés desta Intent implícita com o setData da Uri,
                     // abrindo a que foi específicada pelo clique do usuário, como trazida pelo cursor acima
-                    Intent intent = new Intent(getActivity(),DetailActivity.class)
-                            .setData(
-                                    WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                                            locationSetting, cursor.getLong(COL_WEATHER_DATE)));
+                    Uri selectedDate = WeatherContract.WeatherEntry
+                            .buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE));
+                    Intent intent = new Intent(getActivity(),DetailActivity.class).setData(selectedDate);
+                    mCallback.onItemSelected(selectedDate);
                     //inicia a Activity
                     startActivity(intent);
                 }

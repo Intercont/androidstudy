@@ -1,32 +1,15 @@
 package br.com.intercont.sunshine.app;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements DetailActivityFragment.CallbackDetails{
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
@@ -61,20 +44,18 @@ public class MainActivity extends ActionBarActivity {
             // adding or replacing the detail fragment using a fragment transaction
             if (savedInstanceState == null){
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.weather_detail_container, new DetailActivityFragment())
+                        .replace(R.id.weather_detail_container,
+                                new DetailActivityFragment(),
+                                DETAILFRAGMENT_TAG)
                         .commit();
             }
         }else{
             mTwoPane = false;
         }
 
-
         //Log para validacao das fases do ciclo de vida de uma Activity apenas
         Log.d(LOG_TAG, "onCreate");
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,7 +82,6 @@ public class MainActivity extends ActionBarActivity {
             openPreferredLocationInMap();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -154,6 +134,12 @@ public class MainActivity extends ActionBarActivity {
             if(null != ff) {
                 ff.onLocationChange();
             }
+            //onResume para o DetailActivityFragment que agora é carregado dinâmicamente, buscamos ele pela TAG
+            DetailActivityFragment detailActivityFragment = (DetailActivityFragment) getSupportFragmentManager()
+                    .findFragmentByTag(DETAILFRAGMENT_TAG);
+            if (detailActivityFragment != null) {
+                detailActivityFragment.onLocationChanged(location);
+            }
             mLocation = location;
         }
 
@@ -178,4 +164,13 @@ public class MainActivity extends ActionBarActivity {
         Log.d(LOG_TAG, "onDestroy");
     }
 
+    @Override
+    public void onItemSelected(Uri dateUri) {
+        DetailActivityFragment detailActivityFragment = (DetailActivityFragment) getSupportFragmentManager()
+                .findFragmentByTag(DETAILFRAGMENT_TAG);
+        if (detailActivityFragment != null) {
+            detailActivityFragment.onLocationChanged(location);
+        }
+
+    }
 }

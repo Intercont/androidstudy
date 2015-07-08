@@ -28,7 +28,7 @@ import br.com.intercont.sunshine.app.data.WeatherContract;
  * Recebeu o Intent para Share apos o refactor realizado para adaptar meu codigo ao ensinado na
  * aula Share Intent, Lesson 3
  */
-public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
 
@@ -45,11 +45,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     TextView mDetailHumidityTextView;
     TextView mDetailWindTextView;
     TextView mDetailPressureTextView;
-
-
-
-
-
 
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
     //CursorLoader Loader ID
@@ -85,6 +80,19 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         //sinaliza que o Fragment tem um Menu a ser inserido
         // para que chame o onCreateOptionMenu la no DetailActivity
         setHasOptionsMenu(true);
+    }
+
+    /**
+     * Created by igorf on 07/07/2015.
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface CallbackDetails {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(Uri dateUri);
     }
 
     @Override
@@ -148,6 +156,19 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         super.onActivityCreated(savedInstanceState);
     }
 
+    void onLocationChanged(String newLocation){
+        // replace the Uri, since the location has changed
+        Uri uri = mUri;
+        if (null != uri) {
+            long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
+            Uri updatedUri = WeatherContract.WeatherEntry
+                    .buildWeatherLocationWithDate(newLocation,date);
+            mUri = updatedUri;
+            getLoaderManager().restartLoader(DETAIL_FRAGMENT_LOADER_ID,null,this);
+        }
+
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v(LOG_TAG, "Dentro de onCreateLoader");
@@ -205,6 +226,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
 
 //    public static <T> void initLoader(final int loaderId, final Bundle args, final LoaderManager.LoaderCallbacks<T> callbacks,
 //                                      final LoaderManager loaderManager) {
