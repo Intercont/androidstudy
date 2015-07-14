@@ -25,16 +25,16 @@ import br.com.intercont.sunshine.app.data.WeatherContract;
 
 /**
  * A placeholder fragment containing a simple view.
- * Recebeu o Intent para Share apos o refactor realizado para adaptar meu codigo ao ensinado na
- * aula Share Intent, Lesson 3
  */
 public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+    static final String DETAIL_URI = "URI";
 
     private View rootView;
     private String mForecast;
     private ShareActionProvider mShareActionProvider;
+    private Uri mUri;
 
     TextView mDetailDayTextView;
     TextView mDetailDateTextView;
@@ -82,21 +82,30 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         setHasOptionsMenu(true);
     }
 
-    /**
-     * Created by igorf on 07/07/2015.
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
-     */
-    public interface CallbackDetails {
-        /**
-         * DetailFragmentCallback for when an item has been selected.
-         */
-        public void onItemSelected(Uri dateUri);
+    public static DetailActivityFragment newInstance(int index){
+        DetailActivityFragment fragment = new DetailActivityFragment();
+
+        //Supply index input as an argument
+        Bundle args = new Bundle();
+        args.putInt("index", index);
+        fragment.setArguments(args);
+
+        return fragment;
     }
+
+    public int getShownIndex(){
+        return getArguments().getInt("index",0);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Bundle args = new Bundle();
+        if (args != null) {
+            //Trazendo a URI adicionada na Activity aonde se originou o clique pelo Callback
+            mUri = args.getParcelable(DETAIL_URI);
+        }
+
         rootView =  inflater.inflate(R.layout.fragment_detail, container, false);
         mDetailDayTextView = (TextView) rootView.findViewById(R.id.detail_day_textview);
         mDetailDateTextView = (TextView) rootView.findViewById(R.id.detail_date_textview);
@@ -171,20 +180,17 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.v(LOG_TAG, "Dentro de onCreateLoader");
-        Intent intent = getActivity().getIntent();
-        Log.d(LOG_TAG,"intent.getData(): " + intent.getData());
-        if(intent == null || intent.getData() == null){
-            return null;
-        }
+        if (null != mUri) {
+            // Now create and return a CursorLoader that will take care of
+            // creating a Cursor for the data being displayed
+            return new CursorLoader(
+                    getActivity(),
+                    mUri,
+                    FORECAST_COLUMNS, //projection somente das colunas a serem usadas nesta Activity
+                    null,null,null);
 
-        //Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
-        return new CursorLoader(
-                getActivity(),
-                intent.getData(),
-                FORECAST_COLUMNS, //projection somente das colunas a serem usadas nesta Activity
-                null,null,null);
+        }
+        return null;
     }
 
     @Override

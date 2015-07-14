@@ -48,87 +48,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-/**
- * Refactor do FetchWeatherTask para a classe separada, ap�s a finaliza��o da contru��o
- * do ContentProvider, li��o 4B
- * Adicionadas as minhas altera��es da inner Class neste refactor
- * REFACTOR Li��o 4C - Alterado o tipo de retorno pela classe no �ltimo par�metro de
- * extens�o do AsyncTask de String[] para Void
- */
-//public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
-//    private ArrayAdapter<String> mForecastAdapter;
     private final Context mContext;
+
     //MINHA SOLU��O - Mapas, coordenadas para o Maps
     public static double coordLatitude;
     public static double coordLongitude;
-    //MINHA SOLU��O - Mapas, coordenadas para o Maps
-
-    //public FetchWeatherTask(Context context, ArrayAdapter<String> forecastAdapter) {
-    //REFACTOR Li��o 4C
-    public FetchWeatherTask(Context context) {
-        mContext = context;
-//        mForecastAdapter = forecastAdapter;
-    }
 
     private boolean DEBUG = true;
 
-    /* The date/time conversion code is going to be moved outside the asynctask later,
-     * so for convenience we're breaking it out into its own method now.
-     */
-//    REFACTOR LI��O 4C
-//    private String getReadableDateString(long time){
-//        // Because the API returns a unix timestamp (measured in seconds),
-//        // it must be converted to milliseconds in order to be converted to valid date.
-//        Date date = new Date(time);
-//        SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
-//        return format.format(date).toString();
-//    }
-
-    /**
-     * Prepare the weather high/lows for presentation.
-     * * Como o objetivo do aplicativo � apenas trazer os dados em Celsius e
-     converter os valores de Celsius para Fahrenheit no aplicativo,
-     deixarei o par�metro da chamada como metric, intacta, e realizo as
-     convers�es aqui, como mostrado no curso. O objetivo de converter os
-     valores aqui e somente trazer valores m�tricos � porque vamos
-     armazenar estes valores em um Banco de Dados e n�o queremos dados com
-     unidades misturadas, ent�o, para mostrar ao usu�rio de acordo com a pref
-     dele, convertemos aqui trazendo sua prefer�ncia de SharedPreferences
-     */
-//    REFACTOR LI��O 4C - Levou o formatHighLows para o ForecastAdapter, diferente do meu
-//    private String formatHighLows(double high, double low) {
-//        // Data is fetched in Celsius by default.
-//        // If user prefers to see in Fahrenheit, convert the values here.
-//        // We do this rather than fetching in Fahrenheit so that the user can
-//        // change this option without us having to re-fetch the data once
-//        // we start storing the values in a database.
-//        SharedPreferences sharedPrefs =
-//                PreferenceManager.getDefaultSharedPreferences(mContext);
-//        String unitType = sharedPrefs.getString(
-//                mContext.getString(R.string.pref_unit_key),
-//                mContext.getString(R.string.pref_unit_metric));
-//
-//        //verificamos se a unidade de medida de prefer�ncia � imperial, se for, convertemos, am�m
-//        if (unitType.equals(mContext.getString(R.string.pref_unit_imperial))) {
-//            //c�lculo para convers�o dos valores para Fahrenheit
-//            high = (high * 1.8) + 32;
-//            low = (low * 1.8) + 32;
-//        } else if (!unitType.equals(mContext.getString(R.string.pref_unit_metric))) {
-//            //caso n�o seja nem m�trica nem imperial, loga que bicho � esse
-//            Log.d(LOG_TAG, "Unit type not found: " + unitType);
-//        }
-//
-//        // For presentation, assume the user doesn't care about tenths of a degree.
-//        long roundedHigh = Math.round(high);
-//        long roundedLow = Math.round(low);
-//
-//        String highLowStr = roundedHigh + "/" + roundedLow;
-//        return highLowStr;
-//    }
+    public FetchWeatherTask(Context context) {
+        mContext = context;
+    }
 
     /**
      * Helper method to handle insertion of a new location in the weather database.
@@ -148,18 +82,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         Cursor retCursor;
         long _id;
 
-            //MINHA SOLU��O - verifico se esta location existe no banco - FUNCIONAL
-//            retCursor = db.query(
-//                    WeatherContract.LocationEntry.TABLE_NAME,
-//                    new String[]{WeatherContract.LocationEntry._ID},
-//                    WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " + WeatherContract.LocationEntry.COLUMN_CITY_NAME + " = ?",
-//                    new String[]{locationSetting, cityName},
-//                    null,
-//                    null,
-//                    null
-//                    );
-            //MINHA SOLU��O - verifico se esta location existe no banco
-
             //SOLU��O DO CURSO - Consulto no banco usando o ContentResolver, para fazer uma query,
             // usando a URI do Location no Contract, que j� passa todos os par�metros para a consulta
             retCursor = mContext.getContentResolver().query(
@@ -169,7 +91,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                     new String[]{locationSetting},
                     null
             );
-            //SOLU��O DO CURSO
 
             //se j� tiver um valor
             if (retCursor.moveToFirst()){
@@ -182,10 +103,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 values.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
                 values.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
 
-                //MINHA SOLU��O - Insiro diretamente via db com Insert - FUNCIONAL
-//                _id = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, values);
-                //MINHA SOLU��O - Insiro diretamente via db com Insert - FUNCIONAL
-
                 //SOLU��O DO CURSO - Insiro fazendo uso do ContentProvider com a URI
                 Uri insertedUri = mContext.getContentResolver().insert(
                         WeatherContract.LocationEntry.CONTENT_URI,
@@ -193,27 +110,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 );
                 //SOLU��O DO CURSO - A URI cont�m um ID para a row. Extraio a locationId da Uri
                 _id = ContentUris.parseId(insertedUri);
-                //SOLU��O DO CURSO
             }
         retCursor.close();
         return _id;
     }
-//    REFACTOR LI��O 4C Levou o convertContentValuesToUXFormat para o ForecastAdapter
-
-    /*
-        MINHA SOLU��O
-        Convertendo do Vector de ContentValues para um Array comum de ContentValues para chamar o BulkInsert.
-        UPDATE ap�s SOLU��O DO CURSO: N�o ser� necess�ria, pois com apenas converter o Vector para Array com
-        a fun��o toArray(variavelDoVetor) obtenho o mesmo resultado
-     */
-//    @Deprecated
-//    ContentValues[] convertVectorContentValuesToContentValuesArray(Vector<ContentValues> cvv) {
-//        ContentValues[] resultCV = new ContentValues[cvv.size()];
-//        for ( int i = 0; i < cvv.size(); i++ ) {
-//            resultCV[i] = cvv.elementAt(i);
-//        }
-//        return resultCV;
-//    }
 
     /**
      * Take the String representing the complete forecast in JSON Format and
@@ -275,8 +175,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             JSONObject forecastCoord = forecastCity.getJSONObject(OWM_LOCATION_COORD);
             coordLatitude = forecastCoord.getDouble(OWM_LOCATION_COORD_LAT);
             coordLongitude = forecastCoord.getDouble(OWM_LOCATION_COORD_LON);
-            //MINHA SOLU��O
-
 
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
 
@@ -369,17 +267,9 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
             // add to database
             if ( cVVector.size() > 0 ) {
-                // Student: call bulkInsert to add the weatherEntries to the database here
-                //MINHA SOLU��O - FUNCIONAL, por�m perde performance frente � do curso
-//                mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI,
-//                        convertVectorContentValuesToContentValuesArray(cVVector));
-                //MINHA SOLU��O
-                //SOLU��O DO CURSO com coisas minhas
                 ContentValues[] resultCV = new ContentValues[cVVector.size()];
                 cVVector.toArray(resultCV);
-                //REFACTOR LI��O 4C - Levei pra cima a convers�o do Vetor para Array
                 inserted = mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI, resultCV);
-                //REFACTOR LI��O 4C - acima, o novo bulkInsert
             }
             Log.d(LOG_TAG, "FetchWeatherTask Complete. " + inserted + " Inserted");
 
@@ -391,7 +281,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... params) { //REFACTOR 4C - mudou tipo de retorno
-
 
         // If there's no zip code, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
@@ -416,9 +305,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             // Construct the URL for the OpenWeatherMap query
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
+            //http://api.openweathermap.org/data/2.5/forecast/daily?id=3461311&cnt=14
             final String FORECAST_BASE_URL =
                     "http://api.openweathermap.org/data/2.5/forecast/daily?";
-            final String QUERY_PARAM = "q";
+            final String QUERY_PARAM = "id";
             final String FORMAT_PARAM = "mode";
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
@@ -433,6 +323,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                     .build();
 
             URL url = new URL(builtUri.toString());
+
+            Log.d(LOG_TAG, url.toString());
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();

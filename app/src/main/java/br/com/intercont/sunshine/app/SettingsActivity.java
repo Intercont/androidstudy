@@ -1,6 +1,9 @@
 package br.com.intercont.sunshine.app;
 
+import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -30,10 +33,10 @@ public class SettingsActivity extends PreferenceActivity
 
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
-        //Faço Bind usando o método findPreference via getString pra trazer o valor chave que
+        //Faï¿½o Bind usando o mï¿½todo findPreference via getString pra trazer o valor chave que
         // alimentei no strings.xml
-        //Este Bind tem como finalidade alimentar a linha embaixo da preferência nas Configurações
-        // do aplicativo, para que se veja qual opção está selecionada, sempre pela chave
+        //Este Bind tem como finalidade alimentar a linha embaixo da preferï¿½ncia nas Configuraï¿½ï¿½es
+        // do aplicativo, para que se veja qual opï¿½ï¿½o estï¿½ selecionada, sempre pela chave
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_unit_key)));
     }
@@ -74,4 +77,10 @@ public class SettingsActivity extends PreferenceActivity
         return true;
     }
 
+    //Fix para onResume quando alterar a localizaÃ§Ã£o do aplicativo
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public Intent getParentActivityIntent(){
+        return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    }
 }

@@ -8,8 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
-public class MainActivity extends ActionBarActivity implements DetailActivityFragment.CallbackDetails{
+public class MainActivity extends ActionBarActivity implements ForecastFragment.CallbackDetails{
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
@@ -23,13 +22,6 @@ public class MainActivity extends ActionBarActivity implements DetailActivityFra
         super.onCreate(savedInstanceState);
         mLocation = Utility.getPreferredLocation(this);
         setContentView(R.layout.activity_main);
-        //Removido na Lição 5 ao adicionar o layout de 2 painéis para o Tablet.
-        //A lista passa a ser um Fragment estático, ficando dinâmicamente somente os Detalhes
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new ForecastFragment(),FORECASTFRAGMENT_TAG)
-//                    .commit();
-//        }
 
         //Verifico se há a presença de weather_detail_container no layout do activity_main
         //Caso tenha, estou em um tablet, com o layout de sw600dp carregado,
@@ -137,7 +129,7 @@ public class MainActivity extends ActionBarActivity implements DetailActivityFra
             //onResume para o DetailActivityFragment que agora é carregado dinâmicamente, buscamos ele pela TAG
             DetailActivityFragment detailActivityFragment = (DetailActivityFragment) getSupportFragmentManager()
                     .findFragmentByTag(DETAILFRAGMENT_TAG);
-            if (detailActivityFragment != null) {
+            if (null != detailActivityFragment) {
                 detailActivityFragment.onLocationChanged(location);
             }
             mLocation = location;
@@ -166,11 +158,28 @@ public class MainActivity extends ActionBarActivity implements DetailActivityFra
 
     @Override
     public void onItemSelected(Uri dateUri) {
-        DetailActivityFragment detailActivityFragment = (DetailActivityFragment) getSupportFragmentManager()
-                .findFragmentByTag(DETAILFRAGMENT_TAG);
-        if (detailActivityFragment != null) {
-            detailActivityFragment.onLocationChanged(location);
+        //se estamos em um layout com 2 painéis (tablet)
+        if(mTwoPane){
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction
+            //Argumentos da URI que mudou ao se clicar em um item na lista
+            Bundle args = new Bundle();
+            args.putParcelable(DetailActivityFragment.DETAIL_URI, dateUri);
+            //criação dinâmica do fragment para ser carregado em um Master/Detail Navigation Flow
+            DetailActivityFragment fragment = new DetailActivityFragment();
+            fragment.setArguments(args);
+            //substituição da activity atual pela dinâmicamente gerada com os novos args selecionados
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+
+        }else{//senão smarthphone, carregamento convencional de outra activity
+            Intent intent = new Intent(this,DetailActivity.class)
+                    .setData(dateUri);
+            startActivity(intent);
         }
+
 
     }
 }

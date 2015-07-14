@@ -68,7 +68,19 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COL_WEATHER_CONDITION_ID = 6;
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
-    //Projection - 4C
+    //FIM - Projection - 4C
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface CallbackDetails {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(Uri dateUri);
+    }
 
     public ForecastFragment() {
     }
@@ -230,14 +242,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 //se encontrou valor da chamada acima
                 if(cursor != null){
                     String locationSetting = Utility.getPreferredLocation(getActivity());
-                    //Abre a Activity de Details, apravés desta Intent implícita com o setData da Uri,
-                    // abrindo a que foi específicada pelo clique do usuário, como trazida pelo cursor acima
-                    Uri selectedDate = WeatherContract.WeatherEntry
-                            .buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE));
-                    Intent intent = new Intent(getActivity(),DetailActivity.class).setData(selectedDate);
-                    mCallback.onItemSelected(selectedDate);
-                    //inicia a Activity
-                    startActivity(intent);
+                    //Com 2 painéis diferentes (Tablet e Smartphone), ao ter algum item clicado,
+                    // vou chamar o Callback do onItemSelected do pai no lugar de criar aqui a Activity
+                    ((CallbackDetails) getActivity())//Cast da Interface e getActivity para ter acesso à Activity acima deste Fragment (se MainActivity para 2 painéis ou DetailActivityFragment
+                            .onItemSelected(WeatherContract.WeatherEntry //no método da interface, construo uma nova Uri
+                                    .buildWeatherLocationWithDate
+                                            (locationSetting, //com este locationSetting que o recebi acima
+                                                    cursor.getLong(COL_WEATHER_DATE))); //e busco no Cursor a data, fazendo uso dos índices de Projection criados acima
                 }
             }
         });

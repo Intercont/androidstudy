@@ -2,6 +2,7 @@ package br.com.intercont.sunshine.app;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
-public class DetailActivity extends ActionBarActivity {
+public class DetailActivity extends ActionBarActivity implements ForecastFragment.CallbackDetails {
 
 //    private ShareActionProvider mShareActionProvider;
 
@@ -20,10 +21,23 @@ public class DetailActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        //adicionando o DetailActivityFragment dinâmicamente para o painel de Smartphone
         if (savedInstanceState == null){
+            // Create the detail fragment and add it to the activity
+            // using a fragment transaction
+
+            Bundle args = new Bundle();
+            //adicionando ao Bundle os dados recuperados pelo getData que foram
+            // adicionados ao Intent desde onde foi clicado
+            args.putParcelable(DetailActivityFragment.DETAIL_URI, getIntent().getData());
+
+            DetailActivityFragment fragment = new DetailActivityFragment();
+            fragment.setArguments(args);
+
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.weather_detail_container, new DetailActivityFragment())
+                    .add(R.id.weather_detail_container,
+                            new DetailActivityFragment())
+                    .add(R.id.weather_detail_container,
+                            fragment)
                     .commit();
         }
 
@@ -97,5 +111,10 @@ public class DetailActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(Uri dateUri) {
+
     }
 }
