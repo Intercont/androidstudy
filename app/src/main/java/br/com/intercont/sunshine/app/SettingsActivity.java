@@ -77,8 +77,11 @@ public class SettingsActivity extends PreferenceActivity
         return true;
     }
 
-    //Fix para onResume quando alterar a localização do aplicativo
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    //Fix para onResume quando retornar do menu de Configurações (Settings) para twoPaneMode (Tablet)
+    //Esta flag FLAG_ACTIVITY_CLEAR_TOP adicionada irá verificar se já temos em execução uma
+    // instância de MainActivity rodando, no lugar de criar uma nova instância (que ficaria com
+    // a tela em branco ao entrar em Configs e retornar para a MainActivity).
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN) //<- este método não existe antes do JELLY_BEAN, por isso é necessário adicionar esta anotação
     @Override
     public Intent getParentActivityIntent(){
         return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

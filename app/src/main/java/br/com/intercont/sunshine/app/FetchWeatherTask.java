@@ -324,7 +324,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
             URL url = new URL(builtUri.toString());
 
-            Log.d(LOG_TAG, url.toString());
+            Log.d(LOG_TAG, "URL da Requisição: " + url.toString());
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -380,20 +380,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 }
             }
         }
-
-        //REFACTOR 4C - removeu a chamada de getWeatherDataFromJson daqui para dentro do try acima
         return null;
     }
-
-    //REFACTOR 4C - Removido o onPostExecute
-//    @Override
-//    protected void onPostExecute(String[] result) {
-//        if (result != null && mForecastAdapter != null) {
-//            mForecastAdapter.clear();
-//            for(String dayForecastStr : result) {
-//                mForecastAdapter.add(dayForecastStr);
-//            }
-//            // New data is back from the server.  Hooray!
-//        }
-//    }
 }

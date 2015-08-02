@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
-public class DetailActivity extends ActionBarActivity implements ForecastFragment.CallbackDetails {
+public class DetailActivity extends ActionBarActivity {
 
 //    private ShareActionProvider mShareActionProvider;
 
@@ -35,12 +35,9 @@ public class DetailActivity extends ActionBarActivity implements ForecastFragmen
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.weather_detail_container,
-                            new DetailActivityFragment())
-                    .add(R.id.weather_detail_container,
                             fragment)
                     .commit();
         }
-
     }
 
 
@@ -50,52 +47,8 @@ public class DetailActivity extends ActionBarActivity implements ForecastFragmen
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
-
-        /**
-        //MINHA FORMA - FUNCIONA MAS NAO E BOA PRATICA E NO REFACTOR FUNCIONA MELHOR
-        //LEVADO PRA DENTRO DO DetailActivityFragment
-        //Definindo a Intent default do ShareActionProvider
-        MenuItem shareItem = menu.findItem(R.id.action_share);
-        //cast para compatibilidade da v4 para a v7
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        //passamos a Intent a ser executada na opcao de Share, no caso, o ACTION_SEND no metodo auxiliar
-        mShareActionProvider.setShareIntent(getDefaultIntent());
-
-        return super.onCreateOptionsMenu(menu);
-        //MINHA FORMA
-        */
-
         return true;
     }
-
-    /**
-     * Substituido pelo Refactor do Share
-     * Get forecast text from selected day
-     * @return Text showed in DetailActivity
-     */
-//    @Deprecated
-//    private String getExtraText(){
-//        Intent intent = this.getIntent();
-//        TextView text = (TextView) findViewById(R.id.detailforecast);
-//        String shareText = (String) text.getText() + " #SunshineApp";
-//        return shareText;
-//    }
-
-    /**
-     * Set Share Intent to the loaded ShareActionProvider
-     * @return intent
-     *
-     * Substituido pelo Refactor do Share. Esta foi a forma como eu fiz funcionar antes de assistir a resposta.
-     * O refactor leva todo este processo pra dentro do DetailActivityFragment
-     */
-//    @Deprecated
-//    private Intent getDefaultIntent(){
-//        Intent intent = new Intent(Intent.ACTION_SEND);
-//        String text = getExtraText();
-//        intent.setType("text/plain");
-//        intent.putExtra(Intent.EXTRA_TEXT,text);
-//        return intent;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -111,10 +64,5 @@ public class DetailActivity extends ActionBarActivity implements ForecastFragmen
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemSelected(Uri dateUri) {
-
     }
 }

@@ -63,7 +63,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             WeatherContract.WeatherEntry.COLUMN_DEGREES,
             WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
     };
-    //Constantes correspondentes � proje��o acima e DEVEM ser atualizadas caso a proje��o mude
+    //Constantes correspondentes ao projection acima e DEVEM ser atualizadas caso a projecao mude
     private static final int COL_WEATHER_ID = 0;
     private static final int COL_WEATHER_DATE = 1;
     private static final int COL_WEATHER_DESC = 2;
@@ -100,7 +100,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Bundle args = new Bundle();
+        Bundle args = getArguments();
         if (args != null) {
             //Trazendo a URI adicionada na Activity aonde se originou o clique pelo Callback
             mUri = args.getParcelable(DETAIL_URI);
