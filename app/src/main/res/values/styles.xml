@@ -4,5 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+    <style name="ForecastListStyle">
+        <!-- Estilo default para one pane layout, ou seja, não há alteração alguma. Para o tablet,
+        será colocado dentro do diretório de values-sw600dp -->
+    </style>
 
 </resources>

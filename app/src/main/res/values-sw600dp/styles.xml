@@ -1,0 +1,8 @@
+<resources>
+    <style name="ForecastListStyle">
+        <!-- Estilo para dispositivos com mais de 600dp de tela (phablets, tablets e afins) -->
+        <!-- substitui a aplicação de android:choiceMode="singleChoice" diretamente no ListView -->
+        <!-- Esta maneira é mais correta de se usar do que ter 2 layouts duplicados somente para uma propriedade -->
+        <item name="android:choiceMode">singleChoice</item>
+    </style>
+</resources>
