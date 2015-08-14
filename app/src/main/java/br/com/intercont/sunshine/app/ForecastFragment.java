@@ -27,10 +27,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
+    private final String LIST_POS = "LIST_POS";
+
     private ForecastAdapter mForecastAdapter;
     private ListView listView;
+    private Bundle savedInstanceState;
 
     private MainActivity mCallback;
+    private int positionOnList;
 
     private static final String PREF_LOCATION = "location";
     private static final String PREF_LOCATION_DEFAULT = "13206714";
@@ -89,6 +93,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        positionOnList = 0;
         //Especificando que tenho Opçoes de Menu a serem inclusas no menu principal
         setHasOptionsMenu(true);
 
@@ -133,6 +138,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mForecastAdapter.swapCursor(data);
+        listView.smoothScrollToPosition(positionOnList);
+        //TODO MARCAR DE AZUL ITEM SELECCIONADO listView.setStateListAnimator(R.drawable);
     }
 
     @Override
@@ -215,17 +222,29 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     public void onLocationChange(){
         updateData();
-        getLoaderManager().restartLoader(FORECAST_FRAGMENT_LOADER_ID,null,this);
+        getLoaderManager().restartLoader(FORECAST_FRAGMENT_LOADER_ID, null, this);
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(LIST_POS, positionOnList);
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         //Lição 4C - O mForecastAdapter (ou seja, o CursorAdapter) irá pegar os dados do nosso cursor pelo Loader
         // e popular a ListView
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
+        if(savedInstanceState != null){
+            positionOnList = savedInstanceState.getInt(LIST_POS);
+        }
 
         //Trazendo o ListView pra cá, precisa trazer do rootView já que é onde está o ListView,
         //o rootView inflou o fragment_main aí encima e tem todos seus elementos
@@ -238,6 +257,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 //CursorAdapter retorna um cursor da posição correta clicada na Lista para getItem() ou null se não achar essa posição
+                positionOnList = position;
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 //se encontrou valor da chamada acima
                 if(cursor != null){
