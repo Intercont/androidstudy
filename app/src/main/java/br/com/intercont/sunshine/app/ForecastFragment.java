@@ -28,13 +28,16 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
     private final String LIST_POS = "LIST_POS";
+    private final String LIST_IS_SELECT = "LIST_IS_SELECT";
+
 
     private ForecastAdapter mForecastAdapter;
     private ListView listView;
-    private Bundle savedInstanceState;
+//    private Bundle savedInstanceState;
 
     private MainActivity mCallback;
-    private int positionOnList;
+    private int mPositionOnList;
+    private boolean mIsSelected;
 
     private static final String PREF_LOCATION = "location";
     private static final String PREF_LOCATION_DEFAULT = "13206714";
@@ -93,7 +96,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        positionOnList = 0;
+//        mPositionOnList = 0;
         //Especificando que tenho Opçoes de Menu a serem inclusas no menu principal
         setHasOptionsMenu(true);
 
@@ -138,8 +141,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mForecastAdapter.swapCursor(data);
-        listView.smoothScrollToPosition(positionOnList);
-        //TODO MARCAR DE AZUL ITEM SELECCIONADO listView.setStateListAnimator(R.drawable);
+        listView.smoothScrollToPosition(mPositionOnList);
+        //selecionar o item na ListView apenas se algum estiver selecionado
+        if(mIsSelected) {
+            listView.setItemChecked(mPositionOnList, true);
+        }
     }
 
     @Override
@@ -227,8 +233,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putInt(LIST_POS, positionOnList);
-
+        //quando o tablet for girado, a posiçao precisa ser salva para conservar o item na lista
+        //Quanto nenhum item e selecionado, mPositionOnList sera ListView.INVALID_POSITION (ou
+        // seja,-1), entao e preciso verificar isso antes de armazenar o valor.
+        if(mPositionOnList != ListView.INVALID_POSITION) {
+            savedInstanceState.putInt(LIST_POS, mPositionOnList);
+            savedInstanceState.putBoolean(LIST_IS_SELECT, mIsSelected);
+        }
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -242,8 +253,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         //Lição 4C - O mForecastAdapter (ou seja, o CursorAdapter) irá pegar os dados do nosso cursor pelo Loader
         // e popular a ListView
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
+
+        //recupera a posição armazenada no Bundle pré-rotação para voltá-lo no item selecionado
         if(savedInstanceState != null){
-            positionOnList = savedInstanceState.getInt(LIST_POS);
+            mPositionOnList = savedInstanceState.getInt(LIST_POS);
         }
 
         //Trazendo o ListView pra cá, precisa trazer do rootView já que é onde está o ListView,
@@ -257,7 +270,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 //CursorAdapter retorna um cursor da posição correta clicada na Lista para getItem() ou null se não achar essa posição
-                positionOnList = position;
+                mPositionOnList = position;
+                mIsSelected = true;
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 //se encontrou valor da chamada acima
                 if(cursor != null){
@@ -272,6 +286,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 }
             }
         });
+
+        //se o app é morto, e há dados armazenados no savedInstanceState, posso restaurar ao recarregar o app
+        // If there's instance state, mine it for useful information.
+        // The end-goal here is that the user never knows that turning their device sideways
+        // does crazy lifecycle related things.  It should feel like some stuff stretched out,
+        // or magically appeared to take advantage of room, but data or place in the app was never
+        // actually *lost*.
+        if(savedInstanceState != null && savedInstanceState.containsKey(LIST_POS)){
+            mPositionOnList = savedInstanceState.getInt(LIST_POS);
+            mIsSelected = savedInstanceState.getBoolean(LIST_IS_SELECT);
+        }
 
         return rootView;
     }

@@ -293,9 +293,9 @@ public class WeatherProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         //Notify registered observers
-        //Esta notificação irá avisar os observers, tanto se é uma chamada da URI raíz (weather ou location)
-        //quanto se é de algum de seus descendentes (weather/location/date ou weather/location)
-        //IMPORTANTE: usar a URI ANTIGA para notificá-la da mudança, e não a URI retornada na inserção
+        //Esta notificao ir avisar os observers, tanto se  uma chamada da URI raz (weather ou location)
+        //quanto se  de algum de seus descendentes (weather/location/date ou weather/location)
+        //IMPORTANTE: usar a URI ANTIGA para notific-la da mudana, e no a URI retornada na insero
         getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
     }

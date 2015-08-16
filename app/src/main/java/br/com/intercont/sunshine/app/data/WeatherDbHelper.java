@@ -29,8 +29,8 @@ import br.com.intercont.sunshine.app.data.WeatherContract.WeatherEntry;
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    //sempre que mudar o schema (disposição das tabelas, ou qualquer alteração no banco),
-    // devo incrementar a versão do DATABASE VERSION para avisar ao SQLiteOpenHelper que tem
+    //sempre que mudar o schema (disposio das tabelas, ou qualquer alterao no banco),
+    // devo incrementar a verso do DATABASE VERSION para avisar ao SQLiteOpenHelper que tem
     // que atualizar o banco chamando onUpgrade
     private static final int DATABASE_VERSION = 2;
     private static final String LOG_TAG = WeatherDbHelper.class.getSimpleName();
