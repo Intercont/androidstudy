@@ -38,6 +38,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private MainActivity mCallback;
     private int mPositionOnList;
     private boolean mIsSelected;
+    private boolean mUseTodayLayout;
 
     private static final String PREF_LOCATION = "location";
     private static final String PREF_LOCATION_DEFAULT = "13206714";
@@ -253,6 +254,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         //Lição 4C - O mForecastAdapter (ou seja, o CursorAdapter) irá pegar os dados do nosso cursor pelo Loader
         // e popular a ListView
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
+        mForecastAdapter.setmUseTodayLayout(mUseTodayLayout);
 
         //recupera a posição armazenada no Bundle pré-rotação para voltá-lo no item selecionado
         if(savedInstanceState != null){
@@ -299,5 +301,16 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         }
 
         return rootView;
+    }
+
+
+    /**
+     * Setter para o item de topo da lista de previsões do tempo
+     */
+    public void setmForecastAdapterUseTodayLayout(boolean useTodayLayout) {
+        mUseTodayLayout = useTodayLayout;
+        if (mForecastAdapter != null) {
+            this.mForecastAdapter.setmUseTodayLayout(useTodayLayout);
+        }
     }
 }

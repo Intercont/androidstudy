@@ -22,6 +22,7 @@ public class ForecastAdapter extends CursorAdapter {
     // por conta do �ndice da lista come�ar no primeiro em 0
     private final int VIEW_TYPE_TODAY = 0;
     private final int VIEW_TYPE_FUTURE_DAY = 1;
+    private boolean mUseTodayLayout;
 
     public ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -60,6 +61,10 @@ public class ForecastAdapter extends CursorAdapter {
                 " - " + highAndLow;
     }
 
+    public void setmUseTodayLayout(boolean mUseTodayLayout) {
+        this.mUseTodayLayout = mUseTodayLayout;
+    }
+
     /**
      * Especifica qual tipo de View deve ser usada pela condição ternária.
      * Se a mesma é a primeira, estará na posição zero, então, corresponte à
@@ -72,7 +77,7 @@ public class ForecastAdapter extends CursorAdapter {
      */
     @Override
     public int getItemViewType(int position){
-        return (position == 0) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+        return (position == 0 && mUseTodayLayout) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
     }
 
     /**

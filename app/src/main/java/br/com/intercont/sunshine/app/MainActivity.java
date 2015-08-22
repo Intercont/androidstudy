@@ -45,6 +45,14 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             mTwoPane = false;
         }
 
+        ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_forecast);
+
+        //define o tipo do item para o topo do ListView de Forecasts.
+        // Se for tablet (mTwoPane = true), false, assim o primeiro da lista aparece normal
+        // Se for smartphone (mTwoPane = false), true, assim o primeiro da lista aparece grandao
+        forecastFragment.setmForecastAdapterUseTodayLayout(!mTwoPane);
+
         //Log para validacao das fases do ciclo de vida de uma Activity apenas
         Log.d(LOG_TAG, "onCreate");
     }
