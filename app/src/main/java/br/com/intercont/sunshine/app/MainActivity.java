@@ -43,6 +43,10 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             }
         }else{
             mTwoPane = false;
+            //seta a elevação da ActionBar para zero, eliminando assim a sombra default que a mesma faz
+            if(getSupportActionBar() != null) {
+                getSupportActionBar().setElevation(0F);
+            }
         }
 
         ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager()
