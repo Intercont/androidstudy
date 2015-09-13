@@ -6,76 +6,110 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:gravity="center_vertical"
+        android:layout_gravity="left"
         android:orientation="vertical"
-        android:minHeight="?android:attr/listPreferredItemHeight"
-        android:gravity="left"
-        android:padding="16dp"
-        tools:context="br.com.intercont.sunshine.app.DetailActivityFragment">
+        android:padding="16dp">
 
-        <TextView android:layout_width="wrap_content"
+        <!-- Dia e Data -->
+        <TextView
+            android:id="@+id/detail_day_textview"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_day_textview" />
-        <TextView android:layout_width="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/black"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/detail_date_textview"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_date_textview" />
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/grey_700"
+            android:textSize="16sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:gravity="center_horizontal"
             android:layout_marginTop="16dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_gravity="left"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:gravity="center_horizontal">
+                android:layout_width="wrap_content"
+                android:orientation="vertical">
 
-                <TextView android:layout_width="wrap_content"
+                <!-- Máxima e mínima -->
+                <TextView
+                    android:id="@+id/detail_high_textview"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/detail_high_textview" />
-                <TextView android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/detail_low_textview" />
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="96sp" />
 
+                <TextView
+                    android:id="@+id/detail_low_textview"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="48sp"
+                    android:textColor="@color/grey_700" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="vertical"
-                android:layout_weight="1"
                 android:gravity="center_horizontal">
 
+                <!-- Icone do tempo e descritivo -->
                 <ImageView
                     android:id="@+id/detail_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                <TextView android:layout_width="wrap_content"
+
+                <TextView
+                    android:id="@+id/detail_forecast_textview"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/detail_forecast_textview" />
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/grey_700" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_humidity_textview" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_wind_textview" />
+            <!-- Humidade, Vento e pressao -->
+            <TextView
+                android:id="@+id/detail_humidity_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceLarge"/>
 
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_pressure_textview" />
+            <TextView
+                android:id="@+id/detail_wind_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="?android:textAppearanceLarge"/>
 
+            <TextView
+                android:id="@+id/detail_pressure_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
