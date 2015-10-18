@@ -11,7 +11,7 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity implements ForecastFragment.CallbackDetails{
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+    public static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     private String mLocation;
     private boolean mTwoPane;
@@ -194,4 +194,5 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
 
 
     }
+
 }

@@ -18,21 +18,12 @@ package br.com.intercont.sunshine.app;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-
-import br.com.intercont.sunshine.app.data.WeatherContract;
-import br.com.intercont.sunshine.app.data.WeatherContract.WeatherEntry;
-import br.com.intercont.sunshine.app.data.WeatherDbHelper;
-import br.com.intercont.sunshine.app.data.WeatherProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,9 +35,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Vector;
+
+import br.com.intercont.sunshine.app.data.WeatherContract;
+import br.com.intercont.sunshine.app.data.WeatherContract.WeatherEntry;
+import br.com.intercont.sunshine.app.data.WeatherDbHelper;
 
 public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
@@ -299,27 +292,31 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         String format = "json";
         String units = "metric";
         String lang = "pt"; //minha custom
+        String api_key = "f01a986ef54fb617a966dcc9ba6df97d";
         int numDays = 14;
 
         try {
             // Construct the URL for the OpenWeatherMap query
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
-            //http://api.openweathermap.org/data/2.5/forecast/daily?id=3461311&cnt=14
+            //http://api.openweathermap.org/data/2.5/forecast/daily?q=Indaiatuba&units=metric&cnt=14&lang=pt&appid=f01a986ef54fb617a966dcc9ba6df97d
             final String FORECAST_BASE_URL =
                     "http://api.openweathermap.org/data/2.5/forecast/daily?";
-            final String QUERY_PARAM = "id";
+            final String QUERY_PARAM = "q";
             final String FORMAT_PARAM = "mode";
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
             final String LANG_PARAM = "lang"; //minha custom
+            final String API_KEY = "appid"; //minha custom
+
 
             Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, params[0])
                     .appendQueryParameter(FORMAT_PARAM, format)
                     .appendQueryParameter(UNITS_PARAM, units)
                     .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
-                    .appendQueryParameter(LANG_PARAM, lang) //minha custom
+                    .appendQueryParameter(LANG_PARAM, lang)
+                    .appendQueryParameter(API_KEY, api_key)
                     .build();
 
             URL url = new URL(builtUri.toString());

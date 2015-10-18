@@ -146,17 +146,32 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         //selecionar o item na ListView apenas se algum estiver selecionado
         if(mIsSelected) {
             listView.setItemChecked(mPositionOnList, true);
-        }else{
+        }
+        //TODO TESTES
+        else{
             listView.setItemChecked(0, true);
+//            data.moveToFirst();
+            String locationSetting = Utility.getPreferredLocation(getActivity());
+            DetailActivityFragment fragment = new DetailActivityFragment();
 
 
-//            Cursor cursor = (Cursor) data.getItemAtPosition(position);
-//            String locationSetting = Utility.getPreferredLocation(getActivity());
+
+
+            Bundle args = new Bundle();
+            args.putParcelable(DetailActivityFragment.DETAIL_URI, WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, data.getLong(COL_WEATHER_DATE)));
+            fragment.setArguments(args);
+            //substituição da activity atual pela dinâmicamente gerada com os novos args selecionados
+            getFragmentManager().beginTransaction()
+                    .add(R.id.weather_detail_container, fragment, MainActivity.DETAILFRAGMENT_TAG)
+                    .commit();
+
+
 //            ((CallbackDetails) getActivity())//Cast da Interface e getActivity para ter acesso à Activity acima deste Fragment (se MainActivity para 2 painéis ou DetailActivityFragment
 //                    .onItemSelected(WeatherContract.WeatherEntry //no método da interface, construo uma nova Uri
 //                            .buildWeatherLocationWithDate
 //                                    (locationSetting, //com este locationSetting que o recebi acima
 //                                            data.getLong(COL_WEATHER_DATE)));
+            //TODO TESTES
         }
     }
 
@@ -335,7 +350,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         return rootView;
     }
-
 
     /**
      * Setter para o item de topo da lista de previsões do tempo

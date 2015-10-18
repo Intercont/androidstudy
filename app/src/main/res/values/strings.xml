@@ -17,7 +17,7 @@
     <!-- location preferences settings -->
     <string name="pref_location_label">Localização</string>
     <string name="pref_location_key" translatable="false">location</string>
-    <string name="pref_location_default" translatable="false">3461311</string>
+    <string name="pref_location_default" translatable="false">Indaiatuba</string>
 
     <!-- unit preferences settings -->
     <string name="pref_unit_label">Unidade de Medida</string>
