@@ -105,6 +105,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             //Trazendo a URI adicionada na Activity aonde se originou o clique pelo Callback
             mUri = args.getParcelable(DETAIL_URI);
         }
+//        else{
+//            WeatherContract.WeatherEntry.buildWeatherLocationWithDate()
+//        }
+        //TODO É AQUI AONDE DEVE SER ADICIONADA UMA URI QUE PRÉCARREGUE O PRIMEIRO REGISTRO
 
         rootView =  inflater.inflate(R.layout.fragment_detail, container, false);
         mDetailDayTextView = (TextView) rootView.findViewById(R.id.detail_day_textview);
