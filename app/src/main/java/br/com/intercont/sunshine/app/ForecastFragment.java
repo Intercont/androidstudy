@@ -146,6 +146,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         //selecionar o item na ListView apenas se algum estiver selecionado
         if(mIsSelected) {
             listView.setItemChecked(mPositionOnList, true);
+        }else{
+            listView.setItemChecked(0, true);
+
+
+//            Cursor cursor = (Cursor) data.getItemAtPosition(position);
+//            String locationSetting = Utility.getPreferredLocation(getActivity());
+//            ((CallbackDetails) getActivity())//Cast da Interface e getActivity para ter acesso à Activity acima deste Fragment (se MainActivity para 2 painéis ou DetailActivityFragment
+//                    .onItemSelected(WeatherContract.WeatherEntry //no método da interface, construo uma nova Uri
+//                            .buildWeatherLocationWithDate
+//                                    (locationSetting, //com este locationSetting que o recebi acima
+//                                            data.getLong(COL_WEATHER_DATE)));
         }
     }
 
@@ -301,25 +312,25 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         }
 
         //TODO TESTS
-        if(!mIsSelected){
-            listView.setItemChecked(0, true);//(ListView) findViewById(R.id.listview_forecast)
-            Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-            //se encontrou valor da chamada acima
-            if(cursor != null){
-                String locationSetting = Utility.getPreferredLocation(getActivity());
-                //Com 2 painéis diferentes (Tablet e Smartphone), ao ter algum item clicado,
-                // vou chamar o Callback do onItemSelected do pai no lugar de criar aqui a Activity
-                ((CallbackDetails) getActivity())//Cast da Interface e getActivity para ter acesso à Activity acima deste Fragment (se MainActivity para 2 painéis ou DetailActivityFragment
-                        .onItemSelected(WeatherContract.WeatherEntry //no método da interface, construo uma nova Uri
-                                .buildWeatherLocationWithDate
-                                        (locationSetting, //com este locationSetting que o recebi acima
-                                                cursor.getLong(COL_WEATHER_DATE))); //e busco no Cursor a data, fazendo uso dos índices de Projection criados acima
-            }
-//            listView.performItemClick(
-//                    listView,
-//                    0,
-//                    listView.getItemIdAtPosition(0));
-        }
+//        if(!mIsSelected){
+//            listView.setItemChecked(0, true);//(ListView) findViewById(R.id.listview_forecast)
+//            Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+//            //se encontrou valor da chamada acima
+//            if(cursor != null){
+//                String locationSetting = Utility.getPreferredLocation(getActivity());
+//                //Com 2 painéis diferentes (Tablet e Smartphone), ao ter algum item clicado,
+//                // vou chamar o Callback do onItemSelected do pai no lugar de criar aqui a Activity
+//                ((CallbackDetails) getActivity())//Cast da Interface e getActivity para ter acesso à Activity acima deste Fragment (se MainActivity para 2 painéis ou DetailActivityFragment
+//                        .onItemSelected(WeatherContract.WeatherEntry //no método da interface, construo uma nova Uri
+//                                .buildWeatherLocationWithDate
+//                                        (locationSetting, //com este locationSetting que o recebi acima
+//                                                cursor.getLong(COL_WEATHER_DATE))); //e busco no Cursor a data, fazendo uso dos índices de Projection criados acima
+//            }
+////            listView.performItemClick(
+////                    listView,
+////                    0,
+////                    listView.getItemIdAtPosition(0));
+//        }
         //TODO TESTS
 
         return rootView;
