@@ -105,9 +105,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             //Trazendo a URI adicionada na Activity aonde se originou o clique pelo Callback
             mUri = args.getParcelable(DETAIL_URI);
         }
-//        else{
-//            WeatherContract.WeatherEntry.buildWeatherLocationWithDate()
-//        }
         //TODO É AQUI AONDE DEVE SER ADICIONADA UMA URI QUE PRÉCARREGUE O PRIMEIRO REGISTRO
 
         rootView =  inflater.inflate(R.layout.fragment_detail, container, false);
@@ -224,12 +221,35 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mDetailWindTextView.setText(wind);
         mDetailPressureTextView.setText(pressure);
 
+        //alimenta dados para acao de compartilhar a previsao
+        weatherShareInfo(cursor, high, low);
+
+
         Log.d(LOG_TAG,"mForecast: " + mForecast);
 
         //If onCreateOptionsMenu has already happened, we need to update the share intent
         if(mShareActionProvider != null){
             mShareActionProvider.setShareIntent(createShareForecastIntent());
         }
+    }
+
+
+    private String weatherShareInfo(Cursor cursor, String high, String low){
+
+        StringBuilder forecastShare = new StringBuilder();
+
+        forecastShare
+                .append(Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE)))
+                .append(", ")
+                .append(Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE)))
+                .append(" - ")
+                .append(high)
+                .append(" / ")
+                .append(low);
+
+        mForecast = forecastShare.toString();
+
+        return mForecast;
     }
 
     @Override

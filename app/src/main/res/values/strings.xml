@@ -1,10 +1,9 @@
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Sunshine</string>
-    <string name="hello_world" translatable="false">Hello world!</string>
     <string name="action_settings">Configurações</string>
     <string name="action_refresh">Atualizar</string>
-    <string name="action_mapuserlocationigor">Localização do Usuário by Igor (Lat/Lon)</string>
-    <string name="action_mapuserlocationcourse">User Location by CEP (course solution)</string>
+    <string name="action_mapuserlocationigor">Localização do Usuário por Geotag (Lat/Lon)</string>
+    <string name="action_mapuserlocationcourse">Localização do Usuário pelo nome da Cidade</string>
     <string name="title_activity_detail">Detalhes</string>
 
     <!-- forecast description -->
@@ -31,16 +30,16 @@
     <string name="format_temperature"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>
 
     <!-- Wind in km/h [CHAR LIMIT=25] -->
-    <string name="format_wind_kmh">Wind: <xliff:g id="speed">%1.0f</xliff:g> km/h <xliff:g id="direction">%2$s</xliff:g>
+    <string name="format_wind_kmh">Vento: <xliff:g id="speed">%1.0f</xliff:g> km/h <xliff:g id="direction">%2$s</xliff:g>
     </string>
 
     <!-- Wind in mph [CHAR LIMIT=25] -->
-    <string name="format_wind_mph">Wind: <xliff:g id="speed">%1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g>
+    <string name="format_wind_mph">Vento: <xliff:g id="speed">%1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g>
     </string>
 
     <!-- Pressure format [CHAR LIMIT=25] -->
-    <string name="format_pressure">Pressure <xliff:g id="pressure">%1.0f</xliff:g> hPa</string>
+    <string name="format_pressure">Pressão: <xliff:g id="pressure">%1.0f</xliff:g> hPa</string>
 
     <!-- Humidity format [CHAR LIMIT=25] -->
-    <string name="format_humidity">Humidity <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
+    <string name="format_humidity">Humidade: <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
 </resources>

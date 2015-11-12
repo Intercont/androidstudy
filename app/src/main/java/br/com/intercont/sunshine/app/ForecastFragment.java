@@ -33,15 +33,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private ForecastAdapter mForecastAdapter;
     private ListView listView;
-//    private Bundle savedInstanceState;
 
-    private MainActivity mCallback;
     private int mPositionOnList;
     private boolean mIsSelected;
     private boolean mUseTodayLayout;
 
-    private static final String PREF_LOCATION = "location";
-    private static final String PREF_LOCATION_DEFAULT = "13206714";
 
     //CursorLoader Loader ID
     private static final int FORECAST_FRAGMENT_LOADER_ID = 0;
@@ -97,11 +93,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mPositionOnList = 0;
         //Especificando que tenho Opçoes de Menu a serem inclusas no menu principal
         setHasOptionsMenu(true);
-
-
     }
 
     @Override
@@ -147,32 +140,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         if(mIsSelected) {
             listView.setItemChecked(mPositionOnList, true);
         }
-        //TODO TESTES
-        else{
-            listView.setItemChecked(0, true);
-//            data.moveToFirst();
-            String locationSetting = Utility.getPreferredLocation(getActivity());
-            DetailActivityFragment fragment = new DetailActivityFragment();
-
-
-
-
-            Bundle args = new Bundle();
-            args.putParcelable(DetailActivityFragment.DETAIL_URI, WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, data.getLong(COL_WEATHER_DATE)));
-            fragment.setArguments(args);
-            //substituição da activity atual pela dinâmicamente gerada com os novos args selecionados
-            getFragmentManager().beginTransaction()
-                    .add(R.id.weather_detail_container, fragment, MainActivity.DETAILFRAGMENT_TAG)
-                    .commit();
-
-
-//            ((CallbackDetails) getActivity())//Cast da Interface e getActivity para ter acesso à Activity acima deste Fragment (se MainActivity para 2 painéis ou DetailActivityFragment
-//                    .onItemSelected(WeatherContract.WeatherEntry //no método da interface, construo uma nova Uri
-//                            .buildWeatherLocationWithDate
-//                                    (locationSetting, //com este locationSetting que o recebi acima
-//                                            data.getLong(COL_WEATHER_DATE)));
-            //TODO TESTES
-        }
     }
 
     @Override
@@ -189,10 +156,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh) {
-            updateData();
-            return true;
-        }
+//        if (id == R.id.action_refresh) {
+//            updateData();
+//            return true;
+//        }
 
         if(id == R.id.action_mapuserlocationigor) {
             showMap();
@@ -211,13 +178,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
      *
      */
     private void updateData(){
-//        FetchWeatherTask weatherTask  = new FetchWeatherTask(getActivity(),mForecastAdapter);
-//        //1º - Obtenho o arquivo Preferences default
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        //2º - Recupero o valor de location, passando o valor KEY e o valor DEFAULT, trazendo do strings.xml
-//        String location = preferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
-        //3º - Passo o valor da String para o parâmetro de FetchWeatherTask
-
         //REFACTOR LIÇÃO 4C
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
         String location = Utility.getPreferredLocation(getActivity());
@@ -325,29 +285,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             mPositionOnList = savedInstanceState.getInt(LIST_POS);
             mIsSelected = savedInstanceState.getBoolean(LIST_IS_SELECT);
         }
-
-        //TODO TESTS
-//        if(!mIsSelected){
-//            listView.setItemChecked(0, true);//(ListView) findViewById(R.id.listview_forecast)
-//            Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-//            //se encontrou valor da chamada acima
-//            if(cursor != null){
-//                String locationSetting = Utility.getPreferredLocation(getActivity());
-//                //Com 2 painéis diferentes (Tablet e Smartphone), ao ter algum item clicado,
-//                // vou chamar o Callback do onItemSelected do pai no lugar de criar aqui a Activity
-//                ((CallbackDetails) getActivity())//Cast da Interface e getActivity para ter acesso à Activity acima deste Fragment (se MainActivity para 2 painéis ou DetailActivityFragment
-//                        .onItemSelected(WeatherContract.WeatherEntry //no método da interface, construo uma nova Uri
-//                                .buildWeatherLocationWithDate
-//                                        (locationSetting, //com este locationSetting que o recebi acima
-//                                                cursor.getLong(COL_WEATHER_DATE))); //e busco no Cursor a data, fazendo uso dos índices de Projection criados acima
-//            }
-////            listView.performItemClick(
-////                    listView,
-////                    0,
-////                    listView.getItemIdAtPosition(0));
-//        }
-        //TODO TESTS
-
         return rootView;
     }
 

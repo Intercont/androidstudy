@@ -39,6 +39,7 @@ public class ForecastAdapter extends CursorAdapter {
         This is ported from FetchWeatherTask --- but now we go straight from the cursor to the
         string.
      */
+    @Deprecated
     public String convertCursorRowToUXFormat(Cursor cursor) {
         // get row indices for our cursor
         //Refactor 4C - Foram substitu�dos pelas constantes de Projection do ForecastFragment.
@@ -124,18 +125,9 @@ public class ForecastAdapter extends CursorAdapter {
 
         //Choose the layout type
         int viewType = getItemViewType(cursor.getPosition());
-        int layoutId = -1;
-
-        //Define qual layout será, substitu� o tern�rio para legibilidade e consist�ncia em caso de
-        // um retorno n�o esperado pelo cursor, para que a aplica��o n�o quebre
-
 
         //Read weather icon ID from Cursor
         int weatherID = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
-
-        //Use placeholder image for now
-//        ImageView iconView = (ImageView) view.findViewById(R.id.list_item_icon);
-//        iconView.setImageResource(R.mipmap.ic_launcher);
 
         //Verifica se devo carregar o ícone Art (cores HD), previsão HOJE ou o ícone Icon (cinza) DEMAIS DIAS
         if(viewType == VIEW_TYPE_TODAY){
@@ -146,14 +138,10 @@ public class ForecastAdapter extends CursorAdapter {
 
         //Read DATE from cursor
         long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
-//        TextView dateView = (TextView)view.findViewById(R.id.list_item_date_textview);
-//        dateView.setText(Utility.getFriendlyDayString(context,date));
         viewHolder.dateView.setText(Utility.getFriendlyDayString(context,date));
 
         //Read WEATHER FORECAST from cursor
         String weather = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
-//        TextView weatherView = (TextView)view.findViewById(R.id.list_item_forecast_textview);
-//        weatherView.setText(weather);
         viewHolder.weatherView.setText(weather);
 
         //Read user preference for metric or imperial temperature units
@@ -161,14 +149,10 @@ public class ForecastAdapter extends CursorAdapter {
 
         //Read high temperature from cursor
         float high = cursor.getFloat(ForecastFragment.COL_WEATHER_MAX_TEMP);
-//        TextView highView = (TextView) view.findViewById(R.id.list_item_high_textview);
-//        highView.setText(Utility.formatTemperature(high, isMetric));
         viewHolder.highView.setText(Utility.formatTemperature(context, high, isMetric));
 
         //Read low temperature from cursor
         float low = cursor.getFloat(ForecastFragment.COL_WEATHER_MIN_TEMP);
-//        TextView lowView = (TextView) view.findViewById(R.id.list_item_low_textview);
-//        lowView.setText(Utility.formatTemperature(low, isMetric));
         viewHolder.lowView.setText(Utility.formatTemperature(context, low, isMetric));
     }
 

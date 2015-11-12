@@ -254,7 +254,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 cVVector.add(weatherValues);
             }
 
-            //Refactor Li��o 4C - Insere um contador para substituir o c�digo de contagem
+            //Refactor Licao 4C - Insere um contador para substituir o codigo de contagem
             // de registros inseridos
             int inserted = 0;
 
@@ -263,6 +263,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 ContentValues[] resultCV = new ContentValues[cVVector.size()];
                 cVVector.toArray(resultCV);
                 inserted = mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI, resultCV);
+
             }
             Log.d(LOG_TAG, "FetchWeatherTask Complete. " + inserted + " Inserted");
 
@@ -351,7 +352,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             }
             forecastJsonStr = buffer.toString();
 
-            //REFACTOR Li��o 4C
+            //REFACTOR Licao 4C
             getWeatherDataFromJson(forecastJsonStr, locationQuery);
 
             //logando o retorno do backend da API do Tempo

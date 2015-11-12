@@ -11,7 +11,7 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity implements ForecastFragment.CallbackDetails{
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    public static final String DETAILFRAGMENT_TAG = "DFTAG";
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     private String mLocation;
     private boolean mTwoPane;
@@ -93,6 +93,8 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
      * SOLUCAO DO CURSO
      * Solucao do curso para carregar o mapa com a regiao, passa de parametro diretamente
      * o CEP armazenado no SharedPreferences na query da Implicit Intent para algum aplicativo de maps
+     * UPDATE - Devido as novas alteracoes do OpenWeatherAPI, alterei a consulta para a busca pelo nome da
+     *  cidade, aparecendo no mapa a busca pela cidade e não um ponto de CEP exato da mesma.
      */
     private void openPreferredLocationInMap(){
         //REFACTOR 4C
