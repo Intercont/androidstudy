@@ -203,6 +203,9 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         }
 
         String weatherDescription = cursor.getString(COL_WEATHER_DESC);
+        //acessibilidade para cegos, adicionando uma descricao para o icone
+        mImageView.setContentDescription(weatherDescription);
+
         boolean isMetric = Utility.isMetric(getActivity());
         int weatherID = cursor.getInt(COL_WEATHER_CONDITION_ID);
         String high = Utility.formatTemperature(getActivity(), cursor.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
@@ -220,6 +223,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mDetailHumidityTextView.setText(humidity);
         mDetailWindTextView.setText(wind);
         mDetailPressureTextView.setText(pressure);
+
+        //acessibilidade para cegos - temperaturas maxima e minima
+        mDetailHighTextView.setContentDescription(getString(R.string.accessibily_maxtemp) + high);
+        mDetailLowTextView.setContentDescription(getString(R.string.accessibily_mintemp) + low);
 
         //alimenta dados para acao de compartilhar a previsao
         weatherShareInfo(cursor, high, low);

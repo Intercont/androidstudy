@@ -26,39 +26,39 @@ public class ForecastAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
-    /**
-     * Prepare the weather high/lows for presentation.
-     */
-    private String formatHighLows(double high, double low) {
-        boolean isMetric = Utility.isMetric(mContext);
-        String highLowStr = Utility.formatTemperature(mContext, high, isMetric) + "/" + Utility.formatTemperature(mContext, low, isMetric);
-        return highLowStr;
-    }
+//    /**
+//     * Prepare the weather high/lows for presentation.
+//     */
+//    private String formatHighLows(double high, double low) {
+//        boolean isMetric = Utility.isMetric(mContext);
+//        String highLowStr = Utility.formatTemperature(mContext, high, isMetric) + "/" + Utility.formatTemperature(mContext, low, isMetric);
+//        return highLowStr;
+//    }
 
     /*
         This is ported from FetchWeatherTask --- but now we go straight from the cursor to the
         string.
      */
-    @Deprecated
-    public String convertCursorRowToUXFormat(Cursor cursor) {
-        // get row indices for our cursor
-        //Refactor 4C - Foram substitu�dos pelas constantes de Projection do ForecastFragment.
-        // Caso os �ndices no DB mudem ou haja altera��o de Schema ou do Join, as constantes
-        // devem ser atualizadas manualmente
-
-//        int idx_max_temp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
-//        int idx_min_temp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP);
-//        int idx_date = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE);
-//        int idx_short_desc = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC);
-
-        String highAndLow = formatHighLows(
-                cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP),
-                cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP));
-
-        return Utility.formatDate(cursor.getLong(ForecastFragment.COL_WEATHER_DATE)) +
-                " - " + cursor.getString(ForecastFragment.COL_WEATHER_DESC) +
-                " - " + highAndLow;
-    }
+//    @Deprecated
+//    public String convertCursorRowToUXFormat(Cursor cursor) {
+//        // get row indices for our cursor
+//        //Refactor 4C - Foram substitu�dos pelas constantes de Projection do ForecastFragment.
+//        // Caso os �ndices no DB mudem ou haja altera��o de Schema ou do Join, as constantes
+//        // devem ser atualizadas manualmente
+//
+////        int idx_max_temp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
+////        int idx_min_temp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP);
+////        int idx_date = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE);
+////        int idx_short_desc = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC);
+//
+//        String highAndLow = formatHighLows(
+//                cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP),
+//                cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP));
+//
+//        return Utility.formatDate(cursor.getLong(ForecastFragment.COL_WEATHER_DATE)) +
+//                " - " + cursor.getString(ForecastFragment.COL_WEATHER_DESC) +
+//                " - " + highAndLow;
+//    }
 
     public void setmUseTodayLayout(boolean mUseTodayLayout) {
         this.mUseTodayLayout = mUseTodayLayout;
@@ -154,6 +154,9 @@ public class ForecastAdapter extends CursorAdapter {
         //Read low temperature from cursor
         float low = cursor.getFloat(ForecastFragment.COL_WEATHER_MIN_TEMP);
         viewHolder.lowView.setText(Utility.formatTemperature(context, low, isMetric));
+
+        //descricao de acessibilidade para o icone da lista de Apps
+        viewHolder.iconView.setContentDescription(context.getString(R.string.accessibily_app_description));
     }
 
     /**

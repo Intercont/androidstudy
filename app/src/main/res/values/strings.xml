@@ -19,6 +19,13 @@
     <string name="pref_location_key" translatable="false">location</string>
     <string name="pref_location_default" translatable="false">Indaiatuba</string>
 
+    <!-- textos pt-BR descritivos de acessibilidade -->
+    <string name="accessibily_app_description">Sunshine previsão do tempo</string>
+    <string name="accessibily_day">Dia</string>
+    <string name="accessibily_date">Data</string>
+    <string name="accessibily_maxtemp">Temperatura maxima do Dia</string>
+    <string name="accessibily_mintemp">Temperatura minima do Dia</string>
+
     <!-- unit preferences settings -->
     <string name="pref_unit_label">Unidade de Medida</string>
     <string name="pref_unit_key" translatable="false">unit</string>

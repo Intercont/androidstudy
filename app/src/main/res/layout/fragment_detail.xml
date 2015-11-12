@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/black"
-            android:textSize="24sp"/>
+            android:textSize="24sp"
+            android:contentDescription="@string/accessibily_day"/>
 
         <TextView
             android:id="@+id/detail_date_textview"
@@ -26,7 +27,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/grey_700"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:contentDescription="@string/accessibily_date"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,7 +49,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:textSize="96sp" />
+                    android:textSize="96sp"
+                    android:contentDescription="@string/accessibily_maxtemp" />
 
                 <TextView
                     android:id="@+id/detail_low_textview"
@@ -56,7 +59,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:textSize="48sp"
-                    android:textColor="@color/grey_700" />
+                    android:textColor="@color/grey_700"
+                    android:contentDescription="@string/accessibily_mintemp" />
             </LinearLayout>
 
             <LinearLayout
