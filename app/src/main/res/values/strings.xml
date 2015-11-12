@@ -5,6 +5,7 @@
     <string name="action_mapuserlocationigor">Localização do Usuário por Geotag (Lat/Lon)</string>
     <string name="action_mapuserlocationcourse">Localização do Usuário pelo nome da Cidade</string>
     <string name="title_activity_detail">Detalhes</string>
+    <string name="warning_no_maps_app">Aplicativo de Mapas não instalado</string>
 
     <!-- forecast description -->
     <string name="today">Hoje</string>

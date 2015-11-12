@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import br.com.intercont.sunshine.app.data.WeatherContract;
 
@@ -210,6 +211,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             startActivity(intent);
         }else{
             Log.d(LOG_TAG, "Nao foi possivel chamar " + geoUri + ", não há nenhuma aplicação de mapas instalada");
+            Toast toast = Toast.makeText(getActivity(), getString(R.string.warning_no_maps_app), Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 
