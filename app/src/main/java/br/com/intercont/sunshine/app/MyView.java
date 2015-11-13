@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Custom View personalizada feita do zero
+ * Testes com Custom View personalizada feita do zero
  * Created by intercont on 13/11/15.
  */
 public class MyView extends View {
