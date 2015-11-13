@@ -114,6 +114,10 @@
                 android:layout_marginTop="4dp"
                 android:textAppearance="?android:textAppearanceLarge" />
 
+            <br.com.intercont.sunshine.app.MyView
+                android:layout_width="500dp"
+                android:layout_height="500dp" />
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
