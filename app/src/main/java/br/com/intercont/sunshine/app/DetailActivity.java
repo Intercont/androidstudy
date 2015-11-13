@@ -10,6 +10,7 @@ import android.view.MenuItem;
 public class DetailActivity extends ActionBarActivity {
 
 //    private ShareActionProvider mShareActionProvider;
+    public static String windDirection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -55,16 +56,31 @@ public class MyView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10);
         canvas.drawCircle(160, 160, 80, paint);
+        canvas.drawCircle(160, 160, 100, paint);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setColor(Color.RED);
-        canvas.drawLine(80, 80, 120, 100, paint);
 
-//        canvas.drawRect(80, 80, 80, 80, paint);
-//        paint.setStrokeWidth(0);
-//        paint.setColor(Color.CYAN);
-//        canvas.drawRect(83, 120, 147, 147, paint);
-//        paint.setColor(Color.YELLOW);
-//        canvas.drawRect(88, 88, 144, 120, paint);
+        //definindo para onde vai apontar a agulha da bussola
+        if(DetailActivity.windDirection.equals("N")){
+            canvas.drawLine(160, 160, 160, 60, paint);
+        }else if (DetailActivity.windDirection.equals("NE")){
+            canvas.drawLine(160, 160, 245, 95, paint);
+        }else if (DetailActivity.windDirection.equals("E")){
+            canvas.drawLine(160, 160, 260, 160, paint);
+        }else if (DetailActivity.windDirection.equals("SE")){
+            canvas.drawLine(160, 160, 240, 230, paint);
+        }else if (DetailActivity.windDirection.equals("S")){
+            canvas.drawLine(160, 160, 160, 260, paint);
+        }else if (DetailActivity.windDirection.equals("SW")){
+            canvas.drawLine(160, 160, 105, 240, paint);
+        }else if (DetailActivity.windDirection.equals("W")){
+            canvas.drawLine(160, 160, 60, 160, paint);
+        }else if (DetailActivity.windDirection.equals("NW")){
+            canvas.drawLine(160, 160, 70, 100, paint);
+        }
+
+        Log.d("MY_VIEW", DetailActivity.windDirection);
+
     }
 
 }
