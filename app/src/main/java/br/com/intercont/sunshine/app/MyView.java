@@ -8,6 +8,8 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 
 /**
  * Testes com Custom View personalizada feita do zero
@@ -100,6 +102,25 @@ public class MyView extends View {
         canvas.drawText("NE", 0, 2, 225, 102, paint);
         canvas.drawText("SE",0,2,225,232,paint);
 
+        //Verifica se o usuario esta utilizando algum recurso de acessibilidade
+        AccessibilityManager accessibilityManager = (AccessibilityManager) getContext().
+                getSystemService(getContext().ACCESSIBILITY_SERVICE);
+
+        if(accessibilityManager.isEnabled()){
+            sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED);
+        }
+
+    }
+
+    /**
+     * dispatch Populate Accessibility Event, sempre que o conteúdo da View for alterado
+     * Utilizado para notificar o recurso de acessibilidade de uma alteração na View
+     * quando o mesmo se encontra habilitado
+     */
+    @Override
+    public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
+        event.getText().add(DetailActivity.windDirection);
+        return true;
     }
 
 }

@@ -21,10 +21,9 @@
 
     <!-- textos pt-BR descritivos de acessibilidade -->
     <string name="accessibily_app_description">Sunshine previsão do tempo</string>
-    <string name="accessibily_day">Dia</string>
-    <string name="accessibily_date">Data</string>
     <string name="accessibily_maxtemp">Temperatura maxima do Dia</string>
     <string name="accessibily_mintemp">Temperatura minima do Dia</string>
+    <string name="accessibily_winddirection">Direção do Vento</string>
 
     <!-- unit preferences settings -->
     <string name="pref_unit_label">Unidade de Medida</string>
