@@ -149,7 +149,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         final String OWM_MIN = "min";
 
         final String OWM_WEATHER = "weather";
-        final String OWM_DESCRIPTION = "main";
+        final String OWM_DESCRIPTION = "description";//original era main para o valor in english
         final String OWM_WEATHER_ID = "id";
 
         //MINHA SOLU��O - Mostrar a localiza��o no Mapa
