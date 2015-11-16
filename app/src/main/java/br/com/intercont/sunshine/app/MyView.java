@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -56,30 +57,48 @@ public class MyView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10);
         canvas.drawCircle(160, 160, 80, paint);
-        canvas.drawCircle(160, 160, 100, paint);
+        canvas.drawCircle(160, 160, 120, paint);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setColor(Color.RED);
 
         //definindo para onde vai apontar a agulha da bussola
-        if(DetailActivity.windDirection.equals("N")){
-            canvas.drawLine(160, 160, 160, 60, paint);
-        }else if (DetailActivity.windDirection.equals("NE")){
-            canvas.drawLine(160, 160, 245, 95, paint);
-        }else if (DetailActivity.windDirection.equals("E")){
-            canvas.drawLine(160, 160, 260, 160, paint);
-        }else if (DetailActivity.windDirection.equals("SE")){
-            canvas.drawLine(160, 160, 240, 230, paint);
-        }else if (DetailActivity.windDirection.equals("S")){
-            canvas.drawLine(160, 160, 160, 260, paint);
-        }else if (DetailActivity.windDirection.equals("SW")){
-            canvas.drawLine(160, 160, 105, 240, paint);
-        }else if (DetailActivity.windDirection.equals("W")){
-            canvas.drawLine(160, 160, 60, 160, paint);
-        }else if (DetailActivity.windDirection.equals("NW")){
-            canvas.drawLine(160, 160, 70, 100, paint);
+        if(DetailActivity.windDirection != null) {
+            if (DetailActivity.windDirection.equals("N")) {
+                canvas.drawLine(160, 160, 160, 60, paint);
+            } else if (DetailActivity.windDirection.equals("NE")) {
+                canvas.drawLine(160, 160, 245, 95, paint);
+            } else if (DetailActivity.windDirection.equals("E")) {
+                canvas.drawLine(160, 160, 260, 160, paint);
+            } else if (DetailActivity.windDirection.equals("SE")) {
+                canvas.drawLine(160, 160, 240, 230, paint);
+            } else if (DetailActivity.windDirection.equals("S")) {
+                canvas.drawLine(160, 160, 160, 260, paint);
+            } else if (DetailActivity.windDirection.equals("SW")) {
+                canvas.drawLine(160, 160, 105, 240, paint);
+            } else if (DetailActivity.windDirection.equals("W")) {
+                canvas.drawLine(160, 160, 60, 160, paint);
+            } else if (DetailActivity.windDirection.equals("NW")) {
+                canvas.drawLine(160, 160, 70, 100, paint);
+            }
+            Log.d("MY_VIEW", DetailActivity.windDirection);
         }
 
-        Log.d("MY_VIEW", DetailActivity.windDirection);
+        //TODO - Internacionalizar - Indicador das coordenadas na bussola
+        paint.setTypeface(Typeface.SANS_SERIF);
+        paint.setTextSize(30);
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
+        canvas.drawText("N", 0, 1, 150, 72, paint);
+        canvas.drawText("S", 0, 1, 150, 270, paint);
+        canvas.drawText("E", 0, 1, 250, 170, paint);
+        canvas.drawText("W", 0, 1, 48, 170, paint);
+
+        paint.setTextSize(18);
+        canvas.drawText("NW", 0, 2, 70, 102, paint);
+        canvas.drawText("SW", 0, 2, 70, 232, paint);
+        canvas.drawText("NE", 0, 2, 225, 102, paint);
+        canvas.drawText("SE",0,2,225,232,paint);
 
     }
 
