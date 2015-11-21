@@ -1,5 +1,8 @@
 package br.com.intercont.sunshine.app;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,6 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import br.com.intercont.sunshine.app.data.WeatherContract;
+import br.com.intercont.sunshine.app.service.SunshineService;
 
 /**
  * Created by intercont on 19/04/15.
@@ -38,6 +42,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private int mPositionOnList;
     private boolean mIsSelected;
     private boolean mUseTodayLayout;
+
+    private AlarmManager alarmManager;
+    private PendingIntent alarmIntent;
 
 
     //CursorLoader Loader ID
@@ -180,10 +187,24 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
      */
     private void updateData(){
         //REFACTOR LIÇÃO 4C
-        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
-        String location = Utility.getPreferredLocation(getActivity());
-        weatherTask.execute(location);
+//        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
+//        String location = Utility.getPreferredLocation(getActivity());
+//        weatherTask.execute(location);
+
+        //todo iniciar service aqui
+        Intent sunshineServiceIntent = new Intent(getActivity(), SunshineService.class);
+        sunshineServiceIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
+                Utility.getPreferredLocation(getActivity()));
+        getActivity().startService(sunshineServiceIntent);
         mForecastAdapter.notifyDataSetChanged();
+
+        //iniciando o AlarmReceiver via Broadcast Intent
+        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getActivity(),SunshineService.AlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(getActivity(),0,intent,0);
+
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,5000,alarmIntent);
+
     }
 
     /**
@@ -203,8 +224,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void showMap() {
         //geo:latitude,longitude
 //        String geoUri = "geo:"+coordLatitude+","+coordLongitude;
-        String geoUri = "geo:"+ br.com.intercont.sunshine.app.FetchWeatherTask.coordLatitude+","+
-                br.com.intercont.sunshine.app.FetchWeatherTask.coordLongitude + "?z=19";
+        String geoUri = "geo:"+ br.com.intercont.sunshine.app.service.SunshineService.coordLatitude+","+
+                br.com.intercont.sunshine.app.service.SunshineService.coordLongitude + "?z=19";
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(geoUri));
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
