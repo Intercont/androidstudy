@@ -361,7 +361,10 @@ public class SunshineService extends IntentService {
 
         @Override
         public void onReceive(Context context, Intent intent){
-
+            Intent sunshineServiceIntent = new Intent(context, SunshineService.class);
+            sunshineServiceIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
+                    intent.getStringExtra(SunshineService.LOCATION_QUERY_EXTRA));
+            context.startService(sunshineServiceIntent);
         }
     }
 }

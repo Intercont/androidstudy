@@ -43,10 +43,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private boolean mIsSelected;
     private boolean mUseTodayLayout;
 
-    private AlarmManager alarmManager;
-    private PendingIntent alarmIntent;
-
-
     //CursorLoader Loader ID
     private static final int FORECAST_FRAGMENT_LOADER_ID = 0;
 
@@ -164,10 +160,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_refresh) {
-//            updateData();
-//            return true;
-//        }
+        if (id == R.id.action_refresh) {
+            updateData();
+            return true;
+        }
 
         if(id == R.id.action_mapuserlocationigor) {
             showMap();
@@ -191,19 +187,24 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 //        String location = Utility.getPreferredLocation(getActivity());
 //        weatherTask.execute(location);
 
-        //todo iniciar service aqui
-        Intent sunshineServiceIntent = new Intent(getActivity(), SunshineService.class);
-        sunshineServiceIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
-                Utility.getPreferredLocation(getActivity()));
-        getActivity().startService(sunshineServiceIntent);
-        mForecastAdapter.notifyDataSetChanged();
-
         //iniciando o AlarmReceiver via Broadcast Intent
-        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getActivity(),SunshineService.AlarmReceiver.class);
-        alarmIntent = PendingIntent.getBroadcast(getActivity(),0,intent,0);
+        Intent alarmIntent = new Intent(getActivity(),SunshineService.AlarmReceiver.class);
+        alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, Utility.getPreferredLocation(getActivity()));
 
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,5000,alarmIntent);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,alarmIntent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+
+        //iniciar service
+//        Intent sunshineServiceIntent = new Intent(getActivity(), SunshineService.class);
+//        sunshineServiceIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
+//                Utility.getPreferredLocation(getActivity()));
+//        getActivity().startService(sunshineServiceIntent);
+
+//        mForecastAdapter.notifyDataSetChanged();
+
 
     }
 
