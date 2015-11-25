@@ -1,8 +1,5 @@
 package br.com.intercont.sunshine.app;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,7 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import br.com.intercont.sunshine.app.data.WeatherContract;
-import br.com.intercont.sunshine.app.service.SunshineService;
+import br.com.intercont.sunshine.app.sync.SunshineSyncAdapter;
 
 /**
  * Created by intercont on 19/04/15.
@@ -188,14 +185,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 //        weatherTask.execute(location);
 
         //iniciando o AlarmReceiver via Broadcast Intent
-        Intent alarmIntent = new Intent(getActivity(),SunshineService.AlarmReceiver.class);
-        alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, Utility.getPreferredLocation(getActivity()));
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,alarmIntent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+//        Intent alarmIntent = new Intent(getActivity(),SunshineService.AlarmReceiver.class);
+//        alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, Utility.getPreferredLocation(getActivity()));
+//
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,alarmIntent,
+//                PendingIntent.FLAG_ONE_SHOT);
+//
+//        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
 
         //iniciar service
 //        Intent sunshineServiceIntent = new Intent(getActivity(), SunshineService.class);
@@ -205,7 +202,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
 //        mForecastAdapter.notifyDataSetChanged();
 
-
+        //inicia a sicronização imediatamente ao realizar o refresh
+        SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
     /**
@@ -215,7 +213,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 //    @Override
     public void onStart(){
         super.onStart();
-        updateData();
+//        updateData();
     }
 
     /**

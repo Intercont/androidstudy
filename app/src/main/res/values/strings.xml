@@ -49,4 +49,9 @@
 
     <!-- Humidity format [CHAR LIMIT=25] -->
     <string name="format_humidity">Humidade: <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">sunshine.intercont.com</string>
+    <string name="content_authority">br.com.intercont.sunshine.app</string>
+
 </resources>
