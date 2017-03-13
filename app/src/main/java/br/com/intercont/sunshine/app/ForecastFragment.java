@@ -136,7 +136,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mForecastAdapter.swapCursor(data);
-        listView.smoothScrollToPosition(mPositionOnList);
+        //listView.smoothScrollToPosition(mPositionOnList);
+        SunshineSyncAdapter.syncImmediately(getActivity()); //fix carregar ao abrir e atualizar ao alterar a unidade
         //selecionar o item na ListView apenas se algum estiver selecionado
         if(mIsSelected) {
             listView.setItemChecked(mPositionOnList, true);
