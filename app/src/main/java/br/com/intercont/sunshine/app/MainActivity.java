@@ -18,17 +18,17 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Alimentando a mLocation
         super.onCreate(savedInstanceState);
+
         mLocation = Utility.getPreferredLocation(this);
         setContentView(R.layout.activity_main);
 
-        //Verifico se há a presença de weather_detail_container no layout do activity_main
-        //Caso tenha, estou em um tablet, com o layout de sw600dp carregado,
-        // caso não, estou em um smartphone com o layout default carregado
+        /*Verifico se há a presença de weather_detail_container no layout do activity_main
+        Caso tenha, estou em um tablet, com o layout de sw600dp carregado,
+        Caso não, estou em um smartphone com o layout default carregado*/
         if (findViewById(R.id.weather_detail_container) != null){
             //The detail container view will be present only in the large-screen layouts
-            //(res/layout-sw600dp. If this view is present, the the activityshould be
+            //(res/layout-sw600dp. If this view is present, the the activity should be
             //in two-pane mode.
             mTwoPane = true;
 
@@ -75,13 +75,11 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
-        //solucao do curso para apresentar a localizacao do mapa, passa o CEP/ZIP Postal Code
-        // diretamente para a API do Google e esta se encarrega de buscar o endereco
+
         if(id == R.id.action_mapuserlocationcourse) {
             openPreferredLocationInMap();
             return true;
@@ -90,19 +88,13 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     }
 
     /**
-     * SOLUCAO DO CURSO
-     * Solucao do curso para carregar o mapa com a regiao, passa de parametro diretamente
-     * o CEP armazenado no SharedPreferences na query da Implicit Intent para algum aplicativo de maps
-     * UPDATE - Devido as novas alteracoes do OpenWeatherAPI, alterei a consulta para a busca pelo nome da
-     *  cidade, aparecendo no mapa a busca pela cidade e não um ponto de CEP exato da mesma.
+     * Solucao para carregar o mapa com a regiao, passa de parametro diretamente
+     * o nome da cidade armazenado no SharedPreferences na query da Implicit Intent para algum aplicativo de maps.
+     * Atualizado de busca por CEP/ZIP Postal code para nome da Cidade por alteração da API do OWM
      */
     private void openPreferredLocationInMap(){
-        //REFACTOR 4C
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        String location = preferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
-        //REFACTOR 4C
         String location = Utility.getPreferredLocation(this);
-                //Uri para chamada do intent, como descrita em https://developer.android.com/guide/components/intents-common.html#Maps
+        //Uri para chamada do intent, como descrita em https://developer.android.com/guide/components/intents-common.html#Maps
         Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
                 .appendQueryParameter("q",location)
                 .build();
@@ -132,7 +124,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     @Override
     protected void onResume(){
         super.onResume();
-        //Verifica��o se o location est� diferente do atual, se sim, requisito novos dados
+        //Verificacao se o location esta diferente do atual, se sim, requisito novos dados
         String location = Utility.getPreferredLocation(this);
         if(location != null && !location.equals(mLocation)){
             ForecastFragment ff = (ForecastFragment)getSupportFragmentManager()
@@ -148,10 +140,10 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             }
             mLocation = location;
         }
-
         Log.d(LOG_TAG, "onResume");
     }
 
+    //Logs para estudo do ciclo de vida da aplicação
     @Override
     protected void onPause(){
         super.onPause();
@@ -193,8 +185,5 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                     .setData(dateUri);
             startActivity(intent);
         }
-
-
     }
-
 }

@@ -18,8 +18,6 @@ package br.com.intercont.sunshine.app.data;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import br.com.intercont.sunshine.app.data.WeatherContract;
-
 /*
     Students: This is NOT a complete test for the WeatherContract --- just for the functions
     that we expect you to write.
@@ -32,7 +30,7 @@ public class TestWeatherContract extends AndroidTestCase {
 
     /*
         Students: Uncomment this out to test your weather location function.
-        Atualizado pacote no 2º assertEquals para que compare com o pacote do meu aplicativo e tenha o resultado esperado
+        Atualizado pacote no 2o assertEquals para que compare com o pacote do meu aplicativo e tenha o resultado esperado
      */
     public void testBuildWeatherLocation() {
         Uri locationUri = WeatherContract.WeatherEntry.buildWeatherLocation(TEST_WEATHER_LOCATION);

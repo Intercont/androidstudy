@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 public class DetailActivity extends ActionBarActivity {
 
-//    private ShareActionProvider mShareActionProvider;
     public static String windDirection;
 
     @Override
@@ -19,7 +18,6 @@ public class DetailActivity extends ActionBarActivity {
         if (savedInstanceState == null){
             // Create the detail fragment and add it to the activity
             // using a fragment transaction
-
             Bundle args = new Bundle();
             //adicionando ao Bundle os dados recuperados pelo getData que foram
             // adicionados ao Intent desde onde foi clicado

@@ -41,8 +41,7 @@ public class WeatherProvider extends ContentProvider {
     static{
         sWeatherByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
         sWeatherQueryBuilder = new SQLiteQueryBuilder();
-//        sLocationQueryBuilder = new SQLiteQueryBuilder();
-        
+
         //This is an inner join which looks like
         //weather INNER JOIN location ON weather.location_id = location._id
         sWeatherByLocationSettingQueryBuilder.setTables(
@@ -129,12 +128,12 @@ public class WeatherProvider extends ContentProvider {
      */
     static UriMatcher buildUriMatcher() {
         /*
-        Nossas 4 URI�s:
+        Possibilidades de URIs:
         CAMINHO - Confere exatamente igual ao caminho
-        CAMINHO/# - Confere com o caminho seguido de um N�MERO
+        CAMINHO/# - Confere com o caminho seguido de um NUMERO
         CAMINHO/* - Confere com o caminho seguido de QUALQUER STRING
         CAMINHO/* /OUTRO/# - Confere com o caminho seguido de QUALQUER STRING,
-                SEGUIDO DE "OUTRO" SEGUIDO DE UM N�MERO
+                SEGUIDO DE "OUTRO" SEGUIDO DE UM NUMERO
          */
 
         // 1) The code passed into the constructor represents the code to return for the root
@@ -155,12 +154,12 @@ public class WeatherProvider extends ContentProvider {
                 authority,
                 WeatherContract.PATH_WEATHER.concat("/*"),
                 WEATHER_WITH_LOCATION);
-//        //Weather with Location and Date
+        //Weather with Location and Date
         sURIMatcher.addURI(
                 authority,
                 WeatherContract.PATH_WEATHER.concat("/*").concat("/#"),
                 WEATHER_WITH_LOCATION_AND_DATE);
-//        //Location
+        //Location
         sURIMatcher.addURI(
                 authority,
                 WeatherContract.PATH_LOCATION,
@@ -183,7 +182,6 @@ public class WeatherProvider extends ContentProvider {
     /*
         Students: Here's where you'll code the getType function that uses the UriMatcher.  You can
         test this by uncommenting testGetType in TestProvider.
-
      */
     @Override
     public String getType(Uri uri) {
@@ -293,9 +291,9 @@ public class WeatherProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         //Notify registered observers
-        //Esta notificao ir avisar os observers, tanto se  uma chamada da URI raz (weather ou location)
+        //Esta notificao ira avisar os observers, tanto se  uma chamada da URI traz (weather ou location)
         //quanto se  de algum de seus descendentes (weather/location/date ou weather/location)
-        //IMPORTANTE: usar a URI ANTIGA para notific-la da mudana, e no a URI retornada na insero
+        //IMPORTANTE: usar a URI CHAMADORA para notificar a mudanca, e nao a URI de retorno da insercao
         getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
     }
@@ -382,6 +380,7 @@ public class WeatherProvider extends ContentProvider {
     public int bulkInsert(Uri uri, ContentValues[] values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
+
         switch (match) {
             case WEATHER:
                 db.beginTransaction();

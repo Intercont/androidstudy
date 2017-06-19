@@ -19,8 +19,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
-import android.text.format.Time;
-import android.util.Log;
 
 import java.util.HashSet;
 
@@ -115,7 +113,7 @@ public class TestDb extends AndroidTestCase {
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
     public void testLocationTable() {
-        //código foi movido para o método insertLocation, para que possa ser chamado deste teste e do
+        //codigo foi movido para o metodo insertLocation, para que possa ser chamado deste teste e do
         //teste testWeatherTable()
         insertLocation();
     }
@@ -135,7 +133,7 @@ public class TestDb extends AndroidTestCase {
         // tests. Why move it? We need the code to return the ID of the inserted location
         // and our testLocationTable can only return void because it's a test.
         long locationID = insertLocation();
-        //Assert that we have a valid location ID - Diferente de -1, é válida, L na frente pois é um Long
+        //Assert that we have a valid location ID - Diferente de -1, e valida, L na frente pois e um Long
         assertTrue("Invalid location ID", locationID != -1L);
 
         // First step: Get reference to writable database
@@ -167,10 +165,10 @@ public class TestDb extends AndroidTestCase {
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
-        TestUtilities.validateCurrentRecord("Dados inseridos na tabela Weather não correspondem com os de ContentValues",
+        TestUtilities.validateCurrentRecord("Dados inseridos na tabela Weather nao correspondem com os de ContentValues",
             dbCursor,weatherValues);
 
-        //Valido que não há nenhum outro registro na tabela
+        //Valido que nao ha nenhum outro registro na tabela
         assertFalse("Mais de um registro na tabela",dbCursor.moveToNext());
 
         // Finally, close the cursor and database
@@ -205,7 +203,7 @@ public class TestDb extends AndroidTestCase {
         Cursor dbCursor = db.query(
                 WeatherContract.LocationEntry.TABLE_NAME, //Tabela a consultar
                 null, //colunas a trazer na consulta
-                null,//colunas para a cláusula Where
+                null,//colunas para a clausula Where
                 null, //group by
                 null, //filtrar por grupo de colunas
                 null, //having
@@ -219,14 +217,14 @@ public class TestDb extends AndroidTestCase {
         // query if you like)
         TestUtilities.validateCurrentRecord("Deumerda", dbCursor, testValues);
 
-        //Assert para testar que há somente um registro na tabela
+        //Assert para testar que ha somente um registro na tabela
         assertFalse("Existe mais de um registro na tabela quando deve apenas existir um", dbCursor.moveToNext());
 
         // Finally, close the cursor and database
         dbCursor.close();
         db.close();
 
-        //verificação para garantir que o cursor foi fechado
+        //verificacao para garantir que o cursor foi fechado
         assertEquals(true, dbCursor.isClosed());
 
         return rowId;

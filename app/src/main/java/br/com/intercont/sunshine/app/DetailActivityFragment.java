@@ -46,7 +46,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     TextView mDetailWindTextView;
     TextView mDetailPressureTextView;
 
-    private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
+    private static final String FORECAST_SHARE_HASHTAG = " #SunshineAppByIgor";
     //CursorLoader Loader ID
     private static final int DETAIL_FRAGMENT_LOADER_ID = 1;
 
@@ -105,7 +105,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             //Trazendo a URI adicionada na Activity aonde se originou o clique pelo Callback
             mUri = args.getParcelable(DETAIL_URI);
         }
-        //TODO É AQUI AONDE DEVE SER ADICIONADA UMA URI QUE PRÉCARREGUE O PRIMEIRO REGISTRO
 
         rootView =  inflater.inflate(R.layout.fragment_detail, container, false);
         mDetailDayTextView = (TextView) rootView.findViewById(R.id.detail_day_textview);
@@ -132,7 +131,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         // seja habilitado no botao o os Providers para o Share, pelo getActionProvider
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
-        //Refactor Li��o 4C - Details Activity - Share Option - Valido se tenho algum valor
+        //Refactor Licao 4C - Details Activity - Share Option - Valido se tenho algum valor
         // alimentado pelo CursorLoader da consulta do clique na ListView
         if(mForecast != null){
             mShareActionProvider.setShareIntent(createShareForecastIntent());
@@ -197,7 +196,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.v(LOG_TAG, "Dentro de onLoadFinished");
-        //se n�o h� dados, return vazio
+        //se nao ha dados, return vazio
         if(!cursor.moveToFirst()){
             return;
         }

@@ -85,7 +85,7 @@ public class MyView extends View {
             Log.d("MY_VIEW", DetailActivity.windDirection);
         }
 
-        //TODO - Internacionalizar - Indicador das coordenadas na bussola
+        //Indicador das coordenadas na bussola
         paint.setTypeface(Typeface.SANS_SERIF);
         paint.setTextSize(30);
         paint.setColor(Color.BLACK);

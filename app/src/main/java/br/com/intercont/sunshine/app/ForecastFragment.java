@@ -113,7 +113,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         inflater.inflate(R.menu.forecastfragment, menu);
     }
 
-//    //Loader Callbacks
+    //Loader Callbacks
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         //Lição 4C Refactor - requisitando dados do DB para o Cursor
@@ -137,7 +137,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mForecastAdapter.swapCursor(data);
         //listView.smoothScrollToPosition(mPositionOnList);
-        SunshineSyncAdapter.syncImmediately(getActivity()); //fix carregar ao abrir e atualizar ao alterar a unidade
+        updateData(); //fix carregar ao abrir e atualizar ao alterar a unidade
         //selecionar o item na ListView apenas se algum estiver selecionado
         if(mIsSelected) {
             listView.setItemChecked(mPositionOnList, true);
@@ -149,7 +149,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mForecastAdapter.swapCursor(null);
     }
 
-    //este cara 'e de forma geral padrao e necessario
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -173,67 +172,38 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     /**
      * updateData - Método para atualizar os dados da MainActivity
-     * Funcionamento:
-     * - Uso o PreferenceManager, pegando o getDefaultSharedPreferences, no contexto corrente,
-     * trago a String do arquivo strings.xml da chave que quero e o valor por Default se esta não
-     * existir e passo na chamada
-     *
+     * Alterado apos a implementação do SyncAdapter
      */
     private void updateData(){
-        //REFACTOR LIÇÃO 4C
-//        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
-//        String location = Utility.getPreferredLocation(getActivity());
-//        weatherTask.execute(location);
-
-        //iniciando o AlarmReceiver via Broadcast Intent
-//        Intent alarmIntent = new Intent(getActivity(),SunshineService.AlarmReceiver.class);
-//        alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, Utility.getPreferredLocation(getActivity()));
-//
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,alarmIntent,
-//                PendingIntent.FLAG_ONE_SHOT);
-//
-//        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
-
-        //iniciar service
-//        Intent sunshineServiceIntent = new Intent(getActivity(), SunshineService.class);
-//        sunshineServiceIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
-//                Utility.getPreferredLocation(getActivity()));
-//        getActivity().startService(sunshineServiceIntent);
-
-//        mForecastAdapter.notifyDataSetChanged();
-
         //inicia a sicronização imediatamente ao realizar o refresh
         SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
     /**
      * onStart - Always executed when the Activity is started
-     * UPDATE - Removido no final da Lição 4C
      */
-//    @Override
+    @Override
     public void onStart(){
         super.onStart();
-//        updateData();
+        updateData();
     }
 
     /**
-     * showMap (MINHA SOLUÇÃO) - Este método foi a minha solução para apresentar a localização do usuário no mapa
+     * showMap (MINHA CUSTOM) - Este método foi outra solução para apresentar a localização do usuário no mapa
      * O mesmo faz uso das coordenadas que a API retorna e carrega o mapa com uso delas
      */
     public void showMap() {
-        //geo:latitude,longitude
-//        String geoUri = "geo:"+coordLatitude+","+coordLongitude;
-        String geoUri = "geo:"+ br.com.intercont.sunshine.app.service.SunshineService.coordLatitude+","+
-                br.com.intercont.sunshine.app.service.SunshineService.coordLongitude + "?z=19";
+        String geoUri = "geo:" + SunshineSyncAdapter.coordLatitude + "," +
+                SunshineSyncAdapter.coordLongitude + "?z=10";
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(geoUri));
+
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
-        }else{
-            Log.d(LOG_TAG, "Nao foi possivel chamar " + geoUri + ", não há nenhuma aplicação de mapas instalada");
-            Toast toast = Toast.makeText(getActivity(), getString(R.string.warning_no_maps_app), Toast.LENGTH_LONG);
-            toast.show();
+        } else {
+            Log.e(LOG_TAG, getString(R.string.warning_no_maps_app) + geoUri);
+            Toast.makeText(getActivity(), getString(R.string.warning_no_maps_app), Toast.LENGTH_LONG).show();
         }
     }
 

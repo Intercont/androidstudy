@@ -6,9 +6,17 @@
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="25" />
+
     <!-- Necessary for the app to use Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+
+    <meta-data
+        android:name="android.support.VERSION"
+        android:value="25.3.1" />
 
     <application
         android:allowBackup="true"
@@ -17,13 +25,65 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="br.com.intercont.sunshine.app.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/ForecastTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="br.com.intercont.sunshine.app.DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName="br.com.intercont.sunshine.app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.intercont.sunshine.app.MainActivity" />
+        </activity>
+        <activity
+            android:name="br.com.intercont.sunshine.app.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="br.com.intercont.sunshine.app.MainActivity"
+            android:theme="@style/SettingsTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.intercont.sunshine.app.MainActivity" />
+        </activity>
+
+        <provider
+            android:name="br.com.intercont.sunshine.app.data.WeatherProvider"
+            android:authorities="@string/content_authority"
+            android:exported="false"
+            android:syncable="true" />
+
+        <service android:name="br.com.intercont.sunshine.app.service.SunshineService" />
+
+        <receiver
+            android:name="br.com.intercont.sunshine.app.service.SunshineService$AlarmReceiver"
+            android:enabled="true" />
+        <!-- Autenticacao 'tonta',vazia neste caso porem tem que ter para o servico do SyncAdapter -->
+        <service android:name="br.com.intercont.sunshine.app.sync.SunshineAuthenticatorService" >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+        <!-- Servico do SyncAdapter -->
+        <service
+            android:name="br.com.intercont.sunshine.app.sync.SunshineSyncService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
     </application>
 
 </manifest>

@@ -15,9 +15,9 @@ import android.widget.TextView;
  */
 public class ForecastAdapter extends CursorAdapter {
 
-    // Representa��es de int do tipo de ViewType.
-    // Seu maior n�mero NUNCA vai ser maior ou igual � quantidade de Views
-    // por conta do �ndice da lista come�ar no primeiro em 0
+    // Representacoes de int de ViewType.
+    // Seu maior numero NUNCA vai ser maior ou igual a quantidade de Views
+    // por conta do indice da lista comecar no primeiro em 0
     private final int VIEW_TYPE_TODAY = 0;
     private final int VIEW_TYPE_FUTURE_DAY = 1;
     private boolean mUseTodayLayout;
@@ -26,39 +26,6 @@ public class ForecastAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
-//    /**
-//     * Prepare the weather high/lows for presentation.
-//     */
-//    private String formatHighLows(double high, double low) {
-//        boolean isMetric = Utility.isMetric(mContext);
-//        String highLowStr = Utility.formatTemperature(mContext, high, isMetric) + "/" + Utility.formatTemperature(mContext, low, isMetric);
-//        return highLowStr;
-//    }
-
-    /*
-        This is ported from FetchWeatherTask --- but now we go straight from the cursor to the
-        string.
-     */
-//    @Deprecated
-//    public String convertCursorRowToUXFormat(Cursor cursor) {
-//        // get row indices for our cursor
-//        //Refactor 4C - Foram substitu�dos pelas constantes de Projection do ForecastFragment.
-//        // Caso os �ndices no DB mudem ou haja altera��o de Schema ou do Join, as constantes
-//        // devem ser atualizadas manualmente
-//
-////        int idx_max_temp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
-////        int idx_min_temp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP);
-////        int idx_date = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE);
-////        int idx_short_desc = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC);
-//
-//        String highAndLow = formatHighLows(
-//                cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP),
-//                cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP));
-//
-//        return Utility.formatDate(cursor.getLong(ForecastFragment.COL_WEATHER_DATE)) +
-//                " - " + cursor.getString(ForecastFragment.COL_WEATHER_DESC) +
-//                " - " + highAndLow;
-//    }
 
     public void setmUseTodayLayout(boolean mUseTodayLayout) {
         this.mUseTodayLayout = mUseTodayLayout;
@@ -69,7 +36,7 @@ public class ForecastAdapter extends CursorAdapter {
      * Se a mesma é a primeira, estará na posição zero, então, corresponte à
      * previsão de Hoje, então carregamos a View list_item_forecast_today,
      * se não, carregamos a lista normal com as demais previsões dos dias.
-     * Esta lógica de qual carregar é feita dentro de newView com o valor de
+     * A lógica de qual carregar é feita dentro de newView com o valor de
      * retorno daqui.
      * @param position
      * @return
@@ -80,7 +47,7 @@ public class ForecastAdapter extends CursorAdapter {
     }
 
     /**
-     * Sobrescreve o m�todo getViewTypeCount
+     * Sobrescreve o metodo getViewTypeCount
      * que especifica quantas Views o Adapter retorna
      * @return Quantidade de Views
      */
@@ -98,8 +65,8 @@ public class ForecastAdapter extends CursorAdapter {
         int viewType = getItemViewType(cursor.getPosition());
         int layoutId = -1;
 
-        //Define qual layout será, substitu� o tern�rio para legibilidade e consist�ncia em caso de
-        // um retorno n�o esperado pelo cursor, para que a aplica��o n�o quebre
+        //Define qual layout será, substitui o ternario para legibilidade e consistencia em caso de
+        // um retorno nao esperado pelo cursor, para que a aplicacao nao quebre
         if(viewType == VIEW_TYPE_TODAY){
             layoutId = R.layout.list_item_forecast_today;
         }else if(viewType == VIEW_TYPE_FUTURE_DAY){
@@ -119,7 +86,7 @@ public class ForecastAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         //Criando o objeto viewHolder e recuperando a tag da View criada em newView
-        //Este objeto ser� o utilizado de agora em diante para aplicar os valores
+        //Este objeto sera o utilizado de agora em diante para aplicar os valores
         //na view
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 

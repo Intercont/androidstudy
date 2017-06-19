@@ -1,0 +1,47 @@
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+    <string name="app_name">Sunshine</string>
+    <string name="action_settings">Configurações</string>
+    <string name="action_refresh">Atualizar</string>
+    <string name="action_mapuserlocationigor">Localização do Usuário por Geotag (Lat/Lon)</string>
+    <string name="action_mapuserlocationcourse">Localização do Usuário pelo nome da Cidade</string>
+    <string name="title_activity_detail">Detalhes</string>
+    <string name="warning_no_maps_app">Aplicativo de Mapas não instalado</string>
+
+    <!-- forecast description -->
+    <string name="today">Hoje</string>
+    <string name="tomorrow">Amanhã</string>
+    <string name="format_full_friendly_date">
+        <xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g>
+    </string>
+
+    <!-- location preferences settings -->
+    <string name="pref_location_label">Localização</string>
+
+    <!-- textos pt-BR descritivos de acessibilidade -->
+    <string name="accessibily_app_description">Sunshine previsão do tempo</string>
+    <string name="accessibily_maxtemp">Temperatura maxima do Dia</string>
+    <string name="accessibily_mintemp">Temperatura minima do Dia</string>
+    <string name="accessibily_winddirection">Direção do Vento</string>
+
+    <!-- unit preferences settings -->
+    <string name="pref_unit_label">Unidade de Medida</string>
+
+    <!-- Strings for formatting weather-related data -->
+    <!-- Temperature formats [CHAR LIMIT=5] -->
+    <string name="format_temperature"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>
+
+    <!-- Wind in km/h [CHAR LIMIT=25] -->
+    <string name="format_wind_kmh">Vento: <xliff:g id="speed">%1.0f</xliff:g> km/h <xliff:g id="direction">%2$s</xliff:g>
+    </string>
+
+    <!-- Wind in mph [CHAR LIMIT=25] -->
+    <string name="format_wind_mph">Vento: <xliff:g id="speed">%1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g>
+    </string>
+
+    <!-- Pressure format [CHAR LIMIT=25] -->
+    <string name="format_pressure">Pressão: <xliff:g id="pressure">%1.0f</xliff:g> hPa</string>
+
+    <!-- Humidity format [CHAR LIMIT=25] -->
+    <string name="format_humidity">Humidade: <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
+
+</resources>

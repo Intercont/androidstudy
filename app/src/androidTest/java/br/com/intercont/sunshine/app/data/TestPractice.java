@@ -3,7 +3,7 @@ package br.com.intercont.sunshine.app.data;
 import android.test.AndroidTestCase;
 
 /**
- * Classe de demonstracao de cria��o de testes unit�rios para o Android
+ * Classe de demonstracao de criacao de testes unitarios para o Android
  */
 public class TestPractice extends AndroidTestCase {
     /*
@@ -15,9 +15,9 @@ public class TestPractice extends AndroidTestCase {
     }
 
     /**
-     * Teste unit�rio que demonstra o uso dos Asserts
-     * Para cada teste unit�rio que crio, devo inicializar com testNomeDoTestesUnitario()
-     * Colocando test no inicio do nome do m�todo
+     * Teste unitario que demonstra o uso dos Asserts
+     * Para cada teste unitario que crio, devo inicializar com testNomeDoTestesUnitario()
+     * Colocando test no inicio do nome do metodo
      * @throws Throwable
      */
     public void testThatDemonstratesAssertions() throws Throwable {
@@ -36,7 +36,7 @@ public class TestPractice extends AndroidTestCase {
     }
 
     /*
-        tearDown roda sempre AP�S os testes
+        tearDown roda sempre APOS os testes
      */
     @Override
     protected void tearDown() throws Exception {

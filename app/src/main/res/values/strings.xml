@@ -1,32 +1,32 @@
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Sunshine</string>
-    <string name="action_settings">Configurações</string>
-    <string name="action_refresh">Atualizar</string>
-    <string name="action_mapuserlocationigor">Localização do Usuário por Geotag (Lat/Lon)</string>
-    <string name="action_mapuserlocationcourse">Localização do Usuário pelo nome da Cidade</string>
-    <string name="title_activity_detail">Detalhes</string>
-    <string name="warning_no_maps_app">Aplicativo de Mapas não instalado</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_mapuserlocationigor">User Location by Geotag (Lat/Lon)</string>
+    <string name="action_mapuserlocationcourse">User Location by City Name</string>
+    <string name="title_activity_detail">Details</string>
+    <string name="warning_no_maps_app">Maps App not Installed</string>
 
     <!-- forecast description -->
-    <string name="today">Hoje</string>
-    <string name="tomorrow">Amanhã</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
     <string name="format_full_friendly_date">
         <xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g>
     </string>
 
     <!-- location preferences settings -->
-    <string name="pref_location_label">Localização</string>
+    <string name="pref_location_label">Location</string>
     <string name="pref_location_key" translatable="false">location</string>
     <string name="pref_location_default" translatable="false">Indaiatuba</string>
 
     <!-- textos pt-BR descritivos de acessibilidade -->
-    <string name="accessibily_app_description">Sunshine previsão do tempo</string>
-    <string name="accessibily_maxtemp">Temperatura maxima do Dia</string>
-    <string name="accessibily_mintemp">Temperatura minima do Dia</string>
-    <string name="accessibily_winddirection">Direção do Vento</string>
+    <string name="accessibily_app_description">Sunshine Weather Forecast</string>
+    <string name="accessibily_maxtemp">Maximum Temperature of the Day</string>
+    <string name="accessibily_mintemp">Minimum Temperature of the Day</string>
+    <string name="accessibily_winddirection">Wind Direction</string>
 
     <!-- unit preferences settings -->
-    <string name="pref_unit_label">Unidade de Medida</string>
+    <string name="pref_unit_label">Units</string>
     <string name="pref_unit_key" translatable="false">unit</string>
     <string name="pref_unit_default" translatable="false">metric</string>
     <string name="pref_unit_metric" translatable="false">metric</string>
@@ -37,18 +37,18 @@
     <string name="format_temperature"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>
 
     <!-- Wind in km/h [CHAR LIMIT=25] -->
-    <string name="format_wind_kmh">Vento: <xliff:g id="speed">%1.0f</xliff:g> km/h <xliff:g id="direction">%2$s</xliff:g>
+    <string name="format_wind_kmh">Wind: <xliff:g id="speed">%1.0f</xliff:g> km/h <xliff:g id="direction">%2$s</xliff:g>
     </string>
 
     <!-- Wind in mph [CHAR LIMIT=25] -->
-    <string name="format_wind_mph">Vento: <xliff:g id="speed">%1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g>
+    <string name="format_wind_mph">Wind: <xliff:g id="speed">%1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g>
     </string>
 
     <!-- Pressure format [CHAR LIMIT=25] -->
-    <string name="format_pressure">Pressão: <xliff:g id="pressure">%1.0f</xliff:g> hPa</string>
+    <string name="format_pressure">Pressure: <xliff:g id="pressure">%1.0f</xliff:g> hPa</string>
 
     <!-- Humidity format [CHAR LIMIT=25] -->
-    <string name="format_humidity">Humidade: <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
+    <string name="format_humidity">Humidity: <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
 
     <!-- SyncAdapter related -->
     <string name="sync_account_type">sunshine.intercont.com</string>

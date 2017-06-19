@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Vector;
 
 import br.com.intercont.sunshine.app.R;
@@ -34,7 +35,7 @@ import br.com.intercont.sunshine.app.data.WeatherContract;
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
 
-    //MINHA SOLUCAO - Mapas, coordenadas para o Maps
+    //MINHA CUSTOM - Mapas, coordenadas para o Maps
     public static double coordLatitude;
     public static double coordLongitude;
 
@@ -58,10 +59,9 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         String forecastJsonStr = null;
 
 
-
         String format = "json";
         String units = "metric";
-        String lang = "pt"; //minha custom
+        String lang = Locale.getDefault().getLanguage(); //minha custom - internacionalizar detalhes da previsao
         String api_key = "f01a986ef54fb617a966dcc9ba6df97d";
         int numDays = 14;
 
@@ -129,7 +129,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
-        }catch (JSONException e){ //Refactor 4C - Tratamento da excess�o da chamada de getWeatherDataFromJson
+        } catch (JSONException e) { //Refactor 4C - Tratamento da excessao da chamada de getWeatherDataFromJson
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         } finally {
@@ -144,12 +144,11 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             }
         }
-
-
     }
 
     /**
      * Helper method to have the sync adapter sync immediately
+     *
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
@@ -178,7 +177,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
 
         // If the password doesn't exist, the account doesn't exist
-        if ( null == accountManager.getPassword(newAccount) ) {
+        if (null == accountManager.getPassword(newAccount)) {
 
         /*
          * Add the account and account type, no password or user data
@@ -201,7 +200,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * Take the String representing the complete forecast in JSON Format and
      * pull out the data we need to construct the Strings needed for the wireframes.
-     *
+     * <p>
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
@@ -241,18 +240,17 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         final String OWM_DESCRIPTION = "description";//original era main para o valor in english
         final String OWM_WEATHER_ID = "id";
 
-        //MINHA SOLU��O - Mostrar a localiza��o no Mapa
+        //MY CUSTOM - Mostrar a localizacao no Mapa
         final String OWM_LOCATION = "city";
         final String OWM_LOCATION_COORD = "coord";
         final String OWM_LOCATION_COORD_LAT = "lat";
         final String OWM_LOCATION_COORD_LON = "lon";
-        //MINHA SOLU��O - Mostrar a localiza��o no Mapa
 
         try {
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
 
-            //MINHA SOLU��O - Mostrar a localiza��o no Mapa com as coordenadas de retorno da API
-            //Obt�m a latitude e a longitude para mostrar no mapa o lugar de prefer�ncia do usu�rio
+            //MY CUSTOM - Mostrar a localizacao no Mapa com as coordenadas de retorno da API
+            //Obtem a latitude e a longitude para mostrar no mapa o lugar de preferencia do usuario
             JSONObject forecastCity = forecastJson.getJSONObject(OWM_LOCATION);
             JSONObject forecastCoord = forecastCity.getJSONObject(OWM_LOCATION_COORD);
             coordLatitude = forecastCoord.getDouble(OWM_LOCATION_COORD_LAT);
@@ -273,7 +271,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             Vector<ContentValues> cVVector = new Vector<ContentValues>(weatherArray.length());
 
             // OWM returns daily forecasts based upon the local time of the city that is being
-            // asked f or, which means that we need to know the GMT offset to translatethis data
+            // asked for, which means that we need to know the GMT offset to translate this data
             // properly.
 
             // Since this data is also sent in-order and the first day is always the
@@ -289,7 +287,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             // now we work exclusively in UTC
             dayTime = new Time();
 
-            for(int i = 0; i < weatherArray.length(); i++) {
+            for (int i = 0; i < weatherArray.length(); i++) {
                 // These are the values that will be collected.
                 long dateTime;
                 double pressure;
@@ -307,7 +305,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 JSONObject dayForecast = weatherArray.getJSONObject(i);
 
                 // Cheating to convert this to UTC time, which is what we want anyhow
-                dateTime = dayTime.setJulianDay(julianStartDay+i);
+                dateTime = dayTime.setJulianDay(julianStartDay + i);
 
                 pressure = dayForecast.getDouble(OWM_PRESSURE);
                 humidity = dayForecast.getInt(OWM_HUMIDITY);
@@ -348,7 +346,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             int inserted = 0;
 
             // add to database
-            if ( cVVector.size() > 0 ) {
+            if (cVVector.size() > 0) {
                 ContentValues[] resultCV = new ContentValues[cVVector.size()];
                 cVVector.toArray(resultCV);
                 this.getContext().getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI, resultCV);
@@ -366,45 +364,44 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
      * Helper method to handle insertion of a new location in the weather database.
      *
      * @param locationSetting The location string used to request updates from the server.
-     * @param cityName A human-readable city name, e.g "Mountain View"
-     * @param lat the latitude of the city
-     * @param lon the longitude of the city
+     * @param cityName        A human-readable city name, e.g "Mountain View"
+     * @param lat             the latitude of the city
+     * @param lon             the longitude of the city
      * @return the row ID of the added location.
      */
     long addLocation(String locationSetting, String cityName, double lat, double lon) {
         Cursor retCursor;
         long _id;
 
-        //SOLU��O DO CURSO - Consulto no banco usando o ContentResolver, para fazer uma query,
-        // usando a URI do Location no Contract, que j� passa todos os par�metros para a consulta
+        //Consulto no banco usando o ContentResolver, para fazer uma query,
+        // usando a URI do Location no Contract, que ja passa todos os parametros para a consulta
         // First, check if the location with this city name exists in the db
         // If it exists, return the current ID
         // Otherwise, insert it using the content resolver and the base URI
         retCursor = this.getContext().getContentResolver().query(
                 WeatherContract.LocationEntry.CONTENT_URI,
                 new String[]{WeatherContract.LocationEntry._ID},
-                WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?", //usou somente LocationSetting de par�metro de busca j� que pela URI do ContentProvider somente ser� poss�vel buscar usando esse par�metro
+                WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?", //usou somente LocationSetting de parametro de busca ja que pela URI do ContentProvider somente sera possivel buscar usando esse parametro
                 new String[]{locationSetting},
                 null
         );
 
-        //se j� tiver um valor
-        if (retCursor.moveToFirst()){
+        if (retCursor.moveToFirst()) {
             _id = retCursor.getLong(retCursor.getColumnIndex(WeatherContract.LocationEntry._ID));
-        }else{
-            //se n�o, insiro o valor
+        } else {
+            //se nao tiver valor, insiro o valor
             ContentValues values = new ContentValues();
             values.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
             values.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
             values.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
             values.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
 
-            //SOLU��O DO CURSO - Insiro fazendo uso do ContentProvider com a URI
+            //Insiro fazendo uso do ContentProvider com a URI
             Uri insertedUri = this.getContext().getContentResolver().insert(
                     WeatherContract.LocationEntry.CONTENT_URI,
                     values
             );
-            //SOLU��O DO CURSO - A URI cont�m um ID para a row. Extraio a locationId da Uri
+            //A URI contem um ID para a row. Extraio a locationId da Uri
             _id = ContentUris.parseId(insertedUri);
         }
         retCursor.close();

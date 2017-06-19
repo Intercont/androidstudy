@@ -1,57 +1,179 @@
 -- Merging decision tree log ---
 manifest
-ADDED from AndroidManifest.xml:2:1
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:2:1-70:12
 	package
-		ADDED from AndroidManifest.xml:3:5
-		INJECTED from AndroidManifest.xml:0:0
-		INJECTED from AndroidManifest.xml:0:0
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:3:5-44
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
 	android:versionName
-		INJECTED from AndroidManifest.xml:0:0
-		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from AndroidManifest.xml:2:11
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:2:11-69
 	android:versionCode
-		INJECTED from AndroidManifest.xml:0:0
-		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
 uses-permission#android.permission.INTERNET
-ADDED from AndroidManifest.xml:5:5
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:6:5-67
 	android:name
-		ADDED from AndroidManifest.xml:5:22
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:6:22-64
+uses-permission#android.permission.READ_SYNC_SETTINGS
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:7:5-77
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:7:22-74
+uses-permission#android.permission.WRITE_SYNC_SETTINGS
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:8:5-78
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:8:22-75
+uses-permission#android.permission.AUTHENTICATE_ACCOUNTS
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:9:5-80
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:9:22-77
 application
-ADDED from AndroidManifest.xml:7:5
-MERGED from com.android.support:appcompat-v7:22.0.0:22:5
-MERGED from com.android.support:support-v4:22.0.0:22:5
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:11:5-69:19
+MERGED from [com.android.support:appcompat-v7:25.3.1] /home/intercont/.android/build-cache/2ef88282e1b1a3eaa5d560c76d15e6f4f284f70d/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] /home/intercont/.android/build-cache/9a828fd246c7201df3badd82e030c30a6883fab1/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] /home/intercont/.android/build-cache/7cbe42ab1d49492aae605dc807dbb41178904144/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] /home/intercont/.android/build-cache/aad7dc1586d2f770a79732f099a041113d83a297/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] /home/intercont/.android/build-cache/cfe76d14790ed02b7b67fbe76e5d2937117dd58b/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] /home/intercont/.android/build-cache/96fa04369922dc5d445ad8996df997559b3789bc/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /home/intercont/.android/build-cache/d4285d6041d260f890bcabad94394b9a2c2f4bbc/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /home/intercont/.android/build-cache/c9359610dd695d6939eb4dd1428dded77e9f12cf/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-compat:25.3.1] /home/intercont/.android/build-cache/67be49b89fcf6ddd8230c3060b59c89d40ad5766/output/AndroidManifest.xml:29:5-20
 	android:label
-		ADDED from AndroidManifest.xml:10:9
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:14:9-41
 	android:allowBackup
-		ADDED from AndroidManifest.xml:8:9
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:12:9-35
 	android:icon
-		ADDED from AndroidManifest.xml:9:9
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:13:9-43
 	android:theme
-		ADDED from AndroidManifest.xml:11:9
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:15:9-40
 activity#br.com.intercont.sunshine.app.MainActivity
-ADDED from AndroidManifest.xml:12:9
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:16:9-25:20
 	android:label
-		ADDED from AndroidManifest.xml:14:13
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:18:13-45
+	android:theme
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:19:13-49
 	android:name
-		ADDED from AndroidManifest.xml:13:13
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:17:13-41
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:15:13
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:20:13-24:29
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:16:17
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:21:17-69
 	android:name
-		ADDED from AndroidManifest.xml:16:25
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:21:25-66
 category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:18:17
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:23:17-77
 	android:name
-		ADDED from AndroidManifest.xml:18:27
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:23:27-74
+activity#br.com.intercont.sunshine.app.DetailActivity
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:26:9-33:20
+	android:label
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:28:13-58
+	android:parentActivityName
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:29:13-55
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:27:13-43
+meta-data#android.support.PARENT_ACTIVITY
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:30:13-32:78
+	android:value
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:32:17-75
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:31:17-63
+activity#br.com.intercont.sunshine.app.SettingsActivity
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:34:9-42:20
+	android:label
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:36:13-60
+	android:parentActivityName
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:37:13-55
+	android:theme
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:38:13-49
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:35:13-45
+provider#br.com.intercont.sunshine.app.data.WeatherProvider
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:43:9-47:39
+	android:authorities
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:44:13-60
+	android:syncable
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:47:13-36
+	android:exported
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:46:13-37
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:45:13-49
+service#br.com.intercont.sunshine.app.service.SunshineService
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:48:9-59
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:48:18-57
+receiver#br.com.intercont.sunshine.app.service.SunshineService$AlarmReceiver
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:49:9-97
+	android:enabled
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:49:73-95
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:49:19-72
+service#br.com.intercont.sunshine.app.sync.SunshineAuthenticatorService
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:51:9-58:19
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:51:18-67
+intent-filter#android.accounts.AccountAuthenticator
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:52:13-54:29
+action#android.accounts.AccountAuthenticator
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:53:17-79
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:53:25-77
+meta-data#android.accounts.AccountAuthenticator
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:55:13-57:57
+	android:resource
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:57:17-54
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:56:17-69
+service#br.com.intercont.sunshine.app.sync.SunshineSyncService
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:60:9-68:19
+	android:exported
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:61:13-36
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:60:18-58
+intent-filter#android.content.SyncAdapter
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:62:13-64:29
+action#android.content.SyncAdapter
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:63:17-70
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:63:25-67
+meta-data#android.content.SyncAdapter
+ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:65:13-67:55
+	android:resource
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:67:17-52
+	android:name
+		ADDED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml:66:17-59
 uses-sdk
-INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
-MERGED from com.android.support:appcompat-v7:22.0.0:20:5
-MERGED from com.android.support:support-v4:22.0.0:20:5
+INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:appcompat-v7:25.3.1] /home/intercont/.android/build-cache/2ef88282e1b1a3eaa5d560c76d15e6f4f284f70d/output/AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:25.3.1] /home/intercont/.android/build-cache/9a828fd246c7201df3badd82e030c30a6883fab1/output/AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] /home/intercont/.android/build-cache/7cbe42ab1d49492aae605dc807dbb41178904144/output/AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.1] /home/intercont/.android/build-cache/aad7dc1586d2f770a79732f099a041113d83a297/output/AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:25.3.1] /home/intercont/.android/build-cache/cfe76d14790ed02b7b67fbe76e5d2937117dd58b/output/AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:25.3.1] /home/intercont/.android/build-cache/96fa04369922dc5d445ad8996df997559b3789bc/output/AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /home/intercont/.android/build-cache/d4285d6041d260f890bcabad94394b9a2c2f4bbc/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /home/intercont/.android/build-cache/c9359610dd695d6939eb4dd1428dded77e9f12cf/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-compat:25.3.1] /home/intercont/.android/build-cache/67be49b89fcf6ddd8230c3060b59c89d40ad5766/output/AndroidManifest.xml:21:5-23:58
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:25.3.1] /home/intercont/.android/build-cache/2ef88282e1b1a3eaa5d560c76d15e6f4f284f70d/output/AndroidManifest.xml:23:9-75
 	android:targetSdkVersion
-		INJECTED from AndroidManifest.xml:0:0
-		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from AndroidManifest.xml:0:0
-		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
+		INJECTED from /home/intercont/StudioProjects/androidstudy/app/src/main/AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:appcompat-v7:25.3.1] /home/intercont/.android/build-cache/2ef88282e1b1a3eaa5d560c76d15e6f4f284f70d/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] /home/intercont/.android/build-cache/9a828fd246c7201df3badd82e030c30a6883fab1/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] /home/intercont/.android/build-cache/7cbe42ab1d49492aae605dc807dbb41178904144/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] /home/intercont/.android/build-cache/aad7dc1586d2f770a79732f099a041113d83a297/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] /home/intercont/.android/build-cache/cfe76d14790ed02b7b67fbe76e5d2937117dd58b/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] /home/intercont/.android/build-cache/96fa04369922dc5d445ad8996df997559b3789bc/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /home/intercont/.android/build-cache/d4285d6041d260f890bcabad94394b9a2c2f4bbc/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /home/intercont/.android/build-cache/c9359610dd695d6939eb4dd1428dded77e9f12cf/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-compat:25.3.1] /home/intercont/.android/build-cache/67be49b89fcf6ddd8230c3060b59c89d40ad5766/output/AndroidManifest.xml:25:5-27:34
+	android:value
+		ADDED from [com.android.support:appcompat-v7:25.3.1] /home/intercont/.android/build-cache/2ef88282e1b1a3eaa5d560c76d15e6f4f284f70d/output/AndroidManifest.xml:27:9-31
+	android:name
+		ADDED from [com.android.support:appcompat-v7:25.3.1] /home/intercont/.android/build-cache/2ef88282e1b1a3eaa5d560c76d15e6f4f284f70d/output/AndroidManifest.xml:26:9-47
